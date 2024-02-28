@@ -9,7 +9,7 @@ async function fetchVideo(){
     try {
         const restOperation = get({
             apiName: 'matches',
-            path: '/matches/find'
+            path: '/matches/find/tmp'
         });
         const { body } = await restOperation.response;
         return body.json();
