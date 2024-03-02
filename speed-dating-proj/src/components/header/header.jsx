@@ -1,28 +1,36 @@
 // Header.js
 import React from 'react';
 import { AppBar, Toolbar, Button } from '@mui/material';
-import { googleLogout } from '@react-oauth/google';
 import text_logo from '../../assets/flash-flirt-text.png'
 import './header.css'
-import {ExitToApp, Person, Phone} from "@mui/icons-material";
+import {ExitToApp, Person} from "@mui/icons-material";
+import {signOut } from 'aws-amplify/auth';
+import {useNavigate} from 'react-router-dom'
+
+
+
 
 
 const Header = () => {
-    // Placeholder logo
-    // log out function to log the user out of google and set the profile array to null
-    const logOut = () => {
-        googleLogout();
-        window.location.href = '/login'
+    const navigate = useNavigate();
+
+    const handleSignOut= ()=>{
+        signOut().then(()=>{
+            navigate('/login');
+        }).catch (error=>{
+            console.log('error signing out: ', error);
+        })
     };
+
 
     return (
         <AppBar color="primary" className="header-main">
             <Toolbar className="header-toolbar">
                 <div className="left-options">
                     <div className="header-logout">
-                        <Button color="inherit" onClick={logOut} className="header-logout-btn">
+                        <Button color="inherit" onClick={handleSignOut} className="header-logout-btn">
                             <ExitToApp/>
-                            Log Out
+                            Logout
                         </Button>
                     </div>
                 </div>
@@ -39,13 +47,6 @@ const Header = () => {
                             Profile
                         </Button>
                     </div>
-                    <div className="header-shared-details">
-                        <Button color="inherit" href="/shared-details" className="header-shared-details-btn">
-                            <Phone/>
-                            Shared
-                        </Button>
-                    </div>
-
                 </div>
             </Toolbar>
         </AppBar>

@@ -1,12 +1,8 @@
 .text-logo {
-    height: 70px;
-    width: 300px;
+    width: 15em;
 }
 
 .right-options{
-    display: flex;
-    align-items: center;
-    align-content: center;
 }
 
 .header-text-logo{
@@ -16,10 +12,10 @@
 }
 
 
-.header-profile-btn, .header-logout-btn , .header-shared-details-btn{
+.header-profile-btn, .header-logout-btn{
     display: flex;
     flex-direction: column;
-    margin: 5px;
+    font-size: 1em;
 }
 
 .header-toolbar, .header-main {
@@ -27,6 +23,5 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-right: 20px;
 
 }

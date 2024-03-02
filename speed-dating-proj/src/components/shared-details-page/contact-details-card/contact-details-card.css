@@ -1,8 +1,9 @@
 .details-card-container {
     background-color: white;
+    width: fit-content;
     min-width: 200px;
     max-width: 250px;
-    margin: 40px;
+    margin: 30px;
     height: auto;
     border-radius: 14px;
     box-shadow: 0px 10px 30px hsl(14, 11%, 63%);
@@ -30,7 +31,6 @@
     font-weight: bold;
     font-size: 1.1rem;
     text-align: center;
-    padding: 10px 20px 0px 20px;
 }
 
 .normal-text {
@@ -38,7 +38,6 @@
     font-size: 0.95rem;
     color: hsl(0, 0%, 50%);
     text-align: center;
-    padding-bottom: 10px;
 }
 
 /* SOCIAL STATS */

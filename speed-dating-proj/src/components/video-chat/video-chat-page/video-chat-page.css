@@ -12,6 +12,9 @@
     flex-direction: column;
 }
 
+.video-chat-page-main{
+    background-size: cover;
+}
 .video-chat-card {
     margin: 10px;
     background-color: #080606f0;
@@ -31,6 +34,12 @@
 
 .video-chat-timer {
     padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.add-time-btn{
+    padding-left: 5px;
 }
 
 .video-chat-action-btns > div{
@@ -40,3 +49,5 @@
 .video-chat-title {
     padding: 10px;
 }
+
+

@@ -4,6 +4,10 @@
     align-content: center;
 }
 
+.loading-video-chat-main{
+    background-size: cover;
+}
+
 .loading-video-chat-card {
     margin: 10px;
     background-color: #080606f0;
@@ -17,6 +21,7 @@
 
 .loading-video-title {
     color: white;
+    text-align: center;
 }
 
 .loader {

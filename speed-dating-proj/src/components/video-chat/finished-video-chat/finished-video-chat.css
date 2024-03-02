@@ -17,6 +17,28 @@
 
 .finished-video-title {
     color: white;
+    text-align: center;
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+
+.finished-video-chat-main{
+    background-size: cover;
+
+}
+
+.spark-title {
+    font-size: larger;
+}
+
+.share-details-text {
+    font-size: medium;
+}
+
+.finished-video-tip-text {
+    color: white;
+    text-align: center;
+    font-size: small;
 }
 
 .finished-video-button {

@@ -1,13 +1,13 @@
 .MuiFormControl-root {
-    width: 50%;
+    width: 65%;
+    max-width: 250px;
 }
 
 .main-form-div{
-    width: 80%;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
     align-self: center;
     flex-direction: column;
-    background-color: #fce7a538;
+    background-color: rgb(254, 212, 228);
     margin-bottom: 10px;
 }
 
@@ -29,11 +29,12 @@
     align-items: center;
 }
 
-form {
-    width: 50%;
+.profile-form {
+    width: inherit;
+    max-height: 100%;
 }
 
-form > * {
+.profile-form > * {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,8 +49,16 @@ form > * {
     flex-direction: column;
 }
 
+.profile-pic-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
 .form-main{
-    margin-top: 50px;
+    overflow: scroll;
+}
+.form-title {
+    font-size: 1.2em
 }
 
 .save-btn {

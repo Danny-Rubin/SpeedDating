@@ -1,38 +1,34 @@
 import React, {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom'
 import Button from "@mui/material/Button";
 import loading_gif from '../../../assets/heart-loader.gif'
 import './loading-video-chat.css'
-import { get } from 'aws-amplify/api';
+import {getRequest} from "../../../services/amplify-api-service";
+import wavy_background from "../../../assets/testing-background.png";
 
-async function fetchVideo(){
-    console.log('ask server for a video chat');
-    try {
-        const restOperation = get({
-            apiName: 'matches',
-            path: '/matches/find/tmp'
-        });
-        const { body } = await restOperation.response;
-        return body.json();
+const matchesApiName = 'matches';
+const findMatchPath = '/matches/find';
 
-    } catch (error) {
-        console.log('GET call failed: ', error);
-    }
-}
 
 const LoadingVideoChat = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
 
-        fetchVideo()
+        getRequest(matchesApiName, findMatchPath)
             .then(response =>
             {
                 console.log(response);
-                window.location.href = '/video-chat?token=' + response["token"] + "&session_id=" + response["session_id"];
+                navigate('/video-chat?token=' + response["token"] + "&session_id=" + response["session_id"]);
+            })
+            .catch(err=>{
+                console.log(`error getting matched. the error: ${err}`)
             })
 
-    }, []); // The empty dependency array means the effect runs once when the component mounts
+    }, [navigate]); // The empty dependency array means the effect runs once when the component mounts
 
     return (
-        <div className="loading-video-chat-main main-div">
+        <div className="loading-video-chat-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
             <div className="loading-video-chat-card mycard">
                 <div>
                     <h2 className="loading-video-title">

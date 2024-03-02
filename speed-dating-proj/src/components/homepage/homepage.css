@@ -1,14 +1,39 @@
-.start-dating-button{
+.start-dating-button,
+.shared-details-button{
     border-radius: 50%;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
+}
+
+.shared-details-button-main,
+.start-dating-button-main {
+    margin-top: 5%;
+}
+
+.start-dating-button {
     flex-direction: column;
+}
+
+.shared-details-button {
+    flex-direction: row;
 }
 
 .homepage-body{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    margin-top: 5%;
+    background-size: cover;
+}
+
+.shared-details-image {
+    width: 40px;
+    padding-right: 2px;
+}
+
+.start-dating-image {
+    width: 9em;
 }
 
 .start-dating-text {
