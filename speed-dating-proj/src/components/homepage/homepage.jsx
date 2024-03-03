@@ -1,20 +1,44 @@
 // HomePage.js
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button } from '@mui/material';
 import Header from "../header/header";
 import "./homepage.css"
 import start_dating from '../../assets/start-dating.png'
 import love_texting from  '../../assets/love-texting.png'
-import wavy_background from '../../assets/testing-background.png'
+import wavy_background from '../../assets/wavy_background.png'
+import {homepage_steps} from "../tour/tour-steps-provider";
+import Joyride from 'react-joyride';
+import IconButton from "@mui/material/IconButton";
+import {Info} from "@mui/icons-material";
+
 
 const HomePage = () => {
+
+    const [isTourRunning, setTourRunning]= useState(false);
+
+    const handleTourStart = (event) => {
+        event.preventDefault();
+        setTourRunning(true);
+    };
+    const handleJoyrideCallback = (data) => {
+        localStorage.setItem('hasCompletedHomepageTour', 'true');
+        setTourRunning(false);
+
+    };
+
+    useEffect(()=>{
+        setTourRunning(true);
+    },[isTourRunning]);
 
 
     return (
         <div className="main-div">
             <Header/>
+            <IconButton className="info-button" onClick={handleTourStart}
+                        style={{position:'absolute', top:'80px', right:'0'}}>
+                <Info>Start Tour</Info>
+            </IconButton>
             <div className="homepage-body main-div" style={{backgroundImage: `url(${wavy_background})`}}>
-
                 <div className="start-dating-button-main">
                     <Button
                         className="start-dating-button"
@@ -36,8 +60,19 @@ const HomePage = () => {
                     </Button>
                 </div>
             </div>
+            <Joyride
+                callback={handleJoyrideCallback}
+                continuous
+                run={isTourRunning || false}
+                showSkipButton
+                steps={homepage_steps}
+                styles={{
+                    options: {
+                        zIndex: 10000,
+                    },
+                }}
+            />
         </div>
-
     );
 };
 

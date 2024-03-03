@@ -6,7 +6,6 @@ import {getCurrentUser} from 'aws-amplify/auth';
 import Typography from "@mui/material/Typography";
 import {useNavigate} from 'react-router-dom';
 import {getRequest, postRequest, putRequest} from "../../services/amplify-api-service";
-import wavy_background from "../../assets/testing-background.png";
 
 
 const locationList = ['North', 'Center', 'South'];

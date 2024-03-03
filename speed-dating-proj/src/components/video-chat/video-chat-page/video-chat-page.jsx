@@ -4,21 +4,35 @@ import { Typography, Button } from '@mui/material';
 import './video-chat-page.css';
 import Meeting from "../video-display/meeting";
 import {useNavigate} from 'react-router-dom'
-import wavy_background from "../../../assets/testing-background.png";
+import wavy_background from "../../../assets/wavy_background.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
-import {Close} from "@mui/icons-material";
-
+import {Close, Info} from "@mui/icons-material";
+import {videochat_steps} from '../../tour/tour-steps-provider';
+import Joyride from 'react-joyride';
 
 const VideoChatPage = () => {
     const navigate = useNavigate();
 
     const initialTimer = 3 * 60; // 3 minutes in seconds
+    let timerMax = initialTimer;
+
     const [timer, setTimer] = useState(initialTimer);
     const [didExtendTime, setDidExtendTime] = useState(false);
-    let timerMax = initialTimer;
+
+    const [isTourRunning, setTourRunning]= useState(false);
+
+    const handleTourStart = (event) => {
+        event.preventDefault();
+        setTourRunning(true);
+    };
+    const handleJoyrideCallback = (data) => {
+        setTourRunning(false);
+
+    };
+
 
     useEffect(() => {
         if (timer <= 0) {
@@ -94,7 +108,10 @@ const VideoChatPage = () => {
                         </Fab>
                     </div>
                 </div>
-
+                <IconButton className="info-button" onClick={handleTourStart}
+                            style={{position:'absolute', top:'20px', right:'20px'}}>
+                    <Info>Start Tour</Info>
+                </IconButton>
                 <div className="video-chat-action-btns">
                     <div className="next-conversation-btn">
                         <Button variant="contained" color="secondary" onClick={handleNextConversation}>
@@ -103,6 +120,18 @@ const VideoChatPage = () => {
                     </div>
                 </div>
             </div>
+            <Joyride
+                callback={handleJoyrideCallback}
+                continuous
+                run={isTourRunning || true}
+                showSkipButton
+                steps={videochat_steps}
+                styles={{
+                    options: {
+                        zIndex: 10000,
+                    },
+                }}
+            />
         </div>
     );
 };

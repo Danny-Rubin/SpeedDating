@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import './finished-video-chat.css'
 import  {useNavigate} from 'react-router-dom'
 import React from "react";
-import wavy_background from "../../../assets/testing-background.png";
+import wavy_background from "../../../assets/wavy_background.png";
 
 const FinishedVideoChat = () => {
     const navigate = useNavigate();

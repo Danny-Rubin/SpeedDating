@@ -1,0 +1,46 @@
+.finished-video-chat-main, .finished-video-chat-card{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.finished-video-chat-card {
+    margin: 10px;
+    background-color: #080606f0;
+    flex-direction: column;
+}
+.finished-video-chat-card > *{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.finished-video-title {
+    color: white;
+    text-align: center;
+    flex-direction: column;
+    margin-bottom: 10%;
+}
+
+.finished-video-chat-main{
+    background-size: cover;
+
+}
+
+.spark-title {
+    font-size: larger;
+}
+
+.share-details-text {
+    font-size: medium;
+}
+
+.finished-video-tip-text {
+    color: white;
+    text-align: center;
+    font-size: small;
+}
+
+.finished-video-button {
+    margin: 10px;
+}

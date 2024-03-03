@@ -12,6 +12,7 @@ import SharedDetailsPage from "./components/shared-details-page/shared-details-p
 import { getCurrentUser } from 'aws-amplify/auth';
 
 
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -47,23 +48,23 @@ const App = () => {
   return (
       <ThemeProvider theme={theme}>
           <Router>
-            <div style={{height:'100%'}}>
-                <Routes>
-                {
-                    isLoggedIn?
-                        <Route path="/" element={<HomePage/>}/>
-                        :
-                        <Route path="/" element={<LoginPage/>}/>
-                }
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/user-form" element={<UserForm/>}/>
-                    <Route path="/homepage" element={<HomePage/>}/>
-                    <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
-                    <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
-                    <Route path="/video-chat" element={<VideoChatPage/>}/>
-                    <Route path="/shared-details" element={<SharedDetailsPage/>} />
-                </Routes>
-            </div>
+              <div style={{height:'100%'}}>
+                    <Routes>
+                    {
+                        isLoggedIn?
+                            <Route path="/" element={<HomePage/>}/>
+                            :
+                            <Route path="/" element={<LoginPage/>}/>
+                    }
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/user-form" element={<UserForm/>}/>
+                        <Route path="/homepage" element={<HomePage/>}/>
+                        <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
+                        <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
+                        <Route path="/video-chat" element={<VideoChatPage/>}/>
+                        <Route path="/shared-details" element={<SharedDetailsPage/>} />
+                    </Routes>
+                  </div>
           </Router>
       </ThemeProvider>
   );
