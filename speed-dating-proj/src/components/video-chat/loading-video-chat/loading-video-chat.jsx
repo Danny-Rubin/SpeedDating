@@ -3,26 +3,67 @@ import {useNavigate} from 'react-router-dom'
 import Button from "@mui/material/Button";
 import loading_gif from '../../../assets/heart-loader.gif'
 import './loading-video-chat.css'
-import {getRequest} from "../../../services/amplify-api-service";
-import wavy_background from "../../../assets/testing-background.png";
+import { post } from 'aws-amplify/api';
 
-const matchesApiName = 'matches';
-const findMatchPath = '/matches/find';
+async function findMatch(){
+    console.log('ask server to find match');
+    try {
+        const restOperation = post({
+            apiName: 'matches',
+            path: '/matches/find'
+        });
+        const { body } = await restOperation.response;
+        return body.json();
 
+    } catch (error) {
+        console.log('GET call failed: ', error);
+    }
+}
+
+async function getToken(){
+    console.log('get token from server');
+
+    if (!localStorage.getItem('meeting_id'))
+        return null;
+
+    try {
+        const restOperation = get({
+            apiName: 'matches',
+            path: '/matches/getToken/{' + localStorage.getItem('meeting_id')  + '}'
+        });
+        const { body } = await restOperation.response;
+        return body.json();
+
+    } catch (error) {
+        console.log('GET call failed: ', error);
+    }
+}
 
 const LoadingVideoChat = () => {
     const navigate = useNavigate();
 
+
     useEffect(() => {
 
-        getRequest(matchesApiName, findMatchPath)
+        findMatch()
             .then(response =>
             {
                 console.log(response);
-                navigate('/video-chat?token=' + response["token"] + "&session_id=" + response["session_id"]);
+                localStorage.setItem("meeting_id", response["meeting_id"]);
+                // window.location.href = '/video-chat?token=' + response["user1_token"] + "&session_id=" + response["meeting_id"];
             })
-            .catch(err=>{
-                console.log(`error getting matched. the error: ${err}`)
+
+    }, []); // The empty dependency array means the effect runs once when the component mounts
+
+    useEffect(() => {
+
+        getToken()
+            .then(response =>
+            {
+                console.log(response);
+                if (response["has_match"]){
+                    navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
+                }
             })
 
     }, [navigate]); // The empty dependency array means the effect runs once when the component mounts
