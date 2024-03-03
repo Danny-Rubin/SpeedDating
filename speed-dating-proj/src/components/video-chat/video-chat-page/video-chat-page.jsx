@@ -11,14 +11,13 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import {Close, Info} from "@mui/icons-material";
 import {videochat_steps} from '../../tour/tour-steps-provider';
-import Joyride from 'react-joyride';
+import Joyride, {STATUS} from 'react-joyride';
 
 const VideoChatPage = () => {
     const navigate = useNavigate();
 
     const initialTimer = 3 * 60; // 3 minutes in seconds
-    let timerMax = initialTimer;
-
+    const [maxTime, setMaxTime] = useState(initialTimer);
     const [timer, setTimer] = useState(initialTimer);
     const [didExtendTime, setDidExtendTime] = useState(false);
 
@@ -29,8 +28,9 @@ const VideoChatPage = () => {
         setTourRunning(true);
     };
     const handleJoyrideCallback = (data) => {
-        setTourRunning(false);
-
+        if (data.action === 'close' || [STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)){
+            setTourRunning(false);
+        }
     };
 
 
@@ -54,7 +54,7 @@ const VideoChatPage = () => {
         return () => clearInterval(timerInterval);
     }, []);
 
-    const normalise = (value) => ((value) * 100) / (timerMax);
+    const normalise = (value) => ((value) * 100) / (maxTime);
 
     const tellServerImLeaving = ()=>{
       // todo implement
@@ -72,8 +72,9 @@ const VideoChatPage = () => {
 
     const handleRequestAnother5Minutes = () => {
         setDidExtendTime(true);
-        timerMax = timer + 5*60;
-        setTimer(timerMax); // adds 5 more minutes
+        const newTime = timer + 5*60;
+        setMaxTime(newTime);
+        setTimer(newTime); // adds 5 more minutes
         // todo Implement logic to request another 5 minutes from server
         console.log('Requesting another 5 minutes');
     };
@@ -88,7 +89,7 @@ const VideoChatPage = () => {
         <div className="video-chat-page-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
             <div className="video-chat-card mycard">
                 <IconButton aria-label="close" onClick={stopDating} className="close-button" size="small"
-                            style={{position: 'absolute', top:'30px', width:'20px', height: '20px', backgroundColor:'#ffb8d3'}}>
+                            style={{position: 'absolute', top:'20px', left:'30px', width:'20px', height: '20px', backgroundColor:'#ffb8d3'}}>
                     <Close fontSize="inherit"/>
                 </IconButton>
                 <div className="video-chat-container">
@@ -108,8 +109,8 @@ const VideoChatPage = () => {
                         </Fab>
                     </div>
                 </div>
-                <IconButton className="info-button" onClick={handleTourStart}
-                            style={{position:'absolute', top:'20px', right:'20px'}}>
+                <IconButton className="info-button" color="secondary" onClick={handleTourStart}
+                            style={{position:'absolute', bottom:'65px', left:'20px'}}>
                     <Info>Start Tour</Info>
                 </IconButton>
                 <div className="video-chat-action-btns">
@@ -123,7 +124,7 @@ const VideoChatPage = () => {
             <Joyride
                 callback={handleJoyrideCallback}
                 continuous
-                run={isTourRunning || true}
+                run={isTourRunning}
                 showSkipButton
                 steps={videochat_steps}
                 styles={{

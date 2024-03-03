@@ -12,6 +12,8 @@ const findMatchPath = '/matches/find';
 
 const LoadingVideoChat = () => {
     const navigate = useNavigate();
+    setTimeout(()=>navigate('/video-chat'), 3000);
+
 
     useEffect(() => {
 
@@ -23,7 +25,6 @@ const LoadingVideoChat = () => {
             })
             .catch(err=>{
                 console.log(`error getting matched. the error: ${err}`);
-                setTimeout(()=>navigate('video-chat'), 3000);
             })
 
     }, [navigate]); // The empty dependency array means the effect runs once when the component mounts

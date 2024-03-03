@@ -25,8 +25,6 @@ const theme = createTheme({
 });
 
 
-
-
 const App = () => {
 
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -48,7 +46,7 @@ const App = () => {
   return (
       <ThemeProvider theme={theme}>
           <Router>
-              <div style={{height:'100%'}}>
+              <div style={{height:'100%', overflow:'hidden'}}>
                     <Routes>
                     {
                         isLoggedIn?

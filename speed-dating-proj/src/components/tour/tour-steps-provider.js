@@ -2,50 +2,64 @@ export const homepage_steps = [
     {
         target: 'body',
         placement: 'center',
-        content: 'Welcome to FlashFlirt! Discover the exciting features available to you.',
+        title: 'Welcome to FlashFlirt!',
+        content: 'Discover the exciting features available to you.',
     },
     {
         target: '.start-dating-button',
-        content: 'Ready to find your match?\nClick the Start Dating button and begin a speed dating session with' +
+        title: 'Ready to find your match?',
+        content: 'Click the Start Dating button and begin a speed dating session with' +
             ' potential soulmates our pairing algorithm matched you with.\n' +
-            'Who knows, your perfect match might be just a click away!'
+            'Who knows, your perfect match might be just a click away!',
+        disableBeacon: true
     },
     {
         target: '.shared-details-button',
+        title: 'Explore your connections!',
         content: 'Explore your connections!\nIf someone you met during a speed dating session' +
             ' liked you and shared their contact details, youll find them here.'
         ,
+        disableBeacon: true
     },
     {
         target: '.header-edit-profile',
-        content: 'Fine-tune your profile!\n' +
-            'Update your attraction preferences, contact details and profile picture.'
-        ,
+        title: 'Fine-tune your profile!',
+        content: 'Update your attraction preferences, contact details and profile picture.',
+        disableBeacon: true
     },
 ];
 
 export const videochat_steps = [
     {
         target: '.video-chat-actions-card',
-        content: 'Lets dive into the exciting features of the video chat page!',
+        content: 'Lets dive into the video chat page!',
+        disableBeacon: true
     },
     {
         target: '.video-chat-timer',
-        content: 'Each date lasts for 3 minutes. You can see the time left here.\nMake the most of your time and enjoy the conversation!'
+        content: 'Each date lasts for 3 minutes. You can see the time left here.\nMake the most of your time and enjoy the conversation!',
+        disableBeacon: true
+
     },
     {
         target: '.add-time-btn',
-        content: 'Need more time? Click here to extend the date by 5 minutes. You can use this feature once per date.'
+        title: 'Need more time?',
+        content: 'Click here to extend the date by 5 minutes. You can use this feature once per date.',
+        disableBeacon: true
         ,
     },
     {
         target: '.next-conversation-btn',
-        content: 'Ready to move on? Click here to gracefully end the current date and start the next conversation.'
+        title: 'Ready for the next date?',
+        content: 'Click here to gracefully end the current date and start the next conversation.',
+        disableBeacon: true
         ,
     },
     {
         target: '.close-button',
-        content: 'Ready to wrap up? Click here to gracefully end the date and return to the homepage.'
+        title: 'Ready to wrap up?',
+        content: 'Click here to gracefully end the date and return to the homepage.',
+        disableBeacon: true
         ,
     },
 ];

@@ -7,6 +7,9 @@
 .loading-video-chat-main{
     background-size: cover;
 }
+.loading-video-chat-main {
+    overflow: hidden;
+}
 
 .loading-video-chat-card {
     margin: 10px;

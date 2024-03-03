@@ -92,10 +92,7 @@ function LoginPage() {
 
 
     return (
-        <div className="login-page-main main-div" style={{backgroundColor: '#ffecdf'}}>
-            <video id="background-video" autoPlay loop muted style={{objectFit: 'cover', position: 'fixed', height: "inherit", width: "inherit"}}>
-                <source src={wavy_pinks} type="video/mp4"/>
-            </video>
+        <div className="login-page-main main-div" style={{backgroundSize: 'cover', backgroundColor: '#ffecdf'}}>
             <ThemeProvider theme={theme}>
                 <View padding="xxl" style={{position:'relative'}}>
                     <Authenticator components={components} theme={theme}>
