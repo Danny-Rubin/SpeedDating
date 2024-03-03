@@ -13,12 +13,12 @@ function ParticipantView(props) {
         useParticipant(props.participantId);
 
     const videoStream = useMemo(() => {
-        if (!isLocal && webcamOn && webcamStream) {
+        if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
             mediaStream.addTrack(webcamStream.track);
             return mediaStream;
         }
-    }, [webcamStream, webcamOn, isLocal]);
+    }, [webcamStream, webcamOn]);
 
     useEffect(() => {
         if (micRef.current) {
