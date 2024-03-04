@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import Button from "@mui/material/Button";
 import loading_gif from '../../../assets/heart-loader.gif'
@@ -33,14 +33,22 @@ async function findMatch() {
 
 async function getToken() {
     console.log('get token from server');
-
+    const localStorageItems = Object.keys(localStorage)
     if (!localStorage.getItem('meeting_id'))
         return null;
 
     try {
         const restOperation = get({
             apiName: 'matches',
-            path: '/matches/getToken/{' + localStorage.getItem('meeting_id') + '}'
+            path: '/matches/getToken/' + localStorage.getItem('meeting_id'),
+            options:
+                {
+                    headers:
+                        {
+                            'Content-Type': 'application/json',
+                            'authorization': "Bearer " + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])
+                        }
+                }
         });
         const {body} = await restOperation.response;
         return body.json();
@@ -52,30 +60,39 @@ async function getToken() {
 
 const LoadingVideoChat = () => {
     const navigate = useNavigate();
-
+    const [GotInQ, setGotInQ] = useState(false);
 
     useEffect(() => {
 
         findMatch()
             .then(response => {
                 console.log(response);
-                localStorage.setItem("meeting_id", response["meeting_id"]);
-                // window.location.href = '/video-chat?token=' + response["user1_token"] + "&session_id=" + response["meeting_id"];
+                localStorage.setItem("meeting_id", response["meetingId"]);
+                setGotInQ(true);
             })
 
     }, []); // The empty dependency array means the effect runs once when the component mounts
 
-    // useEffect(() => {
-    //
-    //     getToken()
-    //         .then(response => {
-    //             console.log(response);
-    //             if (response["has_match"]) {
-    //                 navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
-    //             }
-    //         })
-    //
-    // }, [navigate]); // The empty dependency array means the effect runs once when the component mounts
+    useEffect(() => {
+        const interval = setInterval(() => {
+
+            if (GotInQ) {
+                console.log("meeting id exists start fetching for token")
+                getToken()
+                    .then(response => {
+                        console.log(response);
+                        if (response["has_match"]) {
+                            navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meetingId'));
+                        }
+                    })
+            }
+
+        }, 5000); // 5000 milliseconds = 5 seconds
+
+
+        // Clean up the interval on unmount to avoid memory leaks
+        return () => clearInterval(interval);
+    }, [navigate, GotInQ]); // Empty dependency array to run the effect only once on mount
 
     return (
         <div className="loading-video-chat-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
