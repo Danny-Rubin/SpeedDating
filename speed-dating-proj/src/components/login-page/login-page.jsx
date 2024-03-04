@@ -4,7 +4,7 @@ import { Hub } from 'aws-amplify/utils';
 import '@aws-amplify/ui-react/styles.css';
 import config from '../../amplifyconfiguration.json';
 import { useNavigate } from "react-router-dom"; // Import useHistory from react-router-dom
-import wavy_pinks from '../../assets/4K_129.mp4'
+import login_background from '../../assets/login-background.jpg'
 
 
 import {
@@ -92,7 +92,7 @@ function LoginPage() {
 
 
     return (
-        <div className="login-page-main main-div" style={{backgroundSize: 'cover', backgroundColor: '#ffecdf'}}>
+        <div className="login-page-main main-div" style={{backgroundSize: 'cover', backgroundImage: `url(${login_background})`}}>
             <ThemeProvider theme={theme}>
                 <View padding="xxl" style={{position:'relative'}}>
                     <Authenticator components={components} theme={theme}>
