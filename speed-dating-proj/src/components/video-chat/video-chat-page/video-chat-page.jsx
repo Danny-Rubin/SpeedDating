@@ -57,7 +57,7 @@ const VideoChatPage = () => {
     const normalise = (value) => ((value) * 100) / (maxTime);
 
     const tellServerImLeaving = ()=>{
-      // todo implement
+        // todo implement
     };
 
     const stopDating = ()=>{
