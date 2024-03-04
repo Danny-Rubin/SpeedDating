@@ -89,7 +89,7 @@ const VideoChatPage = () => {
         <div className="video-chat-page-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
             <div className="video-chat-card mycard">
                 <IconButton aria-label="close" onClick={stopDating} className="close-button" size="small"
-                            style={{position: 'absolute', top:'20px', left:'30px', width:'20px', height: '20px', backgroundColor:'#ffb8d3'}}>
+                            style={{position: 'absolute', top:'20px', left:'9%', width:'20px', height: '20px', backgroundColor:'#ffb8d3'}}>
                     <Close fontSize="inherit"/>
                 </IconButton>
                 <div className="video-chat-container">
@@ -97,6 +97,10 @@ const VideoChatPage = () => {
                 </div>
             </div>
             <div className="video-chat-actions-card mycard">
+                <IconButton className="info-button" color="secondary" onClick={handleTourStart}
+                            style={{position:'absolute', bottom:'10%', left:'7%'}}>
+                    <Info>Start Tour</Info>
+                </IconButton>
                 <div className="video-chat-timer">
                     <Box display='flex' justifyContent='center' alignItems='center'>
                         <CircularProgress variant="determinate" value={normalise(timer)} />
@@ -109,10 +113,7 @@ const VideoChatPage = () => {
                         </Fab>
                     </div>
                 </div>
-                <IconButton className="info-button" color="secondary" onClick={handleTourStart}
-                            style={{position:'absolute', bottom:'65px', left:'20px'}}>
-                    <Info>Start Tour</Info>
-                </IconButton>
+
                 <div className="video-chat-action-btns">
                     <div className="next-conversation-btn">
                         <Button variant="contained" color="secondary" onClick={handleNextConversation}>

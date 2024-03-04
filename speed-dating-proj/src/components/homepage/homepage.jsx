@@ -6,10 +6,10 @@ import "./homepage.css"
 import start_dating from '../../assets/start-dating.png'
 import love_texting from  '../../assets/love-texting.png'
 import wavy_background from '../../assets/wavy_background.png'
-import {homepage_steps} from "../tour/tour-steps-provider";
 import Joyride, {STATUS} from 'react-joyride';
 import IconButton from "@mui/material/IconButton";
 import {Info} from "@mui/icons-material";
+import {homepage_steps} from "../tour/tour-steps-provider";
 
 
 class HomePage extends React.Component {
