@@ -1,0 +1,47 @@
+.controls {
+    margin-top: 10px;
+}
+
+.participant-view {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.participants-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.meeting-view {
+    padding: 20px;
+}
+
+.meeting-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fa3ac56b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #fed4e4;
+}
+h2 {
+    color: #fed4e4;
+}

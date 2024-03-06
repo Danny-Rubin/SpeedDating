@@ -6,6 +6,11 @@ import {
 } from "@videosdk.live/react-sdk";
 import ReactPlayer from "react-player";
 import {useLocation} from "react-router-dom";
+import "./Meeting.css"; // Import CSS file for styling
+// import MicOnIcon from "./icons/Bottombar/MicOnIcon";
+// import MicOffIcon from "./icons/Bottombar/MicOffIcon";
+// import WebcamOffIcon from "./icons/Bottombar/WebcamOffIcon";
+// import WebcamOnIcon from "./icons/Bottombar/WebcamOnIcon";
 
 function ParticipantView(props) {
     const micRef = useRef(null);
@@ -39,11 +44,11 @@ function ParticipantView(props) {
     }, [micStream, micOn]);
 
     return (
-        <div>
+        <div className="participant-view">
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    playsinline // very very imp prop
+                    playsinline
                     pip={false}
                     light={false}
                     controls={false}
@@ -54,7 +59,9 @@ function ParticipantView(props) {
                         console.log(err, "participant video error");
                     }}
                 />
+
             )}
+            <h2>{displayName}</h2>
         </div>
     );
 }
@@ -63,7 +70,7 @@ function MeetingView() {
     const [joined, setJoined] = useState(null);
     //Get the method which will be used to join the meeting.
     //We will also get the participants list to display all participants
-    const {join, participants} = useMeeting({
+    const {join, participants, localParticipant} = useMeeting({
         //callback for when meeting is joined successfully
         onMeetingJoined: () => {
             setJoined("JOINED");
@@ -74,19 +81,53 @@ function MeetingView() {
         join();
     };
 
+    function Controls() {
+        const { toggleMic, toggleWebcam} = useMeeting();
+        return (
+            <div className="controls">
+
+                <button onClick={() => toggleMic()}>
+                        {localParticipant.micOn ? <p>Mic Off</p> : <p>Mic On</p>}
+                </button>
+                <button onClick={() => toggleWebcam()}>
+                   {localParticipant.webcamOn ?  <p>Camera Off</p> : <p>Camera On</p>}
+                </button>
+            </div>
+        );
+    }
+
     return (
-        <div className="container">
+        <div className="meeting-view">
             {joined && joined === "JOINED" ? (
                 <div>
-                    {[...participants.keys()].map((participantId) => (
-                        <ParticipantView
-                            participantId={participantId}
-                            key={participantId}
-                        />
-                    ))}
+                    <div className="participants-container">
+                        {participants.size === 1 ? (
+                            <div>
+                                {[...participants.keys()].map((participantId) => (
+                                    <ParticipantView
+                                        participantId={participantId}
+                                        key={participantId}
+                                    />
+                                ))}
+                            </div>
+                        ) : participants.size === 2 ? (
+                            <div>
+                                {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
+                                    <ParticipantView
+                                        participantId={participantId}
+                                        key={participantId}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div></div>
+                        )}
+
+                        <Controls/>
+                    </div>
                 </div>
             ) : joined && joined === "JOINING" ? (
-                <p>Joining the meeting...</p>
+                <h2>Joining the meeting...</h2>
             ) : (
                 <button onClick={joinMeeting}>Join the meeting</button>
             )}
@@ -95,15 +136,14 @@ function MeetingView() {
 }
 
 function Meeting() {
-
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
     const location = useLocation();
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        const tokenParam = searchParams.get('token');
-        const sessionIdParam = searchParams.get('session_id');
+        const tokenParam = searchParams.get("token");
+        const sessionIdParam = searchParams.get("session_id");
         console.log(tokenParam);
         console.log(sessionIdParam);
         if (tokenParam) {
@@ -115,9 +155,8 @@ function Meeting() {
         }
     }, [location]);
 
-
     return (
-        <div>
+        <div className="meeting-container">
             {!token || !sessionId ? (
                 <div></div>
             ) : (
@@ -127,19 +166,16 @@ function Meeting() {
                             meetingId: sessionId,
                             micEnabled: true,
                             webcamEnabled: true,
-                            name: "עידו's Org",
+                            name: "user",
                         }}
                         token={token}
                     >
                         {<MeetingView/>}
                     </MeetingProvider>
                 </div>
-            )
-            }
+            )}
         </div>
-
     );
-
 }
 
 export default Meeting;
