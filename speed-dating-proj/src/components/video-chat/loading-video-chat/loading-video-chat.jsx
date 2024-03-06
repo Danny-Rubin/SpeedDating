@@ -81,8 +81,8 @@ const LoadingVideoChat = () => {
                 getToken()
                     .then(response => {
                         console.log(response);
-                        if (response["has_match"]) {
-                            navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meetingId'));
+                        if (response["hasMatch"]) {
+                            navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
                         }
                     })
             }
