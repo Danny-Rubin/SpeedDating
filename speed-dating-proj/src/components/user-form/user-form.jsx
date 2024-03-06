@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import Header from "../header/header";
 import './user-form.css'
-import {getCurrentUser} from 'aws-amplify/auth';
+import {fetchAuthSession} from 'aws-amplify/auth';
 import Typography from "@mui/material/Typography";
 import {useNavigate} from 'react-router-dom';
 import {getRequest, postRequest, putRequest} from "../../services/amplify-api-service";
@@ -14,14 +14,13 @@ const genderList = ['Male', 'Female', 'Other'];
 const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
 const requiredFields = ['location', 'gender', 'attraction','dateOfBirth','phone'];
 const profileApiName = "profiles";
-const path = "/profiles/";
+const path = "profiles";
 
 
 const UserForm = () => {
-    const [userId, setUserId] = useState(undefined);
     const [isNewUser, setIsNewUser] = useState(true);
+    const [accessToken, setAccessToken] = useState(undefined);
 
-    // todo here get from server current profile state.
     const [formData, setFormData] = useState({
         location: '',
         gender: '',
@@ -49,20 +48,21 @@ const UserForm = () => {
 
     const currentAuthenticatedUser = ()=>
     {
-        getCurrentUser()
-            .then(data=>{
-                setUserId(data.userId);
-                return getRequest(profileApiName, `${path}${data.userId}`);
+
+        fetchAuthSession({forceRefresh:true})
+            .then((session)=>{
+                const currAccessToken = session.tokens.accessToken.toString();
+                setAccessToken(currAccessToken);
+                return getRequest(profileApiName, path, currAccessToken);
             }).then(userProfile=>{
                 if (userProfile){
                     setIsNewUser(false);
+                    setFormData(userProfile);
                 }
-                console.log(userProfile)
-                // todo noa: when get works update formData state accordingly
             }).catch(err=>{
                 setIsNewUser(true);
                 console.log(err);
-            })
+            });
     };
 
     const handleChange = (e) => {
@@ -103,10 +103,6 @@ const UserForm = () => {
         const israeliPhonePattern = /^(00972|0|\\+972)[5][0-9]{8}$/;
 
         return israeliPhonePattern.test(phoneNumber);
-        // todo noa decide if we want international numbers? currently just israeli
-
-        //const phonePattern = /^\+?[0-9]+$/;
-        //return phonePattern.test(phoneNumber) && phoneNumber.length >= minLength && phoneNumber.length <= maxLength;
     }
 
     const handlePhoneChange = (e) => {
@@ -142,20 +138,9 @@ const UserForm = () => {
             }
         }
 
-        // todo noa: send to server
-        console.log('Form Data:', formData);
-        //let request = undefined;
-        // todo noa when BE works.
-        // if (isNewUser){
-        //     request = postRequest(profileApiName, path, formData);
-        // }
-        // else{
-        //     request = putRequest(profileApiName, `${path}${userId}`, formData);
-        // }
-
-        let request = postRequest(profileApiName, `${path}${userId}`, formData);
-        request.then(()=>{
-            navigate('homepage');
+        postRequest(profileApiName, path, formData, accessToken)
+            .then(()=>{
+                navigate('/homepage');
             }).catch((error)=>{
                 console.log(`error updating profile at server. Error: ${error}`)
             });

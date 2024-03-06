@@ -18,7 +18,7 @@
     },
     {
       "name": "profiles",
-      "endpoint": "https://ti9309f7ac.execute-api.us-east-1.amazonaws.com/staging",
+      "endpoint": "https://gods6hmd3e.execute-api.us-east-1.amazonaws.com/staging/",
       "region": "us-east-1"
     }
   ],

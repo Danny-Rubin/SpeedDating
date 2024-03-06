@@ -3,8 +3,9 @@ import { Amplify } from 'aws-amplify';
 import { Hub } from 'aws-amplify/utils';
 import '@aws-amplify/ui-react/styles.css';
 import config from '../../amplifyconfiguration.json';
-import { useNavigate } from "react-router-dom"; // Import useHistory from react-router-dom
+import { useNavigate } from "react-router-dom";
 import login_background from '../../assets/login-background.jpg'
+import {fetchAuthSession} from 'aws-amplify/auth';
 
 
 import {
@@ -15,10 +16,12 @@ import {
 } from "@aws-amplify/ui-react";
 
 import { LoginHeader } from "./login-header";
+import {getRequest} from "../../services/amplify-api-service";
 
 
 
 Amplify.configure(config);
+const profileApiName = 'profiles';
 
 function LoginPage() {
 
@@ -29,18 +32,33 @@ function LoginPage() {
         // Subscribe to the event
         const hubListenerCancelToken = Hub.listen('auth', ({ payload }) => {
             if (payload.event === 'signedIn'){
-                // todo noa check if user has profile so navigate to homepage
-                // todo otherwise navigate to user-form page.
-                navigate("/user-form");
+                navigateByProfileState();
             }
         });
-
 
         return () => {
             // Unsubscribe from the event when the component is unmounted
             hubListenerCancelToken()
         };
     }, [navigate]);
+
+    const navigateByProfileState = ()=>
+    {
+        fetchAuthSession({forceRefresh:true})
+            .then((session)=>{
+                const currAccessToken = session.tokens.accessToken.toString();
+                return getRequest(profileApiName, profileApiName, currAccessToken);
+            }).then(userProfile=>{
+            if (userProfile){
+                navigate('/homepage');
+            }
+            else{
+
+            }
+        }).catch(err=>{
+            navigate("/user-form");
+        });
+    };
 
 
     const components = {
