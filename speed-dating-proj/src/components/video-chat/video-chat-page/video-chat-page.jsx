@@ -70,13 +70,13 @@ const VideoChatPage = () => {
         navigate('/finished-chat')
     };
 
-    const handleRequestAnother5Minutes = () => {
+    const handleRequestAnother3Minutes = () => {
         setDidExtendTime(true);
-        const newTime = timer + 5*60;
+        const newTime = timer + 3*60;
         setMaxTime(newTime);
-        setTimer(newTime); // adds 5 more minutes
-        // todo Implement logic to request another 5 minutes from server
-        console.log('Requesting another 5 minutes');
+        setTimer(newTime); // adds 3 more minutes
+        // todo Implement logic to request another 3 minutes from server
+        console.log('Requesting another 3 minutes');
     };
 
     const formatTime = (seconds) => {
@@ -108,8 +108,8 @@ const VideoChatPage = () => {
                     </Box>
                     <div className="add-time-btn">
                         <Fab variant="contained" color="secondary" style={{width: '40px', height: '40px'}}
-                             disabled={didExtendTime} onClick={handleRequestAnother5Minutes}>
-                            +5
+                             disabled={didExtendTime} onClick={handleRequestAnother3Minutes}>
+                            +3
                         </Fab>
                     </div>
                 </div>
