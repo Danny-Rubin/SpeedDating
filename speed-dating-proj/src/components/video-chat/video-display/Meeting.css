@@ -30,10 +30,9 @@
 
 button {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     background-color: #fa3ac56b;
-    color: #fff;
     border: none;
     border-radius: 5px;
     margin-right: 10px;

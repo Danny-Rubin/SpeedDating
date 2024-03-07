@@ -7,11 +7,7 @@ import {
 import ReactPlayer from "react-player";
 import {useLocation} from "react-router-dom";
 import "./Meeting.css"; // Import CSS file for styling
-// import MicOnIcon from "./icons/Bottombar/MicOnIcon";
-// import MicOffIcon from "./icons/Bottombar/MicOffIcon";
-// import WebcamOffIcon from "./icons/Bottombar/WebcamOffIcon";
-// import WebcamOnIcon from "./icons/Bottombar/WebcamOnIcon";
-
+import { CiVideoOff, CiVideoOn, CiMicrophoneOn , CiMicrophoneOff  } from "react-icons/ci";
 function ParticipantView(props) {
     const micRef = useRef(null);
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
@@ -86,11 +82,11 @@ function MeetingView() {
         return (
             <div className="controls">
 
-                <button onClick={() => toggleMic()}>
-                        {localParticipant.micOn ? <p>Mic Off</p> : <p>Mic On</p>}
+                <button  onClick={() => toggleMic()}>
+                    {localParticipant.micOn ? <CiMicrophoneOff color={"#ffffff"}/> : <CiMicrophoneOn color={"#ffffff"}/>}
                 </button>
                 <button onClick={() => toggleWebcam()}>
-                   {localParticipant.webcamOn ?  <p>Camera Off</p> : <p>Camera On</p>}
+                    {localParticipant.webcamOn ? <CiVideoOff color={"#ffffff"}/> : <CiVideoOn color={"#ffffff"}/>}
                 </button>
             </div>
         );
