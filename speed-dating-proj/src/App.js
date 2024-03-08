@@ -10,6 +10,7 @@ import LoadingVideoChat from "./components/video-chat/loading-video-chat/loading
 import FinishedVideoChat from "./components/video-chat/finished-video-chat/finished-video-chat";
 import SharedDetailsPage from "./components/shared-details-page/shared-details-page";
 import { getCurrentUser } from 'aws-amplify/auth';
+import LandingPage from "./components/login-page/landing-page/landing-page";
 
 
 
@@ -61,6 +62,8 @@ const App = () => {
                         <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
                         <Route path="/video-chat" element={<VideoChatPage/>}/>
                         <Route path="/shared-details" element={<SharedDetailsPage/>} />
+                        <Route path="/welcome" element={<LandingPage/>} />
+
                     </Routes>
                   </div>
           </Router>
