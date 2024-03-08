@@ -5,14 +5,16 @@ function getAuthHeaders(accessToken){
 }
 
 async function makeRestRequest(restOperation){
-    const response = await restOperation.response;
-    return await response.body.json();
+    return await restOperation.response;
 }
 
 export async function getRequest(apiName, path, accessToken) {
     const options = {headers: getAuthHeaders(accessToken)};
     const restOperation = get({apiName: apiName, path: path, options: options});
-    return makeRestRequest(restOperation);
+    const response = await makeRestRequest(restOperation);
+    if (response && response.body)
+        return await response.body?.json();
+    return response;
 }
 
 export async function postRequest(apiName, path, body, accessToken) {

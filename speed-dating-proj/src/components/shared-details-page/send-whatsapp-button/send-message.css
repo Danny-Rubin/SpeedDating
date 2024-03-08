@@ -33,12 +33,12 @@
     position: fixed;
     padding: 20px;
     border-radius: 10px;
-    top: 40%;
-    left: 40%;
+    width: fit-content;
+    height: fit-content;
 }
 
-.display-block {
-    display: block;
+.display-flex {
+    display: flex;
 }
 
 .display-none {

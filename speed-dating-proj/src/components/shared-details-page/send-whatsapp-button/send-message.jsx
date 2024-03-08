@@ -10,7 +10,7 @@ const SendMessage = ({handleClose, show, phone}) => {
     const CHARACTER_LIMIT = 100;
 
     const [showState, setShow] = useState(show);
-    const showHideClassName = showState ? 'popup display-block' : 'popup display-none';
+    const showHideClassName = showState ? 'popup display-flex' : 'popup display-none';
 
 
     useEffect(() => { setShow(show) }, [show]);

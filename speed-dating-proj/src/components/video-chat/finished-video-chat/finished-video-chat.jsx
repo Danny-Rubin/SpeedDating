@@ -1,19 +1,50 @@
 import Button from "@mui/material/Button";
 import './finished-video-chat.css'
 import  {useNavigate} from 'react-router-dom'
-import React from "react";
+import React, {useEffect, useState} from "react";
 import wavy_background from "../../../assets/wavy_background.png";
+import {getRequest, postRequest} from "../../../services/amplify-api-service";
+import {fetchAuthSession} from 'aws-amplify/auth';
+
+
+const matchesApiName = 'matches';
+const shareDetailsPath = '/matches/shareDetails/';
 
 const FinishedVideoChat = () => {
     const navigate = useNavigate();
+    const [accessToken, setAccessToken] = useState(undefined);
+    const meetingId = localStorage.getItem('meeting_id');
+
+
+    useEffect(() => {
+        currentAuthenticatedUser().then(()=>console.log('success'));
+    }, []);
+
+    const currentAuthenticatedUser = async ()=>
+    {
+        try{
+            const session = await fetchAuthSession({forceRefresh:true});
+            const currAccessToken = session.tokens.accessToken.toString();
+            setAccessToken(currAccessToken);
+        }
+        catch(err){
+            console.log(err);
+        }
+    };
+
+
 
     const onShareClicked = ()=>{
-        // todo send to server
-        navigate('/loading-chat');
+            if (meetingId)
+                postRequest(matchesApiName, `${shareDetailsPath}${meetingId}`,{}, accessToken)
+                    .then(()=>console.log('success!'))
+                    .catch((e)=> console.log(e));
+            console.log('no meeting id found');
+            navigate('/loading-chat');
+
     };
 
     const onDontShareClicked = ()=>{
-        // todo send to server
         navigate('/loading-chat');
     };
 

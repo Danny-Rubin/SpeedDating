@@ -4,11 +4,20 @@
     flex-wrap: wrap;
     height: 100%;
     overflow: scroll;
-    margin-top: 15%;
+    margin-top: 7em;
 }
 
 .shared-details-page-main {
     display: flex;
     align-content: center;
     justify-content: center;
+}
+
+.shared-details-content {
+    display: flex;
+    align-items: center;
+}
+
+.no-contacts-txt{
+    text-align: center;
 }

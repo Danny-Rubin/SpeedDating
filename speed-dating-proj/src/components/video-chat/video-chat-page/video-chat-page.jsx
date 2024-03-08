@@ -12,15 +12,23 @@ import IconButton from "@mui/material/IconButton";
 import {Close, Info} from "@mui/icons-material";
 import {videochat_steps} from '../../tour/tour-steps-provider';
 import Joyride, {STATUS} from 'react-joyride';
+import {fetchAuthSession} from 'aws-amplify/auth';
+import {getRequest, postRequest} from "../../../services/amplify-api-service";
+
+
+const matchesApiName = 'matches';
+const extendMeetingPath = '/matches/extendMeeting/';
+const mutualConsentExtendPath = '/matches/mutualConsentExtendMeeting/';
 
 const VideoChatPage = () => {
     const navigate = useNavigate();
+    const meetingId = localStorage.getItem('meeting_id');
 
     const initialTimer = 3 * 60; // 3 minutes in seconds
     const [maxTime, setMaxTime] = useState(initialTimer);
     const [timer, setTimer] = useState(initialTimer);
     const [didExtendTime, setDidExtendTime] = useState(false);
-
+    const [accessToken, setAccessToken] = useState('');
     const [isTourRunning, setTourRunning]= useState(false);
 
     const handleTourStart = (event) => {
@@ -33,6 +41,24 @@ const VideoChatPage = () => {
         }
     };
 
+    useEffect(() => {
+        currentAuthenticatedUser().then(()=>console.log('success'));
+    }, []);
+
+    const currentAuthenticatedUser = async ()=>
+    {
+        try{
+            const session = await fetchAuthSession({forceRefresh:true});
+            const currAccessToken = session.tokens.accessToken.toString();
+            setAccessToken(currAccessToken);
+        }
+        catch(err){
+            console.log(err);
+        }
+    };
+
+
+
 
     useEffect(() => {
         if (timer <= 0) {
@@ -41,8 +67,9 @@ const VideoChatPage = () => {
     }, [timer]);
 
     const handleTimerEnd = ()=>{
+        checkIfTimeWasExtended();
         console.log('timer ended, chat finished');
-        navigate('/finished-chat');
+        //navigate('/finished-chat');
     };
 
 
@@ -67,16 +94,31 @@ const VideoChatPage = () => {
 
     const handleNextConversation = () => {
         tellServerImLeaving();
-        navigate('/finished-chat')
+        navigate('/finished-chat');
     };
 
-    const handleRequestAnother3Minutes = () => {
-        setDidExtendTime(true);
+    const handleRequestAnother3Minutes = async () => {
+        console.log('Requesting another 3 minutes from server.. ');
+        try{
+            await postRequest(matchesApiName, `${extendMeetingPath}${meetingId}`,{} ,accessToken);
+            setDidExtendTime(true);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+    const checkIfTimeWasExtended = ()=>{
+        console.log('checking if mutual consent to extend time');
+        getRequest(matchesApiName, `${mutualConsentExtendPath}${meetingId}`, accessToken)
+            .then((response)=>console.log(response))
+            .catch((e)=>console.log(e));
+    };
+
+    const handleAddAnother3Mintes = ()=>{
         const newTime = timer + 3*60;
         setMaxTime(newTime);
         setTimer(newTime); // adds 3 more minutes
-        // todo Implement logic to request another 3 minutes from server
-        console.log('Requesting another 3 minutes');
     };
 
     const formatTime = (seconds) => {
