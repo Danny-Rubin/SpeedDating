@@ -110,7 +110,8 @@ function LoginPage() {
 
 
     return (
-        <div className="login-page-main main-div" style={{backgroundSize: 'cover', backgroundImage: `url(${login_background})`}}>
+        <div className="login-page-main main-div" style={{backgroundSize: 'cover', backgroundImage: `url(${login_background})`
+        , overflow:'scroll'}}>
             <ThemeProvider theme={theme}>
                 <View padding="xxl" style={{position:'relative'}}>
                     <Authenticator components={components} theme={theme}>
