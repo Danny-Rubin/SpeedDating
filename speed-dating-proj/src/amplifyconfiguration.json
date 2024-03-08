@@ -68,5 +68,7 @@
       "tableName": "matches-staging",
       "region": "us-east-1"
     }
-  ]
+  ],
+  "aws_user_files_s3_bucket": "profilepicsspeeddating205648-staging",
+  "aws_user_files_s3_bucket_region": "us-east-1"
 }
