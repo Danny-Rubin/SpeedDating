@@ -33,7 +33,7 @@ async function findMatch() {
 
 async function getToken() {
     console.log('get token from server');
-    const localStorageItems = Object.keys(localStorage)
+    const localStorageItems = Object.keys(localStorage);
     if (!localStorage.getItem('meeting_id'))
         return null;
 
@@ -77,7 +77,7 @@ const LoadingVideoChat = () => {
         const interval = setInterval(() => {
 
             if (GotInQ) {
-                console.log("meeting id exists start fetching for token")
+                console.log("meeting id exists start fetching for token");
                 getToken()
                     .then(response => {
                         console.log(response);

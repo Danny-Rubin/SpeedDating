@@ -9,6 +9,7 @@
     flex-direction: column;
     background-color: rgb(254, 212, 228);
     margin-bottom: 10px;
+    overflow: scroll;
 }
 
 .user-form-header-div {
