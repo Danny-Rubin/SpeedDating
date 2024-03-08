@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="674c8e7d-a936-4eaa-8d94-089868168664" name="Default Changelist" comment="+ project starting....">
-      <change afterPath="$PROJECT_DIR$/src/assets/dating-instruction.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/pic-instructions.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/profile-instruction.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/flash-flirt-text.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/flash-flirt-text.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -54,8 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="27" column="120" selection-start-line="27" selection-start-column="120" selection-end-line="27" selection-end-column="120" />
+            <state relative-caret-position="170">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -66,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="580">
-              <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+            <state relative-caret-position="193">
+              <caret line="67" column="18" selection-start-line="67" selection-start-column="18" selection-end-line="67" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -435,7 +427,7 @@
       <workItem from="1707838786989" duration="2357000" />
       <workItem from="1709057589763" duration="38089000" />
       <workItem from="1709554547973" duration="610000" />
-      <workItem from="1709903806734" duration="8389000" />
+      <workItem from="1709903806734" duration="8779000" />
     </task>
     <task id="LOCAL-00001" summary="+ project starting....">
       <created>1706410611610</created>
@@ -448,10 +440,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97513000" />
+    <option name="totallyTimeSpent" value="97903000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="63" y="248" width="1380" height="784" extended-state="0" />
+    <frame x="38" y="447" width="1380" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49356222" visible="true" weight="0.30463576" />
@@ -500,13 +492,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx</url>
-          <line>65</line>
+          <line>69</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx</url>
-          <line>55</line>
+          <line>59</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
@@ -834,6 +826,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="67" column="18" selection-start-line="67" selection-start-column="18" selection-end-line="67" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -844,24 +850,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="24" column="23" lean-forward="true" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="27" column="120" selection-start-line="27" selection-start-column="120" selection-end-line="27" selection-end-column="120" />
+        <state relative-caret-position="170">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>

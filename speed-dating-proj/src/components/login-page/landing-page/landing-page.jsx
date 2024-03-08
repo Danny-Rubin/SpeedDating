@@ -12,10 +12,10 @@ import y from '../../../assets/back-to-back.png';
 
 const LandingPage = () => {
     const instructionsData = [
-        {img: profile_instructions_logo, title: 'Create a Profile', text: 'Here’s where the magic starts! The more we know about you, the better we can match you with the right singles.'},
-        {img: pic_instructions_logo, title: 'Upload Quality Photo', text: 'Seriously! This is the number one thing you can do to increase your chances after your speed date. Make sure the photo shows the real you!'},
-        {img: dating_instructions_logo, title: 'Start Dating!', text: 'Start searching your love partner in a speed dating session. The dating are on camera, so make sure youre camera ready.'},
-        {img: contact_instructions_logo, title: 'Contact Who You Liked!', text: 'After a dating you can contact a person you liked, in case the liked you too, and keep the magic going!'},
+        {img: profile_instructions_logo, title: 'Create a Profile', text: 'Here’s where the magic starts! The more we know about you, the better we can match you with the people you will be attracted to.'},
+        {img: pic_instructions_logo, title: 'Upload a Quality Photo', text: 'Seriously! This is the number one thing you can do to increase your chances after your speed date. Make sure the photo shows the real you!'},
+        {img: dating_instructions_logo, title: 'Start Dating!', text: 'Start searching your love partner in a speed dating session. The dates are on camera, so make sure you\'re camera ready.'},
+        {img: contact_instructions_logo, title: 'Contact Who You Liked!', text: 'After a dating session you can contact a person you liked, in case they liked you too, and keep the magic going!'},
     ];
 
     return (
@@ -37,7 +37,8 @@ const LandingPage = () => {
                     <span className="text-to-color"> people,</span><br/>
                     not profiles.
                     </h1>
-                    <div>Introducing your new favorite speed dating site!</div>
+                    <div>Are you ready to ignite sparks and find your perfect match in record time? Look no further than
+                        FlashFlirt – the ultimate destination for exhilarating speed dating video sessions.</div>
                 </div>
                 <div className="cute-pic">
                     <img src={x}  className="section-pic"/>
@@ -48,11 +49,14 @@ const LandingPage = () => {
                     <img src={y} className="section-pic"/>
                 </div>
                 <div className="middle-part-text">
-                    write some stuff. bla bla bla.
+                    <span className="middle-part-title">Discover the Magic of Speed Dating</span>
+                    <br/>
+                    Experience the thrill of meeting potential love interests face-to-face through our innovative video chat platform.
+                    Say goodbye to endless swiping and hello to real connections in real time!
                 </div>
             </div>
             <div className="instruction-part">
-                <h2>Ready? its easy peasy</h2>
+                <h2>Ready? this is how it works</h2>
                 <div className="instruction-wrapper">
                     {instructionsData.map((instructionData)=>(
                           <InstructionCube props={instructionData} key={instructionData.title}/>
