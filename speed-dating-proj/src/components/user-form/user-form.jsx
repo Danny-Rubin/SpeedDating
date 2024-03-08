@@ -6,7 +6,7 @@ import {fetchAuthSession} from 'aws-amplify/auth';
 import Typography from "@mui/material/Typography";
 import {useNavigate} from 'react-router-dom';
 import {getRequest, postRequest, putRequest} from "../../services/amplify-api-service";
-
+import { uploadData } from 'aws-amplify/storage';
 
 const locationList = ['North', 'Center', 'South'];
 const attractionList = ['Female', 'Male', 'Both'];
@@ -93,6 +93,32 @@ const UserForm = () => {
             ...prevData,
             ['profilePicFile']: selectedFile,
         }));
+        // make request to s3 to upload file
+        try {
+
+            const result = uploadData({
+
+                key: "myprofileid.jpeg",
+
+                data: selectedFile,
+
+                options: {
+
+                    accessLevel: 'guest', // defaults to `guest` but can be 'private' | 'protected' | 'guest'
+
+                    // onProgress // Optional progress callback.
+
+                }
+
+            }).result;
+
+            console.log('Succeeded: ', result);
+
+        } catch (error) {
+
+            console.log('Error : ', error);
+
+        }
     };
 
     function validatePhoneNumber(phoneNumber, minLength=7, maxLength=15) {
