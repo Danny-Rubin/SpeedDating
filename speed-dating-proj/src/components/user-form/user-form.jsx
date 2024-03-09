@@ -6,7 +6,7 @@ import {fetchAuthSession} from 'aws-amplify/auth';
 import Typography from "@mui/material/Typography";
 import {useNavigate} from 'react-router-dom';
 import {getRequest, postRequest, putRequest} from "../../services/amplify-api-service";
-import { uploadData } from 'aws-amplify/storage';
+import { uploadData, getUrl} from 'aws-amplify/storage';
 
 const locationList = ['North', 'Center', 'South'];
 const attractionList = ['Female', 'Male', 'Both'];
@@ -20,6 +20,7 @@ const path = "profiles";
 const UserForm = ({setIsLoggedIn}) => {
     const [isNewUser, setIsNewUser] = useState(true);
     const [accessToken, setAccessToken] = useState(undefined);
+    const [profileId, setProfileId] = useState(undefined);
 
     const [formData, setFormData] = useState({
         location: '',
@@ -53,6 +54,7 @@ const UserForm = ({setIsLoggedIn}) => {
             .then((session)=>{
                 const currAccessToken = session.tokens.accessToken.toString();
                 setAccessToken(currAccessToken);
+                setProfileId(session.tokens.accessToken.payload.username);
                 return getRequest(profileApiName, path, currAccessToken);
             }).then(userProfile=>{
                 if (userProfile){
@@ -80,7 +82,7 @@ const UserForm = ({setIsLoggedIn}) => {
         }));
     };
 
-    const handleImgFileChange = (e) => {
+    const handleImgFileChange = async (e) => {
         const selectedFile = e.target.files[0];
         // File type validation
         if (!ALLOWED_FILE_TYPES.includes(selectedFile.type)) {
@@ -91,26 +93,47 @@ const UserForm = ({setIsLoggedIn}) => {
 
         setFormData((prevData) => ({
             ...prevData,
-            ['profilePicFile']: selectedFile,
+            ['profilePicFile']: `${profileId}.jpeg`,
         }));
         // make request to s3 to upload file
         try {
 
-            const result = uploadData({
+            const result = await uploadData({
 
-                key: "myprofileid.jpeg",
+                key: `${profileId}.jpeg`,
 
                 data: selectedFile,
 
                 options: {
 
                     accessLevel: 'guest', // defaults to `guest` but can be 'private' | 'protected' | 'guest'
-
-                    // onProgress // Optional progress callback.
+                    onProgress: ({ transferredBytes, totalBytes }) => {
+                        if (totalBytes) {
+                            console.log(
+                                `Upload progress ${
+                                    Math.round((transferredBytes / totalBytes) * 100)
+                                    } %`
+                            );
+                        }
+                    }
 
                 }
 
             }).result;
+            let imgUrl = await Storage.get(`${profileId}.jpeg`,
+                {
+                download: false,
+                    level: 'guest'
+            });
+            console.log(imgUrl);
+
+            let url = await getUrl({
+                key: `${profileId}.jpeg`,
+                options: {
+                    accessLevel: 'guest' , // can be 'private', 'protected', or 'guest' but defaults to `guest`
+                    targetIdentityId: profileId, // id of another user, if `accessLevel` is `guest`
+                }});
+            console.log(`the url: ${url}`);
 
             console.log('Succeeded: ', result);
 
@@ -120,6 +143,24 @@ const UserForm = ({setIsLoggedIn}) => {
 
         }
     };
+
+//
+// // Downloads file content to memory
+//     const { body, eTag } = await downloadData({
+//         key,
+//         data: file,
+//         options: {
+//             accessLevel: 'guest', // access level of the file being downloaded
+//             targetIdentityId: 'xxxxxxx', // the identity id of another user, required when setting accessLevel to 'protected'
+//             onProgress: (event) => {
+//                 console.log(event.transferredBytes);
+//             } // optional progress callback
+//             bytesRange: {
+//                 start: 1024,
+//                 end: 2048
+//             } // optional bytes range parameter to download a part of the file, the 2nd MB of the file in this example
+//         }
+//     }).result;
 
     function validatePhoneNumber(phoneNumber, minLength=7, maxLength=15) {
         // Remove whitespace from the beginning and end of the phone number
@@ -209,13 +250,12 @@ const UserForm = ({setIsLoggedIn}) => {
                                 <label htmlFor="image-upload">
                                     <Button variant="outlined"  component="span"
                                             style={{boxShadow: '1px 1px 1px #ffb0d1', color:'rgba(0, 0, 0, 0.87)'}}>
-                                        Choose File
+                                        Upload File
                                     </Button>
                                 </label>
                             </FormControl>
-                            <Button variant="contained" color="primary" disabled={!formData.profilePicFile}>
-                                Upload
-                            </Button>
+                                <div>
+                                </div>
                             </div>
                         </div>
                         <div className="gender-field-error">

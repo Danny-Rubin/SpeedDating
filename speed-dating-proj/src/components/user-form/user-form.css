@@ -51,7 +51,7 @@
 }
 
 .profile-pic-buttons {
-    display: flex;
+    display: contents;
     flex-direction: row;
 }
 
