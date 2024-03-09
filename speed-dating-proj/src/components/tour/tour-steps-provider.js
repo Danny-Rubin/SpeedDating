@@ -8,16 +8,16 @@ export const homepage_steps = [
     {
         target: '.start-dating-button',
         title: 'Ready to find your match?',
-        content: 'Click the Start Dating button and begin a speed dating session with' +
-            ' potential soulmates our pairing algorithm matched you with.\n' +
+        content: 'Click the Start Dating button and start a speed dating session with' +
+            ' potential soulmates.\n' +
             'Who knows, your perfect match might be just a click away!',
         disableBeacon: true
     },
     {
         target: '.shared-details-button',
         title: 'Explore your connections!',
-        content: 'Explore your connections!\nIf someone you met during a speed dating session' +
-            ' liked you and shared their contact details, youll find them here.'
+        content: 'If someone you met during a speed dating session' +
+            ' liked you and shared their contact details, you will find them here.'
         ,
         disableBeacon: true
     },
