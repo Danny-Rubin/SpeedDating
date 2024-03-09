@@ -13,7 +13,7 @@ const locationList = ['North', 'Center', 'South'];
 const attractionList = ['Female', 'Male', 'Both'];
 const genderList = ['Male', 'Female', 'Other'];
 const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
-const requiredFields = ['location', 'gender', 'attraction','dateOfBirth','phone'];
+const requiredFields = ['location', 'gender', 'attraction','dateOfBirth'];
 const profileApiName = "profiles";
 const path = "profiles";
 
@@ -30,7 +30,8 @@ const UserForm = ({setIsLoggedIn}) => {
         attraction: '',
         dateOfBirth: '',
         phone: '',
-        profilePicFile: ''
+        profilePicFile: '',
+        social: ''
     });
 
     const [errors, setErrors] = useState({
@@ -39,7 +40,9 @@ const UserForm = ({setIsLoggedIn}) => {
         attraction: null,
         dateOfBirth: null,
         phone: null,
-        profilePicFile: null
+        profilePicFile: null,
+        social: null,
+        contact: null
     });
 
     const navigate = useNavigate();
@@ -95,7 +98,6 @@ const UserForm = ({setIsLoggedIn}) => {
                     download: false
                 }
             });
-            console.log(url);
             setProfilePicUrl(url.url.href);
         }
         catch (e) {
@@ -114,7 +116,6 @@ const UserForm = ({setIsLoggedIn}) => {
 
 
 
-// make request to s3 to upload file
         try {
 
             const result = await uploadData({
@@ -126,21 +127,11 @@ const UserForm = ({setIsLoggedIn}) => {
                 options: {
 
                     accessLevel: 'guest', // defaults to `guest` but can be 'private' | 'protected' | 'guest'
-                    onProgress: ({ transferredBytes, totalBytes }) => {
-                        if (totalBytes) {
-                            console.log(
-                                `Upload progress ${
-                                    Math.round((transferredBytes / totalBytes) * 100)
-                                    } %`
-                            );
-                        }
-                    }
 
                 }
 
             }).result;
 
-            console.log('Succeeded: ', result);
 
             setFormData((prevData) => ({
                 ...prevData,
@@ -159,11 +150,12 @@ const UserForm = ({setIsLoggedIn}) => {
     };
 
 
-    function validatePhoneNumber(phoneNumber, minLength=7, maxLength=15) {
-        // Remove whitespace from the beginning and end of the phone number
-        phoneNumber = phoneNumber.trim();
+    function validatePhoneNumber(phoneNumber) {
 
-        // Regular expression pattern for a simple phone number format
+        if(!phoneNumber){
+            return true;
+        }
+
         const israeliPhonePattern = /^(00972|0|\\+972)[5][0-9]{8}$/;
 
         return israeliPhonePattern.test(phoneNumber);
@@ -172,18 +164,54 @@ const UserForm = ({setIsLoggedIn}) => {
     const handlePhoneChange = (e) => {
         const { name, value } = e.target;
 
+        const phone = value.trim();
+
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: phone,
         }));
 
         // phone validation
-        if (!validatePhoneNumber(value)){
+        if (!validatePhoneNumber(phone)){
             set_error(name, "Illegal phone number");
             return;
         }
 
         set_error(name, undefined);
+        set_error('contact', undefined);
+    };
+
+    function validateSocialNetwork(url) {
+        // Remove whitespace from the beginning and end of the phone number
+        if(!url){
+            return true;
+        }
+
+        // Regular expression pattern for a simple phone number format
+        const facebookPattern = new RegExp('(?:(?:http|https):\\/\\/)?(?:www.)?facebook.com\\/(?:(?:\\w)*#!\\/)?(?:pages\\/)?(?:[?\\w\\-]*\\/)?(?:profile.php\\?id=(?=\\d.*))?([\\w\\-]*)?\n');
+        const instaPattern =  new RegExp('/(?:(?:http|https):\\/\\/)?(?:www\\.)?(?:instagram\\.com|instagr\\.am)\\/([A-Za-z0-9-_\\.]+)/');;
+
+        return instaPattern.test(url) || facebookPattern.test(url);
+    }
+
+    const handleSocialChange = (e) => {
+        const { name, value } = e.target;
+        const social = value.trim();
+
+
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: social,
+        }));
+
+        // phone validation
+        if (!validateSocialNetwork(social)){
+            set_error(name, "Illegal social network profile url");
+            return;
+        }
+        set_error(name, undefined);
+        set_error('contact', undefined);
+
 
     };
 
@@ -200,6 +228,11 @@ const UserForm = ({setIsLoggedIn}) => {
             if (errors[field]){
                 return;
             }
+        }
+
+        if (!formData.phone && !formData.social){
+            set_error('contact',"You are required to fill your phone number or a social media profile so people can get in touch with you.");
+            return;
         }
 
         postRequest(profileApiName, path, formData, accessToken)
@@ -326,6 +359,13 @@ const UserForm = ({setIsLoggedIn}) => {
                                 onChange={handleChange}
                             />
                         </div>
+                        <div className="contact-field-error">
+                            {errors.contact && (
+                                <Typography variant="body2" color="error" mt={2} className="error-msg">
+                                    {errors.contact}
+                                </Typography>
+                            )}
+                        </div>
                         <div className="phone-field-error">
                             {errors.phone && (
                                 <Typography variant="body2" color="error" mt={2} className="error-msg">
@@ -336,13 +376,29 @@ const UserForm = ({setIsLoggedIn}) => {
                         <div className="phone-number-field">
                             <InputLabel className="phone-number-title">Phone number:</InputLabel>
                             <TextField
-                                required
                                 value={formData.phone || ''}
                                 name="phone"
                                 onChange={handlePhoneChange}
                                 type="tel"
                                 pattern="[0-9]{10}"
                                 placeholder="Enter phone number"
+                            />
+
+                        </div>
+                        <div className="social-field-error">
+                            {errors.social && (
+                                <Typography variant="body2" color="error" mt={2} className="error-msg">
+                                    {errors.social}
+                                </Typography>
+                            )}
+                        </div>
+                        <div className="social-field">
+                            <InputLabel className="social-title">Social Media Link:</InputLabel>
+                            <TextField
+                                value={formData.social || ''}
+                                name="social"
+                                onChange={handleSocialChange}
+                                placeholder="Instagram or Facebook profile url"
                             />
 
                         </div>
