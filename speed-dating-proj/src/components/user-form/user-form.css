@@ -75,3 +75,14 @@
 .error-msg {
     text-align: center;
 }
+
+.new-user-title{
+    font-size: larger;
+    font-weight: 800;
+    color: #fb8eba;
+
+}
+
+.new-user-text {
+    text-align: center;
+}
