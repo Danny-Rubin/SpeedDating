@@ -44,6 +44,10 @@ const App = () => {
         })
     };
 
+    const setIsLoggedIn = (isLoggedIn) => {
+        setLoggedIn(isLoggedIn);
+    };
+
   return (
       <ThemeProvider theme={theme}>
           <Router>
@@ -51,19 +55,17 @@ const App = () => {
                     <Routes>
                     {
                         isLoggedIn?
-                            <Route path="/" element={<HomePage/>}/>
+                            <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
                             :
-                            <Route path="/" element={<LoginPage/>}/>
+                            <Route path="/" element={<LandingPage/>}/>
                     }
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/user-form" element={<UserForm/>}/>
-                        <Route path="/homepage" element={<HomePage/>}/>
+                        <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/> }/>
+                        <Route path="/user-form" element={<UserForm setIsLoggedIn={setIsLoggedIn}/>}/>
+                        <Route path="/homepage" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
                         <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
                         <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
                         <Route path="/video-chat" element={<VideoChatPage/>}/>
-                        <Route path="/shared-details" element={<SharedDetailsPage/>} />
-                        <Route path="/welcome" element={<LandingPage/>} />
-
+                        <Route path="/shared-details" element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>} />
                     </Routes>
                   </div>
           </Router>

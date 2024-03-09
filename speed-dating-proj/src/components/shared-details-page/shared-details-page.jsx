@@ -9,7 +9,7 @@ import {fetchAuthSession} from 'aws-amplify/auth';
 const matchesApiName = "matches";
 const getContactsPath = "/matches/sharedProfilesList";
 
-const SharedDetailsPage = () => {
+const SharedDetailsPage = ({setIsLoggedIn}) => {
 
     const [contactsData, setContactsData] = useState([
         {'name': 'noa', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':1},
@@ -67,7 +67,7 @@ const SharedDetailsPage = () => {
     return (
         <div className="shared-details-page-main main-div">
             <div className={"header-part"}>
-                <Header/>
+                <Header setIsLoggedIn={setIsLoggedIn}/>
             </div>
             <div className="shared-details-content">
             {

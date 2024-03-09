@@ -27,9 +27,12 @@ const VideoChatPage = () => {
     const initialTimer = 3 * 60; // 3 minutes in seconds
     const [maxTime, setMaxTime] = useState(initialTimer);
     const [timer, setTimer] = useState(initialTimer);
+    const [timerStarted, setTimerStarted] = useState(false);
+    const [timeExtended, setTimeExtended] = useState(false);
     const [didExtendTime, setDidExtendTime] = useState(false);
     const [accessToken, setAccessToken] = useState('');
     const [isTourRunning, setTourRunning]= useState(false);
+    const [username, setUsername]= useState('');
 
     const handleTourStart = (event) => {
         event.preventDefault();
@@ -42,7 +45,7 @@ const VideoChatPage = () => {
     };
 
     useEffect(() => {
-        currentAuthenticatedUser().then(()=>console.log('success'));
+        currentAuthenticatedUser().then(()=>{});
     }, []);
 
     const currentAuthenticatedUser = async ()=>
@@ -50,7 +53,9 @@ const VideoChatPage = () => {
         try{
             const session = await fetchAuthSession({forceRefresh:true});
             const currAccessToken = session.tokens.accessToken.toString();
+            const username = session.tokens.accessToken.payload.username;
             setAccessToken(currAccessToken);
+            setUsername(username);
         }
         catch(err){
             console.log(err);
@@ -61,20 +66,23 @@ const VideoChatPage = () => {
 
 
     useEffect(() => {
+        if (timer <= 5 && didExtendTime && !timeExtended){
+            checkIfTimeWasExtended();
+        }
         if (timer <= 0) {
             handleTimerEnd();
         }
     }, [timer]);
 
     const handleTimerEnd = ()=>{
-        checkIfTimeWasExtended();
         console.log('timer ended, chat finished');
-        //navigate('/finished-chat');
+        navigate('/finished-chat');
     };
 
 
     useEffect(() => {
         const timerInterval = setInterval(() => {
+            if (!timerStarted) return;
             setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
         }, 1000);
 
@@ -85,6 +93,10 @@ const VideoChatPage = () => {
 
     const tellServerImLeaving = ()=>{
         // todo implement
+    };
+
+    const startTimer = ()=>{
+        setTimerStarted(true);
     };
 
     const stopDating = ()=>{
@@ -111,7 +123,14 @@ const VideoChatPage = () => {
     const checkIfTimeWasExtended = ()=>{
         console.log('checking if mutual consent to extend time');
         getRequest(matchesApiName, `${mutualConsentExtendPath}${meetingId}`, accessToken)
-            .then((response)=>console.log(response))
+            .then((response)=> {
+                if (response['mutualConsent']){
+                    handleAddAnother3Mintes();
+                }
+                else {
+                    navigate('/finished-chat');
+                }
+            })
             .catch((e)=>console.log(e));
     };
 
@@ -119,6 +138,7 @@ const VideoChatPage = () => {
         const newTime = timer + 3*60;
         setMaxTime(newTime);
         setTimer(newTime); // adds 3 more minutes
+        setTimeExtended(true);
     };
 
     const formatTime = (seconds) => {
@@ -135,7 +155,7 @@ const VideoChatPage = () => {
                     <Close fontSize="inherit"/>
                 </IconButton>
                 <div className="video-chat-container">
-                    <Meeting/>
+                    <Meeting startTimer={startTimer.bind(this)} username={username}/>
                 </div>
             </div>
             <div className="video-chat-actions-card mycard">

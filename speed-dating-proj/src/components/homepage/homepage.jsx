@@ -18,6 +18,7 @@ class HomePage extends React.Component {
         const didComplete = localStorage.getItem('hasCompletedHomepageTour');
         const initialTourValue = didComplete === 'true';
         this.state = {isTourRunning: !initialTourValue};
+        this.setIsLoggedIn = props.setIsLoggedIn;
         this.handleTourStart = this.handleTourStart.bind(this);
         this.handleJoyrideCallback = this.handleJoyrideCallback.bind(this);
     }
@@ -40,7 +41,7 @@ class HomePage extends React.Component {
 
         return (
             <div className="main-div">
-                <Header/>
+                <Header setIsLoggedIn={this.setIsLoggedIn}/>
                 <IconButton className="info-button" onClick={this.handleTourStart}
                             style={{position:'absolute', top:'80px', right:'0'}}>
                     <Info>Start Tour</Info>

@@ -56,7 +56,7 @@
 }
 .section-pic {
     width: 20rem;
-    margin-top: 5px;
+    margin-top: 2em;
 }
 
 .middle-part {
@@ -72,6 +72,7 @@
 
 .landing-title-wrapper, .middle-part-text{
     text-align: center;
+    max-width: 25em;
 }
 
 

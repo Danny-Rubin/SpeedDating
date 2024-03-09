@@ -62,7 +62,7 @@ function ParticipantView(props) {
     );
 }
 
-function MeetingView() {
+function MeetingView({onMeetingStarting}) {
     const [joined, setJoined] = useState(null);
     //Get the method which will be used to join the meeting.
     //We will also get the participants list to display all participants
@@ -75,6 +75,7 @@ function MeetingView() {
     const joinMeeting = () => {
         setJoined("JOINING");
         join();
+        onMeetingStarting();
     };
 
     function Controls() {
@@ -116,7 +117,7 @@ function MeetingView() {
                                 ))}
                             </div>
                         ) : (
-                            <div></div>
+                            <div/>
                         )}
 
                         <Controls/>
@@ -131,10 +132,11 @@ function MeetingView() {
     );
 }
 
-function Meeting() {
+function Meeting({startTimer, username}) {
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
     const location = useLocation();
+
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -162,11 +164,11 @@ function Meeting() {
                             meetingId: sessionId,
                             micEnabled: true,
                             webcamEnabled: true,
-                            name: "user",
+                            name: username,
                         }}
                         token={token}
                     >
-                        {<MeetingView/>}
+                        {<MeetingView onMeetingStarting={startTimer}/>}
                     </MeetingProvider>
                 </div>
             )}

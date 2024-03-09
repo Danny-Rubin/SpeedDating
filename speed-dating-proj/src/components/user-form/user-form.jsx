@@ -17,7 +17,7 @@ const profileApiName = "profiles";
 const path = "profiles";
 
 
-const UserForm = () => {
+const UserForm = ({setIsLoggedIn}) => {
     const [isNewUser, setIsNewUser] = useState(true);
     const [accessToken, setAccessToken] = useState(undefined);
 
@@ -151,7 +151,7 @@ const UserForm = () => {
             {
                 !isNewUser &&
                 <div className="user-form-header-div">
-                    <Header/>
+                    <Header setIsLoggedIn={setIsLoggedIn}/>
                 </div>
 
             }
