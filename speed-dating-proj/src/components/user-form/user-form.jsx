@@ -57,6 +57,7 @@ const UserForm = ({setIsLoggedIn}) => {
                 const currAccessToken = session.tokens.accessToken.toString();
                 setAccessToken(currAccessToken);
                 setProfileId(session.tokens.accessToken.payload.username);
+                updateImgUrl(session.tokens.accessToken.payload.username);
                 return getRequest(profileApiName, path, currAccessToken);
             }).then(userProfile=>{
                 if (userProfile){
@@ -84,6 +85,24 @@ const UserForm = ({setIsLoggedIn}) => {
         }));
     };
 
+    const updateImgUrl = async(username=profileId)=> {
+        try{
+            let url = await getUrl({
+                key: `${username}.jpeg`,
+                options: {
+                    accessLevel: 'guest', // can be 'private', 'protected', or 'guest' but defaults to `guest`
+                    targetIdentityId: profileId, // id of another user, if `accessLevel` is `guest`
+                    download: false
+                }
+            });
+            console.log(url);
+            setProfilePicUrl(url.url.href);
+        }
+        catch (e) {
+
+        }
+    };
+
     const handleImgFileChange = async (e) => {
         const selectedFile = e.target.files[0];
         // File type validation
@@ -94,7 +113,8 @@ const UserForm = ({setIsLoggedIn}) => {
         set_error('profilePicFile', undefined);
 
 
-        // make request to s3 to upload file
+
+// make request to s3 to upload file
         try {
 
             const result = await uploadData({
@@ -120,23 +140,16 @@ const UserForm = ({setIsLoggedIn}) => {
 
             }).result;
 
+            console.log('Succeeded: ', result);
+
             setFormData((prevData) => ({
                 ...prevData,
                 ['profilePicFile']: `${profileId}.jpeg`,
             }));
 
 
-            let url = await getUrl({
-                key: `${profileId}.jpeg`,
-                options: {
-                    accessLevel: 'guest' , // can be 'private', 'protected', or 'guest' but defaults to `guest`
-                    targetIdentityId: profileId, // id of another user, if `accessLevel` is `guest`
-                    download: false
-                }});
-            console.log(url);
-            setProfilePicUrl(url);
+            await updateImgUrl();
 
-            console.log('Succeeded: ', url.url.href);
 
         } catch (error) {
 
