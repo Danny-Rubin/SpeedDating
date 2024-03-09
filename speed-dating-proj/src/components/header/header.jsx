@@ -11,11 +11,12 @@ import {useNavigate} from 'react-router-dom'
 
 
 
-const Header = () => {
+const Header = ({setIsLoggedIn}) => {
     const navigate = useNavigate();
 
     const handleSignOut= ()=>{
         signOut().then(()=>{
+            setIsLoggedIn(false);
             navigate('/login');
         }).catch (error=>{
             console.log('error signing out: ', error);

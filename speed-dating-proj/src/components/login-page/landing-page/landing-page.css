@@ -1,0 +1,78 @@
+.landing-page-main{
+    overflow: scroll;
+    height: 100%;
+}
+
+.instruction-part {
+    background: #ff4d96;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center
+}
+
+.instruction-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+.title-part {
+    background-color: #fddfeb;
+}
+
+
+.landing-header {
+    position: sticky;
+    top:0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    background-color: #ffb8d3;
+    z-index: 99;
+
+}
+
+.landing-title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+
+}
+
+.text-to-color{
+    color: #F77F87;
+}
+
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.section-pic {
+    width: 20rem;
+    margin-top: 2em;
+}
+
+.middle-part {
+    background: #fddfeb;
+    flex-wrap: wrap-reverse;
+}
+
+.middle-part-title {
+    font-weight: 700;
+    font-size: larger;
+}
+
+
+.landing-title-wrapper, .middle-part-text{
+    text-align: center;
+    max-width: 25em;
+}
+
+

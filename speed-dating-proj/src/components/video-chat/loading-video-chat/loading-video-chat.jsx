@@ -8,7 +8,7 @@ import wavy_background from "../../../assets/wavy_background.png";
 
 async function findMatch() {
     console.log('ask server to find match');
-    const localStorageItems = Object.keys(localStorage)
+    const localStorageItems = Object.keys(localStorage);
     console.log(localStorageItems.filter(key => key.endsWith('accessToken')))
     try {
         const restOperation = post({

@@ -12,7 +12,68 @@ function ParticipantView(props) {
     const micRef = useRef(null);
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
         useParticipant(props.participantId);
+    let style = {maxWidth:'250px', maxHeight: '360px', width:'auto', height:'auto'};
+    let participantStyle = {};
+    const videoStream = useMemo(() => {
+        if (webcamOn && webcamStream) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(webcamStream.track);
+            return mediaStream;
+        }
+    }, [webcamStream, webcamOn]);
 
+    useEffect(() => {
+        if (micRef.current) {
+            if (micOn && micStream) {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(micStream.track);
+
+                micRef.current.srcObject = mediaStream;
+                micRef.current
+                    .play()
+                    .catch((error) =>
+                        console.error("videoElem.current.play() failed", error)
+                    );
+            } else {
+                micRef.current.srcObject = null;
+            }
+        }
+        if (props.size === 'small'){
+            style = {position:'absolute'};
+            participantStyle = {position: 'fixed', top:'50%'};
+        }
+    }, [micStream, micOn]);
+
+
+
+    return (
+        <div className="participant-view" style={participantStyle}>
+            <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
+            {webcamOn && (
+                <ReactPlayer
+                    style={style}
+                    playsinline
+                    pip={false}
+                    light={false}
+                    controls={false}
+                    muted={true}
+                    playing={true}
+                    url={videoStream}
+                    onError={(err) => {
+                        console.log(err, "participant video error");
+                    }}
+                />
+
+            )}
+            <h2>{displayName}</h2>
+        </div>
+    );
+}
+
+function MySmallView(props) {
+    const micRef = useRef(null);
+    const {webcamStream, micStream, webcamOn, micOn, isLocal} =
+        useParticipant(props.participantId);
     const videoStream = useMemo(() => {
         if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
@@ -39,11 +100,14 @@ function ParticipantView(props) {
         }
     }, [micStream, micOn]);
 
+
+
     return (
-        <div className="participant-view">
+        <div className="participant-view" style={{position: 'fixed', top:'41%'}}>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
+                    style={{maxWidth:'100px', maxHeight: '200px', width:'auto', height:'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -55,9 +119,7 @@ function ParticipantView(props) {
                         console.log(err, "participant video error");
                     }}
                 />
-
             )}
-            <h2>{displayName}</h2>
         </div>
     );
 }
@@ -109,14 +171,18 @@ function MeetingView() {
                         ) : participants.size === 2 ? (
                             <div>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
+                                    <div style={{display:'inline-block'}} key={participantId}>
                                     <ParticipantView
                                         participantId={participantId}
-                                        key={participantId}
                                     />
+                                    <MySmallView
+                                    participantId={localParticipant.id}
+                                    />
+                                    </div>
                                 ))}
                             </div>
                         ) : (
-                            <div></div>
+                            <div/>
                         )}
 
                         <Controls/>
@@ -131,10 +197,11 @@ function MeetingView() {
     );
 }
 
-function Meeting() {
+function Meeting({username}) {
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
     const location = useLocation();
+
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -162,7 +229,7 @@ function Meeting() {
                             meetingId: sessionId,
                             micEnabled: true,
                             webcamEnabled: true,
-                            name: "user",
+                            name: username,
                         }}
                         token={token}
                     >
