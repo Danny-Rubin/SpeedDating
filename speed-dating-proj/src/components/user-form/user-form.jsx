@@ -5,7 +5,7 @@ import './user-form.css'
 import {fetchAuthSession} from 'aws-amplify/auth';
 import Typography from "@mui/material/Typography";
 import {useNavigate} from 'react-router-dom';
-import {getRequest, postRequest, putRequest} from "../../services/amplify-api-service";
+import {getRequest, postRequest} from "../../services/amplify-api-service";
 import { uploadData, getUrl} from 'aws-amplify/storage';
 import person_avatar from "../../assets/person-love.png";
 

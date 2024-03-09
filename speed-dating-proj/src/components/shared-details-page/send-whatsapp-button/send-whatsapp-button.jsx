@@ -11,7 +11,7 @@ const SendWhatsAppBtn = ({phone, handleClick}) => {
     return (
         <div className={ "whatsapp-main whatsapp-"+phone}>
             <div className="send-whatsapp-btn-main">
-                <IconButton color="success" size="large" onClick={handleClick}>
+                <IconButton color="success" size="large" onClick={handleClick} disabled={phone === ''}>
                     <WhatsAppIcon />
                 </IconButton>
             </div>

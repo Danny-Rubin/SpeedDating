@@ -50,6 +50,13 @@ const SharedDetailsPage = ({setIsLoggedIn}) => {
         togglePopUp();
     };
 
+    const handleSocialClick = (socialUrl)=>{
+        window.open(
+            socialUrl,
+            '_blank'
+        );
+    };
+
 
     return (
         <div className="shared-details-page-main main-div">
@@ -62,7 +69,10 @@ const SharedDetailsPage = ({setIsLoggedIn}) => {
                     <div className="shared-details-items">
                         {showPopup}
                         {contactsData.map((contact) => (
-                            <ContactDetailsCard key={contact.profileId} contact={contact} handleClick={()=>handleWhatsappClick(contact.phone)}/>
+                            <ContactDetailsCard key={contact.profileId} contact={contact}
+                                                handleClick={()=>handleWhatsappClick(contact.phone)}
+                                                handleSocialClick={()=>handleSocialClick(contact.social)}
+                            />
                         ))}
                     </div>
                     :
