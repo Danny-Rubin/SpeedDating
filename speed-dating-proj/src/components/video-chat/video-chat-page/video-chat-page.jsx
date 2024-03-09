@@ -27,7 +27,6 @@ const VideoChatPage = () => {
     const initialTimer = 3 * 60; // 3 minutes in seconds
     const [maxTime, setMaxTime] = useState(initialTimer);
     const [timer, setTimer] = useState(initialTimer);
-    const [timerStarted, setTimerStarted] = useState(false);
     const [timeExtended, setTimeExtended] = useState(false);
     const [didExtendTime, setDidExtendTime] = useState(false);
     const [accessToken, setAccessToken] = useState('');
@@ -82,7 +81,6 @@ const VideoChatPage = () => {
 
     useEffect(() => {
         const timerInterval = setInterval(() => {
-            if (!timerStarted) return;
             setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
         }, 1000);
 
@@ -95,9 +93,7 @@ const VideoChatPage = () => {
         // todo implement
     };
 
-    const startTimer = ()=>{
-        setTimerStarted(true);
-    };
+
 
     const stopDating = ()=>{
         tellServerImLeaving();
@@ -155,7 +151,7 @@ const VideoChatPage = () => {
                     <Close fontSize="inherit"/>
                 </IconButton>
                 <div className="video-chat-container">
-                    <Meeting startTimer={startTimer.bind(this)} username={username}/>
+                    <Meeting username={username}/>
                 </div>
             </div>
             <div className="video-chat-actions-card mycard">

@@ -1,5 +1,5 @@
 // HomePage.js
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { Button } from '@mui/material';
 import Header from "../header/header";
 import "./homepage.css"
@@ -42,7 +42,7 @@ class HomePage extends React.Component {
         return (
             <div className="main-div">
                 <Header setIsLoggedIn={this.setIsLoggedIn}/>
-                <IconButton className="info-button" onClick={this.handleTourStart}
+                <IconButton className="info-button" onClick={this.handleTourStart} size='large'
                             style={{position:'absolute', top:'80px', right:'0'}}>
                     <Info>Start Tour</Info>
                 </IconButton>

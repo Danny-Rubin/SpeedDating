@@ -11,20 +11,7 @@ const getContactsPath = "/matches/sharedProfilesList";
 
 const SharedDetailsPage = ({setIsLoggedIn}) => {
 
-    const [contactsData, setContactsData] = useState([
-        {'name': 'noa', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':1},
-        {'name': 'michal', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':2},
-        {'name': 'danny', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':3},
-        {'name': 'ido', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':4},
-        {'name': 'rotem', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':5},
-        {'name': 'noa', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':6},
-        {'name': 'bon', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':7},
-        {'name': 'jovi', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':8},
-        {'name': 'miki', 'phone': '0527799973', 'city':'DisneyLand', 'age':22, 'id':9},
-        {'name': 'mouse', 'phone': '0527799973', 'city':'DisneyLand', 'age':22, 'id':10},
-        {'name': 'cher', 'phone': '0527799973', 'city':'TLV', 'age':22, 'id':11},
-    ]);
-     //const [contactsData, setContactsData] = useState([]);
+    const [contactsData, setContactsData] = useState([]);
 
     useEffect (() => {
         currentAuthenticatedUser()
@@ -39,7 +26,7 @@ const SharedDetailsPage = ({setIsLoggedIn}) => {
             const currAccessToken = session.tokens.accessToken.toString();
             const contactDetails = await getRequest(matchesApiName, getContactsPath, currAccessToken);
             if (contactDetails){
-                //setContactsData(contactDetails);
+                setContactsData(contactDetails.res);
                 console.log(contactDetails);
             }
         }
@@ -75,7 +62,7 @@ const SharedDetailsPage = ({setIsLoggedIn}) => {
                     <div className="shared-details-items">
                         {showPopup}
                         {contactsData.map((contact) => (
-                            <ContactDetailsCard key={contact.id} contact={contact} handleClick={()=>handleWhatsappClick(contact.phone)}/>
+                            <ContactDetailsCard key={contact.profileId} contact={contact} handleClick={()=>handleWhatsappClick(contact.phone)}/>
                         ))}
                     </div>
                     :

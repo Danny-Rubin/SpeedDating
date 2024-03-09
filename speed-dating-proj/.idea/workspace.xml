@@ -3,14 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="674c8e7d-a936-4eaa-8d94-089868168664" name="Default Changelist" comment="+ project starting....">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/homepage/homepage.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/homepage/homepage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/homepage/homepage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/homepage/homepage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/user-form/user-form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user-form/user-form.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/loading-video-chat/loading-video-chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/loading-video-chat/loading-video-chat.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" afterDir="false" />
@@ -30,22 +27,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+            <state relative-caret-position="175">
+              <caret line="156" column="48" lean-forward="true" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="e#20#71#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="62" column="81" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="81" />
+            <state relative-caret-position="253">
+              <caret line="61" column="76" selection-start-line="61" selection-start-column="76" selection-end-line="61" selection-end-column="76" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -54,10 +51,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
+        <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="69" column="1" lean-forward="true" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+            <state relative-caret-position="105">
+              <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -65,22 +71,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/header/header.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="18" column="33" lean-forward="true" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+            <state relative-caret-position="135">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <element signature="e#13#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="146" column="43" selection-start-line="146" selection-start-column="43" selection-end-line="146" selection-end-column="43" />
-              <folding>
-                <element signature="e#20#71#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -89,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="123" column="26" lean-forward="true" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
+            <state relative-caret-position="202">
+              <caret line="177" column="48" lean-forward="true" selection-start-line="177" selection-start-column="48" selection-end-line="177" selection-end-column="48" />
               <folding>
                 <element signature="e#0#66#0" expanded="true" />
               </folding>
@@ -99,12 +93,24 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/login-page/login-page.jsx">
+        <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="49" column="48" lean-forward="true" selection-start-line="49" selection-start-column="48" selection-end-line="49" selection-end-column="48" />
+            <state relative-caret-position="148">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="254">
+              <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -113,17 +119,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/App.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+            <state relative-caret-position="315">
+              <caret line="21" column="28" lean-forward="true" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -167,10 +164,10 @@
       <find>locals</find>
       <find>localStorage</find>
       <find>joinMeeting</find>
-      <find>MeetingView</find>
       <find>user</find>
       <find>timerStarted</find>
       <find>accessToken</find>
+      <find>MeetingView</find>
     </findStrings>
     <replaceStrings>
       <replace>target</replace>
@@ -194,7 +191,6 @@
         <option value="$PROJECT_DIR$/src/PrivateRoute.jsx" />
         <option value="$PROJECT_DIR$/src/components/header/header.css" />
         <option value="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.css" />
-        <option value="$PROJECT_DIR$/src/components/homepage/homepage.css" />
         <option value="$PROJECT_DIR$/src/components/video-chat/finished-video-chat/finished-video-chat.css" />
         <option value="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.css" />
         <option value="$PROJECT_DIR$/src/components/video-chat/comforting-user-screen/comforting-user-screen.jsx" />
@@ -215,23 +211,24 @@
         <option value="$PROJECT_DIR$/src/components/login-page/landing-page/instruction-cube/instruction-cube.jsx" />
         <option value="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/src/components/header/header.jsx" />
-        <option value="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" />
-        <option value="$PROJECT_DIR$/src/components/homepage/homepage.jsx" />
-        <option value="$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx" />
         <option value="$PROJECT_DIR$/src/components/user-form/user-form.jsx" />
-        <option value="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" />
         <option value="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css" />
         <option value="$PROJECT_DIR$/src/components/login-page/login-page.jsx" />
         <option value="$PROJECT_DIR$/src/components/video-chat/loading-video-chat/loading-video-chat.jsx" />
-        <option value="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" />
+        <option value="$PROJECT_DIR$/src/components/homepage/homepage.css" />
+        <option value="$PROJECT_DIR$/src/components/homepage/homepage.jsx" />
+        <option value="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" />
         <option value="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" />
+        <option value="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" />
+        <option value="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" />
+        <option value="$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx" />
+        <option value="$PROJECT_DIR$/src/components/header/header.jsx" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="22" />
-    <option name="y" value="61" />
+    <option name="y" value="60" />
     <option name="width" value="1380" />
     <option name="height" value="784" />
   </component>
@@ -241,7 +238,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -278,6 +274,13 @@
               <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="homepage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="login-page" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -303,6 +306,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="shared-details-page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="shared-details-page" type="462c0819:PsiDirectoryNode" />
+              <item name="contact-details-card" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
@@ -367,6 +378,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -443,7 +455,8 @@
       <workItem from="1709057589763" duration="38089000" />
       <workItem from="1709554547973" duration="610000" />
       <workItem from="1709903806734" duration="8948000" />
-      <workItem from="1709975577792" duration="2830000" />
+      <workItem from="1709975577792" duration="3049000" />
+      <workItem from="1709992714186" duration="3184000" />
     </task>
     <task id="LOCAL-00001" summary="+ project starting....">
       <created>1706410611610</created>
@@ -456,10 +469,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="100902000" />
+    <option name="totallyTimeSpent" value="104305000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="22" y="61" width="1380" height="784" extended-state="0" />
+    <frame x="22" y="60" width="1380" height="784" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49356222" visible="true" weight="0.30463576" />
@@ -573,13 +586,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/video-chat/finished-video-chat/finished-video-chat.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="615">
@@ -594,16 +600,6 @@
             <caret line="763" selection-start-line="763" selection-end-line="763" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="8" column="56" selection-start-line="8" selection-start-column="56" selection-end-line="8" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -628,16 +624,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="76" column="34" lean-forward="true" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
-          <folding>
-            <element signature="e#15#64#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -759,16 +745,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1050">
-          <caret line="76" column="56" selection-start-line="76" selection-start-column="56" selection-end-line="76" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -793,6 +769,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="1" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/login-page/login-page.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="49" column="48" selection-start-line="49" selection-start-column="48" selection-end-line="49" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -807,76 +810,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
+    <entry file="file://$PROJECT_DIR$/src/components/homepage/homepage.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="62" column="81" selection-start-line="62" selection-start-column="68" selection-end-line="62" selection-end-column="81" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/header/header.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="18" column="33" lean-forward="true" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
-          <folding>
-            <element signature="e#13#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="15">
+          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="315">
+          <caret line="21" column="28" lean-forward="true" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.css">
+    <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="69" column="1" lean-forward="true" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/login-page/login-page.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="49" column="48" lean-forward="true" selection-start-line="49" selection-start-column="48" selection-end-line="49" selection-end-column="48" />
+        <state relative-caret-position="175">
+          <caret line="156" column="48" lean-forward="true" selection-start-line="156" selection-start-column="48" selection-end-line="156" selection-end-column="48" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#20#71#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="123" column="26" lean-forward="true" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
+        <state relative-caret-position="202">
+          <caret line="177" column="48" lean-forward="true" selection-start-line="177" selection-start-column="48" selection-end-line="177" selection-end-column="48" />
           <folding>
             <element signature="e#0#66#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
+    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="146" column="43" selection-start-line="146" selection-start-column="43" selection-end-line="146" selection-end-column="43" />
+        <state relative-caret-position="254">
+          <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
           <folding>
-            <element signature="e#20#71#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/header/header.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#13#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="61" column="76" selection-start-line="61" selection-start-column="76" selection-end-line="61" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>

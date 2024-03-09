@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 
-const Header = (setIsLoggedIn) => {
+const Header = ({setIsLoggedIn}) => {
     const navigate = useNavigate();
 
     const handleSignOut= ()=>{
