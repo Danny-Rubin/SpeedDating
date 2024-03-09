@@ -51,7 +51,7 @@
 }
 
 .profile-pic-buttons {
-    display: contents;
+    display: flex;
     flex-direction: row;
 }
 
@@ -64,4 +64,8 @@
 
 .save-btn {
     margin-top: 2px;
+}
+
+.profile-img{
+    width: 3em;
 }
