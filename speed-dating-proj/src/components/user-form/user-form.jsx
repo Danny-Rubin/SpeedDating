@@ -16,6 +16,9 @@ const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
 const requiredFields = ['location', 'gender', 'attraction','dateOfBirth'];
 const profileApiName = "profiles";
 const path = "profiles";
+const facebookPattern = new RegExp('(?:https?:\\/\\/)?(?:www\\.)?(mbasic.facebook|m\\.facebook|facebook|fb)\\.(com|me)\\/(?:(?:\\w\\.)*#!\\/)?(?:pages\\/)?(?:[\\w\\-\\.]*\\/)*([\\w\\-\\.]*)');
+const instaPattern =  new RegExp('/(?:(?:http|https):\\/\\/)?(?:www\\.)?(?:instagram\\.com|instagr\\.am)\\/([A-Za-z0-9-_\\.]+)/');;
+
 
 
 const UserForm = ({setIsLoggedIn}) => {
@@ -188,8 +191,6 @@ const UserForm = ({setIsLoggedIn}) => {
         }
 
         // Regular expression pattern for a simple phone number format
-        const facebookPattern = new RegExp('(?:(?:http|https):\\/\\/)?(?:www.)?facebook.com\\/(?:(?:\\w)*#!\\/)?(?:pages\\/)?(?:[?\\w\\-]*\\/)?(?:profile.php\\?id=(?=\\d.*))?([\\w\\-]*)?\n');
-        const instaPattern =  new RegExp('/(?:(?:http|https):\\/\\/)?(?:www\\.)?(?:instagram\\.com|instagr\\.am)\\/([A-Za-z0-9-_\\.]+)/');;
 
         return instaPattern.test(url) || facebookPattern.test(url);
     }
