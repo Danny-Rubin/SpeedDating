@@ -12,6 +12,10 @@ import SharedDetailsPage from "./components/shared-details-page/shared-details-p
 import { getCurrentUser } from 'aws-amplify/auth';
 import LandingPage from "./components/login-page/landing-page/landing-page";
 import ComfortingUserScreen from "./components/video-chat/comforting-user-screen/comforting-user-screen";
+import { Amplify } from 'aws-amplify';
+import config from './aws-exports.js';
+
+Amplify.configure(config);
 
 
 

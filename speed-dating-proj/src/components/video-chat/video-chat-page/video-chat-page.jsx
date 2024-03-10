@@ -14,6 +14,9 @@ import {videochat_steps} from '../../tour/tour-steps-provider';
 import Joyride, {STATUS} from 'react-joyride';
 import {fetchAuthSession} from 'aws-amplify/auth';
 import {getRequest, postRequest} from "../../../services/amplify-api-service";
+import { generateClient } from 'aws-amplify/api';
+import {onUpdateMatch} from '../../../graphql/subscriptions';
+import {useLocation} from "react-router-dom";
 
 
 const matchesApiName = 'matches';
@@ -23,6 +26,8 @@ const mutualConsentExtendPath = '/matches/mutualConsentExtendMeeting/';
 const VideoChatPage = () => {
     const navigate = useNavigate();
     const meetingId = localStorage.getItem('meeting_id');
+    const location = useLocation();
+
 
     const initialTimer = 3 * 60; // 3 minutes in seconds
     const [maxTime, setMaxTime] = useState(initialTimer);
@@ -42,6 +47,33 @@ const VideoChatPage = () => {
             setTourRunning(false);
         }
     };
+
+    useEffect(() => {
+        const client = generateClient();
+        const searchParams = new URLSearchParams(location.search);
+        const sessionIdParam = searchParams.get("session_id");
+
+        const variables = {
+            filter: {
+                session_id: {eq: sessionIdParam},
+                user1WantsToExtendMeeting: { eq: true },
+                user2WantsToExtendMeeting: { eq: true }
+
+            }
+        };
+        const mutualExtendSub = client
+            .graphql({ query: onUpdateMatch, variables })
+            .subscribe({
+                next: ({ data }) => console.log(data),
+                error: (error) => console.warn(error)
+            });
+
+
+        return () => {
+            mutualExtendSub.unsubscribe();
+        };
+    }, []);
+
 
     useEffect(() => {
         currentAuthenticatedUser().then(()=>{});
