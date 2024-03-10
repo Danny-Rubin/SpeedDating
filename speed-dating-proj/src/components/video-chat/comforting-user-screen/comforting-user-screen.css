@@ -20,6 +20,7 @@
     text-align: center;
     flex-direction: column;
     margin-bottom: 10%;
+    max-width: 75%;
 }
 
 .finished-video-chat-main{
@@ -31,7 +32,7 @@
     font-size: larger;
 }
 
-.share-details-text {
+.comforting-text {
     font-size: medium;
 }
 

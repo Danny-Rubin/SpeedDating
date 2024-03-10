@@ -11,6 +11,7 @@ import FinishedVideoChat from "./components/video-chat/finished-video-chat/finis
 import SharedDetailsPage from "./components/shared-details-page/shared-details-page";
 import { getCurrentUser } from 'aws-amplify/auth';
 import LandingPage from "./components/login-page/landing-page/landing-page";
+import ComfortingUserScreen from "./components/video-chat/comforting-user-screen/comforting-user-screen";
 
 
 
@@ -66,6 +67,7 @@ const App = () => {
                         <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
                         <Route path="/video-chat" element={<VideoChatPage/>}/>
                         <Route path="/shared-details" element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>} />
+                        <Route path="/date-ended" element={<ComfortingUserScreen/>} />
                     </Routes>
                   </div>
           </Router>
