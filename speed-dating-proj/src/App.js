@@ -57,22 +57,25 @@ const App = () => {
       <ThemeProvider theme={theme}>
           <Router>
               <div style={{height:'100%', overflow:'hidden'}}>
-                    <Routes>
-                    {
-                        isLoggedIn?
-                            <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
-                            :
-                            <Route path="/" element={<LandingPage/>}/>
-                    }
-                        <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/> }/>
-                        <Route path="/user-form" element={<UserForm setIsLoggedIn={setIsLoggedIn}/>}/>
-                        <Route path="/homepage" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
-                        <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
-                        <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
-                        <Route path="/video-chat" element={<VideoChatPage/>}/>
-                        <Route path="/shared-details" element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>} />
-                        <Route path="/date-ended" element={<ComfortingUserScreen/>} />
-                    </Routes>
+                  {
+                      isLoggedIn?
+                          (<Routes>
+                              <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
+                              <Route path="/user-form" element={<UserForm setIsLoggedIn={setIsLoggedIn}/>}/>
+                              <Route path="/homepage" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
+                              <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
+                              <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
+                              <Route path="/video-chat" element={<VideoChatPage/>}/>
+                              <Route path="/shared-details" element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>} />
+                              <Route path="/date-ended" element={<ComfortingUserScreen/>} />
+                          </Routes>)
+                          :
+                          (<Routes>
+                              <Route path="/" element={<LandingPage/>}/>
+                              <Route path="/homepage" element={<LandingPage/>}/>
+                              <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/> }/>
+                          </Routes>)
+                  }
                   </div>
           </Router>
       </ThemeProvider>

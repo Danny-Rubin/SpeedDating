@@ -23,7 +23,7 @@ import {getRequest} from "../../services/amplify-api-service";
 Amplify.configure(config);
 const profileApiName = 'profiles';
 
-function LoginPage() {
+function LoginPage({setIsLoggedIn}) {
 
     const navigate = useNavigate();
 
@@ -32,6 +32,7 @@ function LoginPage() {
         // Subscribe to the event
         const hubListenerCancelToken = Hub.listen('auth', ({ payload }) => {
             if (payload.event === 'signedIn'){
+                setIsLoggedIn(true);
                 navigateByProfileState();
             }
         });
