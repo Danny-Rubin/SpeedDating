@@ -39,8 +39,8 @@
       "profile",
       "aws.cognito.signin.user.admin"
     ],
-    "redirectSignIn": "http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/homepage",
-    "redirectSignOut": "http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/homepage",
+    "redirectSignIn": "http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/",
+    "redirectSignOut": "http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/",
     "responseType": "code"
   },
   "federationTarget": "COGNITO_USER_POOLS",
