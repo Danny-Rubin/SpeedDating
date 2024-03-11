@@ -42,9 +42,11 @@ const App = () => {
     const currentAuthenticatedUser = ()=>
     {
         getCurrentUser().then(data=>{
+            console.log('user is logged in');
             setLoggedIn(true);
 
         }).catch(err=>{
+            console.log('no user logged in');
             setLoggedIn(false)
         })
     };
