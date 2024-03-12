@@ -101,7 +101,7 @@ const LoadingVideoChat = () => {
             <div className="loading-video-chat-card mycard">
                 <div>
                     <h2 className="loading-video-title">
-                        {(!matched && !gotInQ) ? "Looking for a match..."  : (gotInQ && !matched) ? "Your data is being processed..." : "Match Found! Loading..."}
+                        {(!matched && !gotInQ) ? "Your data is being processed..."  : (gotInQ && !matched) ? "Looking for a match..." : "Match Found! Loading..."}
                     </h2>
                 </div>
                 <div className="loading-video-loader">
