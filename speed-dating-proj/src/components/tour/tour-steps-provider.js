@@ -44,7 +44,7 @@ export const videochat_steps = [
     {
         target: '.add-time-btn',
         title: 'Need more time?',
-        content: 'Click here to ask to extend the date by 3 minutes, the date will be extended only in case both participants want too. You can use this once per date.',
+        content: 'Click here to ask to extend the date by 3 minutes, the date will be extended at the last seconds of the date, only in case both participants want too. You can use this once per date.',
         disableBeacon: true
         ,
     },

@@ -1,7 +1,9 @@
+.video-chat-container{
+    height: 100%;
+}
 
 .participant-view {
     border-radius: 8px;
-    margin-bottom: 20px;
     overflow: hidden;
 }
 
@@ -9,19 +11,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
+
+    height: 100%;
+    width:100%;
 }
 
 .meeting-view {
     padding: 20px;
+    height: 100%;
+    width:100%;
+    display:flex;
+    align-items: center;
 }
 
 .meeting-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: max-content;
+    height: 100%;
+    width:100%;
 }
 
 button {

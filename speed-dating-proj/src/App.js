@@ -74,6 +74,7 @@ const App = () => {
                                      element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>}/>
                               <Route path="/date-ended" element={<ComfortingUserScreen/>}/>
                               <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/>}/>
+                              <Route path='/test' element={<Loader/>}/>
                           </Routes>)
                           :
                           (<Routes>

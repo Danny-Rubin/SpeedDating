@@ -14,9 +14,10 @@ import {videochat_steps} from '../../tour/tour-steps-provider';
 import Joyride, {STATUS} from 'react-joyride';
 import {fetchAuthSession} from 'aws-amplify/auth';
 import {getRequest, postRequest} from "../../../services/amplify-api-service";
-import { generateClient } from 'aws-amplify/api';
-import {onUpdateMatch} from '../../../graphql/subscriptions';
 import {useLocation} from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Alert from "@mui/material/Alert";
 
 
 const matchesApiName = 'matches';
@@ -37,6 +38,8 @@ const VideoChatPage = () => {
     const [accessToken, setAccessToken] = useState('');
     const [isTourRunning, setTourRunning]= useState(false);
     const [username, setUsername]= useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
     const handleTourStart = (event) => {
         event.preventDefault();
@@ -47,32 +50,6 @@ const VideoChatPage = () => {
             setTourRunning(false);
         }
     };
-
-    useEffect(() => {
-        const client = generateClient();
-        const searchParams = new URLSearchParams(location.search);
-        const sessionIdParam = searchParams.get("session_id");
-
-        const variables = {
-            filter: {
-                session_id: {eq: sessionIdParam},
-                user1WantsToExtendMeeting: { eq: true },
-                user2WantsToExtendMeeting: { eq: true }
-
-            }
-        };
-        const mutualExtendSub = client
-            .graphql({ query: onUpdateMatch })
-            .subscribe({
-                next: ({ data }) => console.log(data),
-                error: (error) => console.warn(error)
-            });
-
-
-        return () => {
-            mutualExtendSub.unsubscribe();
-        };
-    }, []);
 
 
     useEffect(() => {
@@ -154,12 +131,17 @@ const VideoChatPage = () => {
             .then((response)=> {
                 if (response['mutualConsent']){
                     handleAddAnother3Mintes();
+                    setSnackbarOpen(true);
                 }
                 else {
                     navigate('/finished-chat');
                 }
             })
             .catch((e)=>console.log(e));
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
     };
 
     const handleAddAnother3Mintes = ()=>{
@@ -183,7 +165,7 @@ const VideoChatPage = () => {
                     <Close fontSize="inherit"/>
                 </IconButton>
                 <div className="video-chat-container">
-                    <Meeting username={username}/>
+                    <Meeting username={username} />
                 </div>
             </div>
             <div className="video-chat-actions-card mycard">
@@ -224,8 +206,25 @@ const VideoChatPage = () => {
                     },
                 }}
             />
+            <Snackbar
+                anchorOrigin={{vertical:'top', horizontal:'center'}}
+                open={snackbarOpen}
+                onClose={handleCloseSnackbar}
+                autoHideDuration={2000}
+            >
+                <Alert
+                    severity="error"
+                    sx={{ width: '100%' }}
+                    iconMapping={{
+                        error: <FavoriteBorderIcon fontSize="inherit" />,
+                    }}
+                >
+                    Date extended by 3 minutes!
+                </Alert>
+            </Snackbar>
         </div>
     );
 };
 
 export default VideoChatPage;
+

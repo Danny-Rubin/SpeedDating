@@ -50,4 +50,6 @@
     padding: 10px;
 }
 
-
+.video-chat-container {
+    height: 100%;
+}

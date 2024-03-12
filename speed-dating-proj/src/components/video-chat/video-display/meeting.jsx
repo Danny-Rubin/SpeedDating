@@ -12,7 +12,7 @@ function ParticipantView(props) {
     const micRef = useRef(null);
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
         useParticipant(props.participantId);
-    let style = {maxWidth:'250px', maxHeight: '360px', width:'auto', height:'auto'};
+    let style = {maxWidth:'260px', maxHeight: '360px', width:'auto', height:'auto'};
     const videoStream = useMemo(() => {
         if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
@@ -60,7 +60,7 @@ function ParticipantView(props) {
                 />
 
             )}
-            <h2>{displayName}</h2>
+            <h2 style={{marginTop: '35px'}}>{displayName}</h2>
         </div>
     );
 }
@@ -152,10 +152,10 @@ function MeetingView() {
     return (
         <div className="meeting-view">
             {joined && joined === "JOINED" ? (
-                <div>
+                <div style={{height:'100%'}}>
                     <div className="participants-container">
                         {participants.size === 1 ? (
-                            <div>
+                            <div style={{height:'100%'}}>
                                 {[...participants.keys()].map((participantId) => (
                                     <ParticipantView
                                         participantId={participantId}
@@ -164,7 +164,7 @@ function MeetingView() {
                                 ))}
                             </div>
                         ) : participants.size === 2 ? (
-                            <div>
+                            <div style={{height:'100%'}}>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
                                     <div style={{display:'inline-block'}} key={participantId}>
                                         <ParticipantView
@@ -218,7 +218,7 @@ function Meeting({username}) {
             {!token || !sessionId ? (
                 <div></div>
             ) : (
-                <div>
+                <div style={{height:'100%'}}>
                     <MeetingProvider
                         config={{
                             meetingId: sessionId,
