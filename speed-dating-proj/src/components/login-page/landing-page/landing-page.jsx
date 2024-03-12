@@ -12,7 +12,7 @@ import y from '../../../assets/back-to-back.png';
 
 const LandingPage = () => {
     const instructionsData = [
-        {img: profile_instructions_logo, title: 'Create a Profile', text: 'Here’s where the magic starts! The more we know about you, the better we can match you with the people you will be attracted to.'},
+        {img: profile_instructions_logo, title: 'Create a Profile', text: 'Here’s where the magic starts! Provide us a few details about you we will match you by.'},
         {img: pic_instructions_logo, title: 'Upload a Quality Photo', text: 'Seriously! This is the number one thing you can do to increase your chances after your speed date. Make sure the photo shows the real you!'},
         {img: dating_instructions_logo, title: 'Start Dating!', text: 'Start searching your love partner in a speed dating session. The dates are on camera, so make sure you\'re camera ready.'},
         {img: contact_instructions_logo, title: 'Contact Who You Liked!', text: 'After a dating session you can contact a person you liked, in case they liked you too, and keep the magic going!'},
