@@ -118,7 +118,7 @@ function MySmallView(props) {
     );
 }
 
-function MeetingView() {
+function MeetingView(props) {
     const [joined, setJoined] = useState(null);
     const [webCamOnState, setWebCamOnState] = useState(true);
     const [micOnState, setMicOnState] = useState(true);
@@ -143,7 +143,7 @@ function MeetingView() {
     }
 
     function toggleMicWrapper(state) {
-        console.log(state)
+        console.log(state);
         setMicOnState(state);
         toggleMic();
     }
@@ -155,6 +155,11 @@ function MeetingView() {
         };
     }, []);
 
+    useEffect(()=>{
+        if(participants.size === 2){
+            props.startTimer();
+        }
+    }, [participants.size]);
 
     function Controls() {
 
@@ -215,7 +220,7 @@ function MeetingView() {
     );
 }
 
-function Meeting({username}) {
+function Meeting({username, startTimer}) {
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
     const location = useLocation();
@@ -251,7 +256,7 @@ function Meeting({username}) {
                         }}
                         token={token}
                     >
-                        {<MeetingView/>}
+                        {<MeetingView startTimer={startTimer}/>}
                     </MeetingProvider>
                 </div>
             )}
