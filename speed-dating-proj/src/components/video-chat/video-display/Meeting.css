@@ -13,9 +13,8 @@
     text-align: center;
 }
 
-.participants-wrapper {
-    display: flex;
-    align-items: flex-end;
+.participant-wrapper{
+    display: inline-block;
 }
 .meeting-view {
     padding: 20px;

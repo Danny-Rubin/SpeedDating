@@ -188,7 +188,7 @@ const VideoChatPage = () => {
             </div>
             <div className="video-chat-actions-card mycard">
                 <IconButton className="info-button" color="secondary" onClick={handleTourStart}
-                            style={{position:'absolute', bottom:'10%', left:'7%'}}>
+                            style={{position:'absolute', bottom:'2.5em', left:'7%'}}>
                     <Info>Start Tour</Info>
                 </IconButton>
                 <div className="video-chat-timer">

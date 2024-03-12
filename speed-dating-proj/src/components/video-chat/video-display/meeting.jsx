@@ -103,11 +103,12 @@ function MySmallView(props) {
 
 
     return (
-        <div className="participant-view" style={{position: 'fixed'}}>
+        <div className="participant-view" style={{position: 'fixed',  top:'41%'}}>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth:'100px', maxHeight: '180px', width:'auto', height:'auto'}}
+                    style={{maxWidth:'100px', maxHeight: '200px', width:'max-content', height:'max-content',
+                    position: 'absolute', right: '15em'}}
                     playsinline
                     pip={false}
                     light={false}

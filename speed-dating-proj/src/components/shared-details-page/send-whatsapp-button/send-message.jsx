@@ -64,11 +64,10 @@ const SendMessage = ({handleClose, show, phone}) => {
             let number = mobileNumber.replace(/[^\w\s]/gi, "").replace(/ /g, "");
 
             // Appending the phone number to the URL
-            let url = `https://web.whatsapp.com/send?phone=${number}`;
-            url += `&text=${encodeURI(message)}&app_absent=0`;
+            let url = `https://wa.me/${number}`;
+            url += `?text=${encodeURI(message)}&app_absent=0`;
             window.open(url);
             handleClose()
-            // TODO: Enter code here
         }
     };
 
