@@ -16,13 +16,15 @@ const ContactDetailsCard = ({contact, handleClick, handleSocialClick}) => {
     const [profilePicUrl, setProfilePicUrl] = useState(person_avatar);
 
     useEffect(()=>{
-        updateImgUrl().then();
+        if (contact.profilePicFile!==""){
+            updateImgUrl().then();
+        }
     }, []);
 
     const updateImgUrl = async()=> {
         try{
             let url = await getUrl({
-                key: `${contact.profileId}.jpeg`,
+                key: contact.profilePicFile,
                 options: {
                     accessLevel: 'guest', // can be 'private', 'protected', or 'guest' but defaults to `guest`
                     targetIdentityId: contact.profileId, // id of another user, if `accessLevel` is `guest`

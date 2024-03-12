@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="674c8e7d-a936-4eaa-8d94-089868168664" name="Default Changelist" comment="+ project starting....">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -35,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="200" column="16" selection-start-line="200" selection-start-column="9" selection-end-line="200" selection-end-column="16" />
+            <state relative-caret-position="1485">
+              <caret line="106" column="31" selection-start-line="106" selection-start-column="31" selection-end-line="106" selection-end-column="31" />
               <folding>
                 <element signature="e#0#66#0" expanded="true" />
               </folding>
@@ -44,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="99" column="17" lean-forward="true" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
+            <state relative-caret-position="1320">
+              <caret line="106" column="28" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
               <folding>
                 <element signature="e#20#71#0" expanded="true" />
               </folding>
@@ -59,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="15" column="174" selection-start-line="15" selection-start-column="128" selection-end-line="15" selection-end-column="174" />
+            <state relative-caret-position="181">
+              <caret line="20" column="12" lean-forward="true" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -68,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+            <state relative-caret-position="130">
+              <caret line="24" column="12" lean-forward="true" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -135,8 +134,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>h2</find>
-      <find>ParticipantView</find>
       <find>locals</find>
       <find>localStorage</find>
       <find>joinMeeting</find>
@@ -165,6 +162,8 @@
       <find>checkIfTimeWasExtended</find>
       <find>ill</find>
       <find>illega</find>
+      <find>profilePicUrl</find>
+      <find>profilePicFile</find>
     </findStrings>
     <replaceStrings>
       <replace>target</replace>
@@ -175,7 +174,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="noa/fix-timer" />
       </map>
     </option>
   </component>
@@ -216,7 +215,6 @@
         <option value="$PROJECT_DIR$/src/components/loader/loader.jsx" />
         <option value="$PROJECT_DIR$/src/components/loader/loader.css" />
         <option value="$PROJECT_DIR$/src/components/shared-details-page/shared-details-page.jsx" />
-        <option value="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" />
         <option value="$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx" />
         <option value="$PROJECT_DIR$/src/components/shared-details-page/send-whatsapp-button/send-message.jsx" />
         <option value="$PROJECT_DIR$/src/components/user-form/user-form.jsx" />
@@ -226,6 +224,7 @@
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" />
         <option value="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" />
+        <option value="$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx" />
       </list>
     </option>
   </component>
@@ -264,7 +263,89 @@
               <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="header" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="homepage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="login-page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="login-page" type="462c0819:PsiDirectoryNode" />
+              <item name="landing-page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="shared-details-page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="shared-details-page" type="462c0819:PsiDirectoryNode" />
+              <item name="contact-details-card" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="shared-details-page" type="462c0819:PsiDirectoryNode" />
+              <item name="send-whatsapp-button" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="tour" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="user-form" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="video-chat" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="video-chat" type="462c0819:PsiDirectoryNode" />
+              <item name="comforting-user-screen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="speed-dating-proj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="video-chat" type="462c0819:PsiDirectoryNode" />
+              <item name="finished-video-chat" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="speed-dating-proj" type="b2602c69:ProjectViewProjectNode" />
@@ -387,10 +468,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132546000" />
+    <option name="totallyTimeSpent" value="133100000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="22" y="60" width="1380" height="784" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49356222" visible="true" weight="0.30463576" />
       <window_info id="Structure" order="1" sideWeight="0.5064378" side_tool="true" weight="0.30527496" />
@@ -730,13 +812,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="51" column="47" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/send-whatsapp-button/send-message.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="990">
@@ -783,8 +858,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/login-page/landing-page/landing-page.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="15" column="174" selection-start-line="15" selection-start-column="128" selection-end-line="15" selection-end-column="174" />
+        <state relative-caret-position="181">
+          <caret line="20" column="12" lean-forward="true" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -793,8 +868,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="200" column="16" selection-start-line="200" selection-start-column="9" selection-end-line="200" selection-end-column="16" />
+        <state relative-caret-position="1485">
+          <caret line="106" column="31" selection-start-line="106" selection-start-column="31" selection-end-line="106" selection-end-column="31" />
           <folding>
             <element signature="e#0#66#0" expanded="true" />
           </folding>
@@ -803,11 +878,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="99" column="17" lean-forward="true" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
+        <state relative-caret-position="1320">
+          <caret line="106" column="28" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
           <folding>
             <element signature="e#20#71#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="24" column="12" lean-forward="true" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
         </state>
       </provider>
     </entry>
