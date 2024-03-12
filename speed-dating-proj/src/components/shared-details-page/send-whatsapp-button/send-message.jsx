@@ -65,7 +65,7 @@ const SendMessage = ({handleClose, show, phone}) => {
 
             // Appending the phone number to the URL
             let url = `https://wa.me/${number}`;
-            url += `?text=${encodeURI(message)}&app_absent=0`;
+            url += `?text=${encodeURI(message)}`;
             window.open(url);
             handleClose()
         }

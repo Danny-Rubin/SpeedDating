@@ -13,7 +13,6 @@ function ParticipantView(props) {
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
         useParticipant(props.participantId);
     let style = {maxWidth:'250px', maxHeight: '360px', width:'auto', height:'auto'};
-    let participantStyle = {};
     const videoStream = useMemo(() => {
         if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
@@ -38,21 +37,16 @@ function ParticipantView(props) {
                 micRef.current.srcObject = null;
             }
         }
-        if (props.size === 'small'){
-            style = {position:'absolute'};
-            participantStyle = {position: 'fixed', top:'50%'};
-        }
     }, [micStream, micOn]);
 
 
 
     return (
-        <div className="participant-view" style={participantStyle}>
-            <h2>{displayName}</h2>
+        <div className="participant-view">
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={style}
+                    style={{maxWidth:'250px', maxHeight: '360px', width:'auto', height:'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -66,6 +60,7 @@ function ParticipantView(props) {
                 />
 
             )}
+            <h2>{displayName}</h2>
         </div>
     );
 }
@@ -103,12 +98,11 @@ function MySmallView(props) {
 
 
     return (
-        <div className="participant-view" style={{position: 'fixed',  top:'41%'}}>
+        <div className="participant-view" style={{position: 'fixed', top:'41%'}}>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth:'100px', maxHeight: '200px', width:'max-content', height:'max-content',
-                    position: 'absolute', right: '15em'}}
+                    style={{maxWidth:'100px', maxHeight: '200px', width:'auto', height:'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -172,13 +166,13 @@ function MeetingView() {
                         ) : participants.size === 2 ? (
                             <div>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
-                                    <div className="participants-wrapper" key={participantId}>
-                                    <ParticipantView
-                                        participantId={participantId}
-                                    />
-                                    <MySmallView
-                                    participantId={localParticipant.id}
-                                    />
+                                    <div style={{display:'inline-block'}} key={participantId}>
+                                        <ParticipantView
+                                            participantId={participantId}
+                                        />
+                                        <MySmallView
+                                            participantId={localParticipant.id}
+                                        />
                                     </div>
                                 ))}
                             </div>
