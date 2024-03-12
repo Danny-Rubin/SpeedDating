@@ -99,7 +99,7 @@ const VideoChatPage = () => {
     const normalise = (value) => ((value) * 100) / (maxTime);
 
     const tellServerImLeaving = ()=>{
-        // todo implement
+
     };
 
 
@@ -139,6 +139,7 @@ const VideoChatPage = () => {
             })
             .catch((e)=>console.log(e));
     };
+
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);

@@ -7,12 +7,13 @@ import {
 import ReactPlayer from "react-player";
 import {useLocation} from "react-router-dom";
 import "./Meeting.css"; // Import CSS file for styling
-import { CiVideoOff, CiVideoOn, CiMicrophoneOn , CiMicrophoneOff  } from "react-icons/ci";
+import {CiVideoOff, CiVideoOn, CiMicrophoneOn, CiMicrophoneOff} from "react-icons/ci";
+
 function ParticipantView(props) {
     const micRef = useRef(null);
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
         useParticipant(props.participantId);
-    let style = {maxWidth:'260px', maxHeight: '360px', width:'auto', height:'auto'};
+    let style = {maxWidth: '260px', maxHeight: '360px', width: 'auto', height: 'auto'};
     const videoStream = useMemo(() => {
         if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
@@ -40,13 +41,12 @@ function ParticipantView(props) {
     }, [micStream, micOn]);
 
 
-
     return (
         <div className="participant-view">
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth:'250px', maxHeight: '360px', width:'auto', height:'auto'}}
+                    style={{maxWidth: '250px', maxHeight: '360px', width: 'auto', height: 'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -96,13 +96,12 @@ function MySmallView(props) {
     }, [micStream, micOn]);
 
 
-
     return (
-        <div className="participant-view" style={{position: 'fixed', top:'41%'}}>
+        <div className="participant-view" style={{position: 'fixed', top: '41%'}}>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth:'100px', maxHeight: '200px', width:'auto', height:'auto'}}
+                    style={{maxWidth: '100px', maxHeight: '200px', width: 'auto', height: 'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -121,8 +120,11 @@ function MySmallView(props) {
 
 function MeetingView() {
     const [joined, setJoined] = useState(null);
+    const [webCamOnState, setWebCamOnState] = useState(true);
+    const [micOnState, setMicOnState] = useState(true);
     //Get the method which will be used to join the meeting.
     //We will also get the participants list to display all participants
+    const {toggleMic, toggleWebcam, leave} = useMeeting();
     const {join, participants, localParticipant} = useMeeting({
         //callback for when meeting is joined successfully
         onMeetingJoined: () => {
@@ -134,16 +136,37 @@ function MeetingView() {
         join();
     };
 
+    function toggleWebCamWrapper(state) {
+        console.log(webCamOnState);
+        setWebCamOnState(state);
+        toggleWebcam();
+    }
+
+    function toggleMicWrapper(state) {
+        console.log(state)
+        setMicOnState(state);
+        toggleMic();
+    }
+
+    useEffect(() => {
+        return () => {
+            // This function will be called when the component unmounts (i.e., when navigating away)
+            leave();
+        };
+    }, []);
+
+
     function Controls() {
-        const { toggleMic, toggleWebcam} = useMeeting();
+
+
         return (
             <div className="controls">
 
-                <button  onClick={() => toggleMic()}>
-                    {localParticipant.micOn ? <CiMicrophoneOff color={"#ffffff"}/> : <CiMicrophoneOn color={"#ffffff"}/>}
+                <button onClick={() => toggleMicWrapper(!micOnState)}>
+                    {micOnState ? <CiMicrophoneOn color={"#ffffff"}/> : <CiMicrophoneOff color={"#ffffff"}/>}
                 </button>
-                <button onClick={() => toggleWebcam()}>
-                    {localParticipant.webcamOn ? <CiVideoOff color={"#ffffff"}/> : <CiVideoOn color={"#ffffff"}/>}
+                <button onClick={() => toggleWebCamWrapper(!webCamOnState)}>
+                    {webCamOnState ? <CiVideoOn color={"#ffffff"}/> : <CiVideoOff color={"#ffffff"}/>}
                 </button>
             </div>
         );
@@ -152,10 +175,10 @@ function MeetingView() {
     return (
         <div className="meeting-view">
             {joined && joined === "JOINED" ? (
-                <div style={{height:'100%'}}>
+                <div style={{height: '100%'}}>
                     <div className="participants-container">
                         {participants.size === 1 ? (
-                            <div style={{height:'100%'}}>
+                            <div style={{height: '100%'}}>
                                 {[...participants.keys()].map((participantId) => (
                                     <ParticipantView
                                         participantId={participantId}
@@ -164,9 +187,9 @@ function MeetingView() {
                                 ))}
                             </div>
                         ) : participants.size === 2 ? (
-                            <div style={{height:'100%'}}>
+                            <div style={{height: '100%'}}>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
-                                    <div style={{display:'inline-block'}} key={participantId}>
+                                    <div style={{display: 'inline-block'}} key={participantId}>
                                         <ParticipantView
                                             participantId={participantId}
                                         />
@@ -218,7 +241,7 @@ function Meeting({username}) {
             {!token || !sessionId ? (
                 <div></div>
             ) : (
-                <div style={{height:'100%'}}>
+                <div style={{height: '100%'}}>
                     <MeetingProvider
                         config={{
                             meetingId: sessionId,

@@ -60,7 +60,8 @@ async function getToken() {
 
 const LoadingVideoChat = () => {
     const navigate = useNavigate();
-    const [GotInQ, setGotInQ] = useState(false);
+    const [gotInQ, setGotInQ] = useState(false);
+    const [matched, setMatched] = useState(false);
 
     useEffect(() => {
 
@@ -68,6 +69,7 @@ const LoadingVideoChat = () => {
             .then(response => {
                 console.log(response);
                 localStorage.setItem("meeting_id", response["meetingId"]);
+                setMatched(response["hasMatch"])
                 setGotInQ(true);
             })
 
@@ -76,7 +78,7 @@ const LoadingVideoChat = () => {
     useEffect(() => {
         const interval = setInterval(() => {
 
-            if (GotInQ) {
+            if (gotInQ) {
                 console.log("meeting id exists start fetching for token");
                 getToken()
                     .then(response => {
@@ -92,14 +94,14 @@ const LoadingVideoChat = () => {
 
         // Clean up the interval on unmount to avoid memory leaks
         return () => clearInterval(interval);
-    }, [navigate, GotInQ]); // Empty dependency array to run the effect only once on mount
+    }, [navigate, gotInQ]); // Empty dependency array to run the effect only once on mount
 
     return (
         <div className="loading-video-chat-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
             <div className="loading-video-chat-card mycard">
                 <div>
                     <h2 className="loading-video-title">
-                        Looking for a match...
+                        {(!matched && !gotInQ) ? "Looking for a match..."  : (gotInQ && !matched) ? "Your data is being processed..." : "Match Found! Loading..."}
                     </h2>
                 </div>
                 <div className="loading-video-loader">
