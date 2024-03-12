@@ -103,11 +103,11 @@ function MySmallView(props) {
 
 
     return (
-        <div className="participant-view" style={{position: 'fixed', top:'41%'}}>
+        <div className="participant-view" style={{position: 'fixed'}}>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth:'100px', maxHeight: '200px', width:'auto', height:'auto'}}
+                    style={{maxWidth:'100px', maxHeight: '180px', width:'auto', height:'auto'}}
                     playsinline
                     pip={false}
                     light={false}
@@ -171,7 +171,7 @@ function MeetingView() {
                         ) : participants.size === 2 ? (
                             <div>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
-                                    <div style={{display:'inline-block'}} key={participantId}>
+                                    <div className="participants-wrapper" key={participantId}>
                                     <ParticipantView
                                         participantId={participantId}
                                     />

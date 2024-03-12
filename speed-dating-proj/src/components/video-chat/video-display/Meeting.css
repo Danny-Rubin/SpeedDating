@@ -13,6 +13,10 @@
     text-align: center;
 }
 
+.participants-wrapper {
+    display: flex;
+    align-items: flex-end;
+}
 .meeting-view {
     padding: 20px;
 }
@@ -21,7 +25,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: max-content;
 }
 
 button {
