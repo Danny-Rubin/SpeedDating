@@ -48,6 +48,7 @@ function ParticipantView(props) {
 
     return (
         <div className="participant-view" style={participantStyle}>
+            <h2>{displayName}</h2>
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
@@ -65,7 +66,6 @@ function ParticipantView(props) {
                 />
 
             )}
-            <h2>{displayName}</h2>
         </div>
     );
 }
