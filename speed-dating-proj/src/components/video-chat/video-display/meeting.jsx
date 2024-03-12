@@ -119,7 +119,7 @@ function MySmallView(props) {
     );
 }
 
-function MeetingView() {
+function MeetingView(props) {
     const [joined, setJoined] = useState(null);
     //Get the method which will be used to join the meeting.
     //We will also get the participants list to display all participants
@@ -133,6 +133,12 @@ function MeetingView() {
         setJoined("JOINING");
         join();
     };
+
+    useEffect(()=>{
+        if(participants.size === 2){
+            props.startTimer();
+        }
+    }, [participants.size]);
 
     function Controls() {
         const { toggleMic, toggleWebcam} = useMeeting();
@@ -192,7 +198,7 @@ function MeetingView() {
     );
 }
 
-function Meeting({username}) {
+function Meeting({username, startTimer}) {
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
     const location = useLocation();
@@ -228,7 +234,7 @@ function Meeting({username}) {
                         }}
                         token={token}
                     >
-                        {<MeetingView/>}
+                        {<MeetingView startTimer={startTimer}/>}
                     </MeetingProvider>
                 </div>
             )}
