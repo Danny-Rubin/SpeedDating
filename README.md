@@ -1,7 +1,7 @@
 # FlashFlirt
 FlashFlirt is a revolutionary speed dating platform designed to spark connections in a fast-paced environment. With our unique features, you can dive into meaningful interactions with potential matches and explore the chemistry without the hassle of traditional dating platforms.
 
-![flash-flirt-logo](https://github.com/Danny-Rubin/SpeedDating/assets/68163138/5305f25a-7c4a-4401-a47b-f25110c1dd46 | width=100)
+<img src="https://github.com/Danny-Rubin/SpeedDating/assets/68163138/5305f25a-7c4a-4401-a47b-f25110c1dd46" width="100" height="100">
 
 # Features
 ## Speed Dating Sessions
@@ -32,5 +32,3 @@ Video chatting makes it easier to express yourself, including subtle cues like b
 
 # Website
 Visit [FlashFlirt](https://main.deuksgbh6tmkx.amplifyapp.com/ "Homepage") to start your speed dating journey!
-
-Experience the thrill of speed dating with FlashFlirt – where connections ignite in an instant!
