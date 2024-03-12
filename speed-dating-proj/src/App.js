@@ -14,7 +14,6 @@ import LandingPage from "./components/login-page/landing-page/landing-page";
 import ComfortingUserScreen from "./components/video-chat/comforting-user-screen/comforting-user-screen";
 import { Amplify } from 'aws-amplify';
 import config from './amplifyconfiguration.json';
-import Loader from "./components/loader/loader";
 
 Amplify.configure(config);
 
@@ -74,7 +73,6 @@ const App = () => {
                                      element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>}/>
                               <Route path="/date-ended" element={<ComfortingUserScreen/>}/>
                               <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/>}/>
-                              <Route path='/test' element={<Loader/>}/>
                           </Routes>)
                           :
                           (<Routes>

@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="674c8e7d-a936-4eaa-8d94-089868168664" name="Default Changelist" comment="+ project starting....">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/tour/tour-steps-provider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/tour/tour-steps-provider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/user-form/user-form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user-form/user-form.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-chat-page/video-chat-page.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-display/Meeting.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/video-chat/video-display/meeting.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/mutations.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/queries.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/subscriptions.js" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -103,8 +93,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="76" column="71" selection-start-line="76" selection-start-column="71" selection-end-line="76" selection-end-column="71" />
+            <state relative-caret-position="240">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -470,7 +460,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131140000" />
+    <option name="totallyTimeSpent" value="131238000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="22" y="60" width="1380" height="784" extended-state="0" />
@@ -905,8 +895,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="76" column="71" selection-start-line="76" selection-start-column="71" selection-end-line="76" selection-end-column="71" />
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
