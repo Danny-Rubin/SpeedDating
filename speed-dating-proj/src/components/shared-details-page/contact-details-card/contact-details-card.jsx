@@ -45,7 +45,7 @@ const ContactDetailsCard = ({contact, handleClick, handleSocialClick}) => {
             </header>
             <h1 className="bold-text">
                 {contact.profileId}
-                <div className="normal-text">{contact.dateOfBirth}</div>
+                <div className="normal-text">{contact.age}</div>
             </h1>
             <h2 className="normal-text">{contact.location}</h2>
             <div className="contact-details">
