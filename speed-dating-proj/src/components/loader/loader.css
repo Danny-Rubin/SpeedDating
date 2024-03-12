@@ -1,0 +1,13 @@
+.animation-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen {
+    height: 100%;
+}
+
+.loader-main {
+    background-color: #ffd7e6e6;
+}

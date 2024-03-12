@@ -62,7 +62,7 @@ const VideoChatPage = () => {
             }
         };
         const mutualExtendSub = client
-            .graphql({ query: onUpdateMatch, variables })
+            .graphql({ query: onUpdateMatch })
             .subscribe({
                 next: ({ data }) => console.log(data),
                 error: (error) => console.warn(error)

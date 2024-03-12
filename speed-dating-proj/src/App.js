@@ -14,6 +14,7 @@ import LandingPage from "./components/login-page/landing-page/landing-page";
 import ComfortingUserScreen from "./components/video-chat/comforting-user-screen/comforting-user-screen";
 import { Amplify } from 'aws-amplify';
 import config from './amplifyconfiguration.json';
+import Loader from "./components/loader/loader";
 
 Amplify.configure(config);
 
@@ -33,21 +34,22 @@ const theme = createTheme({
 
 const App = () => {
 
-    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         currentAuthenticatedUser();
-    }, [isLoggedIn]);
+    }, []);
 
     const currentAuthenticatedUser = ()=>
     {
         getCurrentUser().then(data=>{
-            console.log('user is logged in');
             setLoggedIn(true);
+            setIsLoading(false);
 
         }).catch(err=>{
-            console.log('no user logged in');
-            setLoggedIn(false)
+            setLoggedIn(false);
+            setIsLoading(false);
         })
     };
 
@@ -57,10 +59,10 @@ const App = () => {
 
   return (
       <ThemeProvider theme={theme}>
-          <Router>
-              <div style={{height:'100%', overflow:'hidden'}}>
+          {!isLoading && <Router>
+              <div style={{height: '100%', overflow: 'hidden'}}>
                   {
-                      isLoggedIn?
+                      isLoggedIn ?
                           (<Routes>
                               <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn}/>}/>
                               <Route path="/user-form" element={<UserForm setIsLoggedIn={setIsLoggedIn}/>}/>
@@ -68,18 +70,21 @@ const App = () => {
                               <Route path="/loading-chat" element={<LoadingVideoChat/>}/>
                               <Route path="/finished-chat" element={<FinishedVideoChat/>}/>
                               <Route path="/video-chat" element={<VideoChatPage/>}/>
-                              <Route path="/shared-details" element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>} />
-                              <Route path="/date-ended" element={<ComfortingUserScreen/>} />
+                              <Route path="/shared-details"
+                                     element={<SharedDetailsPage setIsLoggedIn={setIsLoggedIn}/>}/>
+                              <Route path="/date-ended" element={<ComfortingUserScreen/>}/>
+                              <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/>}/>
                           </Routes>)
                           :
                           (<Routes>
                               <Route path="/" element={<LandingPage/>}/>
                               <Route path="/homepage" element={<LandingPage/>}/>
-                              <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/> }/>
+                              <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn}/>}/>
                           </Routes>)
                   }
-                  </div>
+              </div>
           </Router>
+          }
       </ThemeProvider>
   );
 };

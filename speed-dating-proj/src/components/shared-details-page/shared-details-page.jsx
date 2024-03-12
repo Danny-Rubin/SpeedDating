@@ -5,6 +5,7 @@ import './shared-details-page.css'
 import SendMessage from "./send-whatsapp-button/send-message";
 import {getRequest} from "../../services/amplify-api-service";
 import {fetchAuthSession} from 'aws-amplify/auth';
+import Loader from "../loader/loader";
 
 const matchesApiName = "matches";
 const getContactsPath = "/matches/sharedProfilesList";
@@ -12,10 +13,12 @@ const getContactsPath = "/matches/sharedProfilesList";
 const SharedDetailsPage = ({setIsLoggedIn}) => {
 
     const [contactsData, setContactsData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect (() => {
         currentAuthenticatedUser()
-            .then(()=>console.log('success'));
+            .then(()=>setIsLoading(false));
 
     }, []);
 
@@ -57,34 +60,35 @@ const SharedDetailsPage = ({setIsLoggedIn}) => {
         );
     };
 
+    if (isLoading){
+        return (<Loader/>)
+    }
+    return (<div className="shared-details-page-main main-div">
+                <div className={"header-part"}>
+                    <Header setIsLoggedIn={setIsLoggedIn}/>
+                </div>
+                <div className="shared-details-content">
+                    {
+                        (contactsData && contactsData.length) ?
+                            <div className="shared-details-items">
+                                {showPopup}
+                                {contactsData.map((contact) => (
+                                    <ContactDetailsCard key={contact.profileId} contact={contact}
+                                                        handleClick={()=>handleWhatsappClick(contact.phone)}
+                                                        handleSocialClick={()=>handleSocialClick(contact.social)}
+                                    />
+                                ))}
+                            </div>
+                            :
+                            <div className="no-contacts-txt">
+                                <div>You dont have any contacts</div>
+                                <div>Go dating and find new love interests!</div>
+                            </div>
 
-    return (
-        <div className="shared-details-page-main main-div">
-            <div className={"header-part"}>
-                <Header setIsLoggedIn={setIsLoggedIn}/>
+                    }
+                </div>
+                <SendMessage key={showPopup} show={showPopup} handleClose={togglePopUp} phone={sendToPhone}/>
             </div>
-            <div className="shared-details-content">
-            {
-                (contactsData && contactsData.length) ?
-                    <div className="shared-details-items">
-                        {showPopup}
-                        {contactsData.map((contact) => (
-                            <ContactDetailsCard key={contact.profileId} contact={contact}
-                                                handleClick={()=>handleWhatsappClick(contact.phone)}
-                                                handleSocialClick={()=>handleSocialClick(contact.social)}
-                            />
-                        ))}
-                    </div>
-                    :
-                    <div className="no-contacts-txt">
-                        <div>You dont have any contacts</div>
-                        <div>Go dating and find new love interests!</div>
-                    </div>
-
-            }
-            </div>
-            <SendMessage key={showPopup} show={showPopup} handleClose={togglePopUp} phone={sendToPhone}/>
-        </div>
     );
 };
 

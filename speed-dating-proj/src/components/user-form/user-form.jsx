@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import {getRequest, postRequest} from "../../services/amplify-api-service";
 import { uploadData, getUrl} from 'aws-amplify/storage';
 import person_avatar from "../../assets/person-love.png";
+import Loader from "../loader/loader";
 
 const locationList = ['North', 'Center', 'South'];
 const attractionList = ['Female', 'Male', 'Both'];
@@ -26,6 +27,8 @@ const UserForm = ({setIsLoggedIn}) => {
     const [accessToken, setAccessToken] = useState(undefined);
     const [profileId, setProfileId] = useState(undefined);
     const [profilePicUrl, setProfilePicUrl] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     const [formData, setFormData] = useState({
         location: '',
@@ -70,8 +73,10 @@ const UserForm = ({setIsLoggedIn}) => {
                     setIsNewUser(false);
                     setFormData(userProfile);
                 }
+                setIsLoading(false);
             }).catch(err=>{
                 setIsNewUser(true);
+                setIsLoading(false);
                 console.log(err);
             });
     };
@@ -243,6 +248,10 @@ const UserForm = ({setIsLoggedIn}) => {
                 console.log(`error updating profile at server. Error: ${error}`)
             });
     };
+
+    if(isLoading){
+        return (<Loader/>)
+    }
 
     return (
         <div className="user-form-main main-div">
