@@ -3,21 +3,36 @@ import './finished-video-chat.css'
 import  {useNavigate} from 'react-router-dom'
 import React, {useEffect, useState} from "react";
 import wavy_background from "../../../assets/wavy_background.png";
-import {getRequest, postRequest} from "../../../services/amplify-api-service";
+import {postRequest} from "../../../services/amplify-api-service";
 import {fetchAuthSession} from 'aws-amplify/auth';
+import Snackbar from "@mui/material/Snackbar/Snackbar";
+import Alert from "@mui/material/Alert/Alert";
+import ReportIcon from '@mui/icons-material/Report';
+import {useLocation} from "react-use";
 
 
 const matchesApiName = 'matches';
 const shareDetailsPath = '/matches/shareDetails/';
+const reportPath = 'todo enter when BE is ready';
 
 const FinishedVideoChat = () => {
     const navigate = useNavigate();
     const [accessToken, setAccessToken] = useState(undefined);
     const meetingId = localStorage.getItem('meeting_id');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const location = useLocation();
+
+
 
 
     useEffect(() => {
         currentAuthenticatedUser().then(()=>console.log('success'));
+        const searchParams = new URLSearchParams(location.search);
+        const endedEarlyParam = searchParams.get("endEarly");
+        if (endedEarlyParam != null){
+            setSnackbarOpen(true);
+        }
+
     }, []);
 
     const currentAuthenticatedUser = async ()=>
@@ -47,6 +62,27 @@ const FinishedVideoChat = () => {
     const onDontShareClicked = ()=>{
         navigate('/loading-chat');
     };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+    const handleReport = () => {
+        setSnackbarOpen(false);
+        if (meetingId)
+            postRequest(matchesApiName, `${reportPath}${meetingId}`,{}, accessToken)
+                .then(()=>console.log('Report successful!'))
+                .catch((e)=> console.log(e));
+    };
+
+    const action = (
+        <React.Fragment>
+            <Button color="secondary" size="small" onClick={handleReport}>
+                Report
+            </Button>
+        </React.Fragment>
+    );
+
 
     return (
         <div className="finished-video-chat-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
@@ -78,6 +114,24 @@ const FinishedVideoChat = () => {
                     Remember, love could be just a text away
                 </div>
             </div>
+            <Snackbar
+                anchorOrigin={{vertical:'top', horizontal:'center'}}
+                open={snackbarOpen}
+                onClose={handleCloseSnackbar}
+                autoHideDuration={10000}
+            >
+                <Alert
+                    severity="error"
+                    sx={{ width: '100%' }}
+                    iconMapping={{
+                        error: <ReportIcon fontSize="inherit" />,
+                    }}
+                    action={action}
+                >
+                    Inappropriate behavior?
+                    <br/>Help us maintain a safe space
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

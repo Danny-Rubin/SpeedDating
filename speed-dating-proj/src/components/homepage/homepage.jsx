@@ -64,7 +64,7 @@ class HomePage extends React.Component {
                             style={{borderRadius: 200, backgroundColor:'#fed4e4'}}
                             href="/shared-details">
                             <img src={love_texting} className="shared-details-image"/>
-                            <div className="shared-details-text">Contacts</div>
+                            <div className="shared-details-text">Connections</div>
                         </Button>
                     </div>
                 </div>

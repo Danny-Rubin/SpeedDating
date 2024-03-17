@@ -14,7 +14,6 @@ import {videochat_steps} from '../../tour/tour-steps-provider';
 import Joyride, {STATUS} from 'react-joyride';
 import {fetchAuthSession} from 'aws-amplify/auth';
 import {getRequest, postRequest} from "../../../services/amplify-api-service";
-import {useLocation} from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Alert from "@mui/material/Alert";
@@ -27,9 +26,6 @@ const mutualConsentExtendPath = '/matches/mutualConsentExtendMeeting/';
 const VideoChatPage = () => {
     const navigate = useNavigate();
     const meetingId = localStorage.getItem('meeting_id');
-    const location = useLocation();
-
-
     const initialTimer = 3 * 60; // 3 minutes in seconds
     const [maxTime, setMaxTime] = useState(initialTimer);
     const [timer, setTimer] = useState(initialTimer);
@@ -109,7 +105,7 @@ const VideoChatPage = () => {
     };
 
     const handleNextConversation = () => {
-        navigate('/finished-chat');
+        navigate('/finished-chat?endEarly');
     };
 
     const handleRequestAnother3Minutes = async () => {
@@ -187,7 +183,7 @@ const VideoChatPage = () => {
                 <div className="video-chat-action-btns">
                     <div className="next-conversation-btn">
                         <Button variant="contained" color="secondary" onClick={handleNextConversation}>
-                            Next Date
+                            End Date
                         </Button>
                     </div>
                 </div>
