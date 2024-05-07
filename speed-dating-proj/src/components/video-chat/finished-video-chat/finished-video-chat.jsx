@@ -12,8 +12,9 @@ import {useLocation} from "react-use";
 
 
 const matchesApiName = 'matches';
+const reportApiName = 'report';
 const shareDetailsPath = '/matches/shareDetails/';
-const reportPath = 'todo enter when BE is ready';
+const reportPath = '/report/';
 
 const FinishedVideoChat = () => {
     const navigate = useNavigate();
@@ -70,7 +71,7 @@ const FinishedVideoChat = () => {
     const handleReport = () => {
         setSnackbarOpen(false);
         if (meetingId)
-            postRequest(matchesApiName, `${reportPath}${meetingId}`,{}, accessToken)
+            postRequest(reportApiName, `${reportPath}${meetingId}`,{}, accessToken)
                 .then(()=>console.log('Report successful!'))
                 .catch((e)=> console.log(e));
     };

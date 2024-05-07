@@ -262,11 +262,12 @@ const UserForm = ({setIsLoggedIn}) => {
                 </div>) :
                     (
                         <div className="new-user-text">
-                            <span className="new-user-title">Create Your Profile</span>
+                            <span className="new-user-title">
                             <br/>
                             Here’s where the magic starts!
                             <br/>
-                            The more we know about you, the better we can match you with the people you will be attracted to.
+                                Create Your Profile
+                            </span>
                         </div>
                     )
 
