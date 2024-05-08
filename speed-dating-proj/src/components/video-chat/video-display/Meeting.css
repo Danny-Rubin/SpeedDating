@@ -1,29 +1,134 @@
-.video-chat-container{
-    height: 100%;
+.video-chat-container {
+    /*height: 100%; !* Use viewport height for full screen *!*/
+    /*width: 100%;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    justify-content: center;
+    align-items: center;
+
 }
 
 .participant-view {
-    border-radius: 8px;
-    overflow: hidden;
+    /*position: absolute;*/
+    /*margin: 10px;*/
+    /*border-radius: 8px;*/
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
+    height: 90%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    /*display: flex;*/
+    /*overflow: hidden;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*max-height: 20px; !* Maximum width to prevent overflow *!*/
+    /*max-height:1px;*/
+    /*display: flex;*/
+}
+
+.name-div {
+    /*position: absolute;*/
+    /*margin: 10px;*/
+    /*border-radius: 8px;*/
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
+    height: 10%;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    /*display: flex;*/
+    /*overflow: hidden;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*max-height: 20px; !* Maximum width to prevent overflow *!*/
+    /*max-height:1px;*/
+    /*display: flex;*/
 }
 
 .participants-container {
+
+    height: 80%;
+    width: 100%;
+    /*padding-top: 10px;*/
+    /*height: 80%;*/
+    /*width:100%;*/
+    /*position: relative;*/
+    /*display: flex;*/
+    /*flex-direction: row-reverse;*/
+    align-items: center;
+    /*justify-content: space-between;*/
+    text-align: center;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*flex-wrap: nowrap;*/
+}
+
+.controls-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     text-align: center;
 
-    height: 100%;
+    height: 20%;
     width:100%;
+    padding: 10px 20px;
+}
+
+.other-participant-container {
+    height: 100%;
+    width: 100%;
+    /*position: absolute;*/
+    /*max-height: 100%;*/
+    /*max-width: 100%;*/
+    /*align-items: center;*/
+    /*justify-content: space-between;*/
+    /*text-align: center;*/
+
+}
+
+.local-participant-container {
+    top: -25%;
+    /*height: 20%;*/
+    /*width: 100%;*/
+    /*text-align: center;*/
+    height: 25%;
+    width: 25%;
+    /*bottom: 0;*/
+    /*max-height: 100%;*/
+    /*max-width: 100%;*/
+    position: relative;
+    z-index: 3;
+    /*position: absolute;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    align-items: center;
+    /*justify-content: space-between;*/
+    /*display: inline-block;*/
+
+
+    /*padding:  10px 20px;*/
+}
+
+.name-div h3 {
+    /*position: absolute;*/
+    /*bottom: 10px;*/
+    /*left: 10px;*/
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
 }
 
 .meeting-view {
-    padding: 20px;
     height: 100%;
-    width:100%;
-    display:flex;
+    width: 100%;
+    display: flex;
     align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+
 }
 
 .meeting-container {
@@ -31,7 +136,8 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    width:100%;
+    width: 100%;
+    padding: 10px 20px;
 }
 
 button {
@@ -47,6 +153,7 @@ button {
 button:hover {
     background-color: #fed4e4;
 }
+
 h2 {
     color: #fed4e4;
 }

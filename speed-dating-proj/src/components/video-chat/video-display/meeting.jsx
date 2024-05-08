@@ -13,7 +13,6 @@ function ParticipantView(props) {
     const micRef = useRef(null);
     const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =
         useParticipant(props.participantId);
-    let style = {maxWidth: '260px', maxHeight: '360px', width: 'auto', height: 'auto'};
     const videoStream = useMemo(() => {
         if (webcamOn && webcamStream) {
             const mediaStream = new MediaStream();
@@ -42,26 +41,33 @@ function ParticipantView(props) {
 
 
     return (
-        <div className="participant-view">
-            <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
-            {webcamOn && (
-                <ReactPlayer
-                    style={{maxWidth: '250px', maxHeight: '360px', width: 'auto', height: 'auto'}}
-                    playsinline
-                    pip={false}
-                    light={false}
-                    controls={false}
-                    muted={true}
-                    playing={true}
-                    url={videoStream}
-                    onError={(err) => {
-                        console.log(err, "participant video error");
-                    }}
-                />
+        <>
+            <div className="name-div">
+                <h3>{displayName}</h3>
+            </div>
+            <div className="participant-view">
+                <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
+                {webcamOn && (
+                    <ReactPlayer
+                        style={{}}
+                        playsinline
+                        pip={false}
+                        light={false}
+                        controls={false}
+                        height={"100%"}
+                        width={"100%"}
+                        muted={true}
+                        playing={true}
+                        url={videoStream}
+                        onError={(err) => {
+                            console.log(err, "participant video error");
+                        }}
+                    />
 
-            )}
-            <h2 style={{marginTop: '35px'}}>{displayName}</h2>
-        </div>
+                )}
+
+            </div>
+        </>
     );
 }
 
@@ -97,15 +103,17 @@ function MySmallView(props) {
 
 
     return (
-        <div className="participant-view" style={{position: 'fixed', top: '41%'}}>
+        <div className="participant-view">
             <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
             {webcamOn && (
                 <ReactPlayer
-                    style={{maxWidth: '100px', maxHeight: '200px', width: 'auto', height: 'auto'}}
+                    style={{}}
                     playsinline
                     pip={false}
                     light={false}
                     controls={false}
+                    height={"100%"}
+                    width={"100%"}
                     muted={true}
                     playing={true}
                     url={videoStream}
@@ -113,7 +121,9 @@ function MySmallView(props) {
                         console.log(err, "participant video error");
                     }}
                 />
+
             )}
+
         </div>
     );
 }
@@ -155,8 +165,8 @@ function MeetingView(props) {
         };
     }, []);
 
-    useEffect(()=>{
-        if(participants.size === 2){
+    useEffect(() => {
+        if (participants.size === 2) {
             props.startTimer();
         }
     }, [participants.size]);
@@ -180,10 +190,10 @@ function MeetingView(props) {
     return (
         <div className="meeting-view">
             {joined && joined === "JOINED" ? (
-                <div style={{height: '100%'}}>
+                <>
                     <div className="participants-container">
                         {participants.size === 1 ? (
-                            <div style={{height: '100%'}}>
+                            <div className="other-participant-container">
                                 {[...participants.keys()].map((participantId) => (
                                     <ParticipantView
                                         participantId={participantId}
@@ -192,25 +202,35 @@ function MeetingView(props) {
                                 ))}
                             </div>
                         ) : participants.size === 2 ? (
-                            <div style={{height: '100%'}}>
+                            <>
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
-                                    <div style={{display: 'inline-block'}} key={participantId}>
-                                        <ParticipantView
-                                            participantId={participantId}
-                                        />
-                                        <MySmallView
-                                            participantId={localParticipant.id}
-                                        />
-                                    </div>
+                                    <>
+                                        <div className="other-participant-container">
+                                            <ParticipantView
+                                                participantId={participantId}
+                                            />
+                                            <div className="local-participant-container">
+                                                <MySmallView
+                                                    participantId={localParticipant.id}
+                                                />
+                                            </div>
+                                        </div>
+
+
+
+                                    </>
                                 ))}
-                            </div>
+                            </>
                         ) : (
-                            <div/>
+                            <>
+                            </>
                         )}
 
+                    </div>
+                    <div className="controls-container">
                         <Controls/>
                     </div>
-                </div>
+                </>
             ) : joined && joined === "JOINING" ? (
                 <h2>Joining the meeting...</h2>
             ) : (
@@ -246,7 +266,7 @@ function Meeting({username, startTimer}) {
             {!token || !sessionId ? (
                 <div></div>
             ) : (
-                <div style={{height: '100%'}}>
+                <div style={{height: '100%', width: '100%'}}>
                     <MeetingProvider
                         config={{
                             meetingId: sessionId,
