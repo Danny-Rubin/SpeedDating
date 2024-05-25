@@ -164,7 +164,7 @@ const UserForm = ({setIsLoggedIn}) => {
             return true;
         }
 
-        const israeliPhonePattern = /^(972)[5][0-9]{8}$/;
+        const israeliPhonePattern = /^0[0-9]{9}$/;
 
         return israeliPhonePattern.test(phoneNumber);
     }
