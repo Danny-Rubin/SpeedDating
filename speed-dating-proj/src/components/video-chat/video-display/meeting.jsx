@@ -8,6 +8,7 @@ import ReactPlayer from "react-player";
 import {useLocation} from "react-router-dom";
 import "./Meeting.css"; // Import CSS file for styling
 import {CiVideoOff, CiVideoOn, CiMicrophoneOn, CiMicrophoneOff} from "react-icons/ci";
+import Snackbar from "@mui/material/Snackbar/Snackbar";
 
 function ParticipantView(props) {
     const micRef = useRef(null);
@@ -132,6 +133,7 @@ function MeetingView(props) {
     const [joined, setJoined] = useState(null);
     const [webCamOnState, setWebCamOnState] = useState(true);
     const [micOnState, setMicOnState] = useState(true);
+    const [aloneSnackbarOpen, setAloneSnackbarOpen] = useState(false);
     //Get the method which will be used to join the meeting.
     //We will also get the participants list to display all participants
     const {toggleMic, toggleWebcam, leave} = useMeeting();
@@ -159,7 +161,7 @@ function MeetingView(props) {
     }
 
     function leftAlone(){
-        alert("Seems your been left alone :(")
+        setAloneSnackbarOpen(true);
     }
 
 
@@ -171,19 +173,23 @@ function MeetingView(props) {
     }, []);
 
     useEffect(() => {
-        let timer
+        let timer;
         if (participants.size === 2) {
             props.startTimer();
         }
         if (participants.size === 1){
-            console.log("here")
             timer = setTimeout(() => {
                 leftAlone();
-            }, 25000); // 15000 milliseconds = 15 seconds
+            }, 17000); // 17000 milliseconds = 17 seconds
 
         }
         return () => clearTimeout(timer);
     }, [participants.size]);
+
+    const handleCloseAloneSnackbar = () => {
+        setAloneSnackbarOpen(false);
+    };
+
 
     function Controls() {
 
@@ -197,7 +203,16 @@ function MeetingView(props) {
                 <button onClick={() => toggleWebCamWrapper(!webCamOnState)}>
                     {webCamOnState ? <CiVideoOn color={"#ffffff"}/> : <CiVideoOff color={"#ffffff"}/>}
                 </button>
+                <Snackbar
+                    anchorOrigin={{vertical:'top', horizontal:'center'}}
+                    open={aloneSnackbarOpen}
+                    onClose={handleCloseAloneSnackbar}
+                    autoHideDuration={2000}
+                    message="Looks like you're alone, feel free to go to the next date."
+                >
+                </Snackbar>
             </div>
+
         );
     }
 
