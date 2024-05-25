@@ -60,8 +60,9 @@ const SendMessage = ({handleClose, show, phone}) => {
             setMessageEmptyError(true);
             setTimeout(() => setMessageEmptyError(false), 3000);
         } else {
-            // Regex expression to remove all characters which are NOT alphanumeric
-            let number = mobileNumber.replace(/[^\w\s]/gi, "").replace(/ /g, "");
+            // Regex expression to remove all characters which are NOT alphanumeric,
+            // then convert to israeli format with country code
+            let number = '972' + mobileNumber.replace(/[^\w\s]/gi, "").replace(/ /g, "").substring(1);
 
             // Appending the phone number to the URL
             let url = `https://wa.me/${number}`;
