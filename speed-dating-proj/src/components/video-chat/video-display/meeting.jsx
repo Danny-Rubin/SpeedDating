@@ -158,6 +158,11 @@ function MeetingView(props) {
         toggleMic();
     }
 
+    function leftAlone(){
+        alert("Seems your been left alone :(")
+    }
+
+
     useEffect(() => {
         return () => {
             // This function will be called when the component unmounts (i.e., when navigating away)
@@ -166,9 +171,18 @@ function MeetingView(props) {
     }, []);
 
     useEffect(() => {
+        let timer
         if (participants.size === 2) {
             props.startTimer();
         }
+        if (participants.size === 1){
+            console.log("here")
+            timer = setTimeout(() => {
+                leftAlone();
+            }, 25000); // 15000 milliseconds = 15 seconds
+
+        }
+        return () => clearTimeout(timer);
     }, [participants.size]);
 
     function Controls() {
