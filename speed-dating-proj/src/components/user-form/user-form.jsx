@@ -181,7 +181,7 @@ const UserForm = ({setIsLoggedIn}) => {
 
         // phone validation
         if (!validatePhoneNumber(phone)){
-            set_error(name, "Illegal phone number, make sure you included your country code");
+            set_error(name, "Illegal phone number");
             return;
         }
 
