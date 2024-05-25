@@ -401,7 +401,7 @@ const UserForm = ({setIsLoggedIn}) => {
                                 onChange={handlePhoneChange}
                                 type="tel"
                                 pattern="[0-9]{10}"
-                                placeholder="972528899988"
+                                placeholder="0524489246"
                             />
 
                         </div>
