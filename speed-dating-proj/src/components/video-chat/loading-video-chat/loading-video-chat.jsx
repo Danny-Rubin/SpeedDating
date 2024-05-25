@@ -64,6 +64,43 @@ const LoadingVideoChat = () => {
     const [matched, setMatched] = useState(false);
 
     useEffect(() => {
+        return () => {
+            // This function will be called when the component unmounts (i.e., when navigating away)
+            if (!matched){
+                stopMatchSearching();
+            }
+
+        };
+    }, []);
+    async function stopMatchSearching() {
+        console.log('ask server to stop match searching');
+        const localStorageItems = Object.keys(localStorage);
+        console.log(localStorageItems.filter(key => key.endsWith('accessToken')))
+        try {
+            const restOperation = post({
+                apiName: 'profiles',
+                path: '/profiles/stopMatchSearching',
+                options:
+                    {
+                        headers:
+                            {
+                                'Content-Type': 'application/json',
+                                'authorization': "Bearer " + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])
+                            }
+                    }
+            });
+            const {body} = await restOperation.response;
+            console.log(body.json())
+        } catch (error) {
+            console.log('GET call failed: ', error);
+        }
+    }
+
+    function backToHomePage(){
+        navigate('/')
+    }
+
+    useEffect(() => {
 
         findMatch()
             .then(response => {
@@ -108,7 +145,7 @@ const LoadingVideoChat = () => {
                     <img className="loader" src={loading_gif} alt="Looking for a match..."/>
                 </div>
                 <div className="loading-video-cancel">
-                    <Button href="./homepage" className="cancel-loading-btn"
+                    <Button onClick={backToHomePage} className="cancel-loading-btn"
                             style={{backgroundColor: '#fa3ac56b'}}>Cancel</Button>
                 </div>
             </div>
