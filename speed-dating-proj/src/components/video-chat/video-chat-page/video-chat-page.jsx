@@ -158,15 +158,15 @@ const VideoChatPage = () => {
                             style={{position: 'absolute', top:'20px', left:'9%', width:'20px', height: '20px', backgroundColor:'#ffb8d3'}}>
                     <Close fontSize="inherit"/>
                 </IconButton>
+                <IconButton aria-label="Start Tour" onClick={handleTourStart} className="info-button" size="small" color="secondary"
+                            style={{position: 'absolute', top:'20px', right:'9%', width:'22px', height: '22px'}}>
+                    <Info>Start Tour</Info>
+                </IconButton>
                 <div className="video-chat-container">
                     <Meeting username={username} startTimer={()=>setTimerStarted(true)} />
                 </div>
             </div>
             <div className="video-chat-actions-card mycard">
-                <IconButton className="info-button" color="secondary" onClick={handleTourStart}
-                            style={{position:'absolute', bottom:'2.5em', left:'7%'}}>
-                    <Info>Start Tour</Info>
-                </IconButton>
                 <div className="video-chat-timer">
                     <Box display='flex' justifyContent='center' alignItems='center'>
                         <CircularProgress variant="determinate" value={normalise(timer)} />
