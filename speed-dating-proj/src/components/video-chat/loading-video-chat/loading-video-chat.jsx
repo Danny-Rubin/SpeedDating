@@ -121,7 +121,7 @@ const LoadingVideoChat = () => {
                     .then(response => {
                         console.log(response);
                         if (response["hasMatch"]) {
-                            navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
+                            navigate('/video-chat?token=' + response["token"] + `&match=${response["otherUser"]}`+"&session_id=" + localStorage.getItem('meeting_id'));
                         }
                     })
             }

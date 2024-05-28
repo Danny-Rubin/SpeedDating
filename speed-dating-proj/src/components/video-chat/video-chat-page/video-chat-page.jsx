@@ -108,8 +108,8 @@ const VideoChatPage = () => {
         navigate('/finished-chat?endEarly');
     };
 
-    const handleRequestAnother3Minutes = async () => {
-        console.log('Requesting another 3 minutes from server.. ');
+    const handleRequestAnother2Minutes = async () => {
+        console.log('Requesting another 2 minutes from server.. ');
         try{
             await postRequest(matchesApiName, `${extendMeetingPath}${meetingId}`,{} ,accessToken);
             setDidExtendTime(true);
@@ -124,7 +124,7 @@ const VideoChatPage = () => {
         getRequest(matchesApiName, `${mutualConsentExtendPath}${meetingId}`, accessToken)
             .then((response)=> {
                 if (response['mutualConsent']){
-                    handleAddAnother3Mintes();
+                    handleAddAnother2Minutes();
                     setSnackbarOpen(true);
                 }
                 else {
@@ -138,10 +138,10 @@ const VideoChatPage = () => {
         setSnackbarOpen(false);
     };
 
-    const handleAddAnother3Mintes = ()=>{
-        const newTime = timer + 3*60;
+    const handleAddAnother2Minutes = ()=>{
+        const newTime = timer + 2*60;
         setMaxTime(newTime);
-        setTimer(newTime); // adds 3 more minutes
+        setTimer(newTime); // adds 2 more minutes
         setTimeExtended(true);
     };
 
@@ -174,8 +174,8 @@ const VideoChatPage = () => {
                     </Box>
                     <div className="add-time-btn">
                         <Fab variant="contained" color="secondary" style={{width: '40px', height: '40px'}}
-                             disabled={didExtendTime} onClick={handleRequestAnother3Minutes}>
-                            +3
+                             disabled={didExtendTime} onClick={handleRequestAnother2Minutes}>
+                            +2
                         </Fab>
                     </div>
                 </div>
@@ -204,7 +204,7 @@ const VideoChatPage = () => {
                 anchorOrigin={{vertical:'top', horizontal:'center'}}
                 open={snackbarOpen}
                 onClose={handleCloseSnackbar}
-                autoHideDuration={2000}
+                autoHideDuration={4000}
             >
                 <Alert
                     severity="error"
@@ -213,7 +213,7 @@ const VideoChatPage = () => {
                         error: <FavoriteBorderIcon fontSize="inherit" />,
                     }}
                 >
-                    Date extended by 3 minutes!
+                    Date extended by 2 minutes!
                 </Alert>
             </Snackbar>
         </div>

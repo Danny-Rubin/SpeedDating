@@ -288,7 +288,7 @@ const UserForm = ({setIsLoggedIn}) => {
                         <div className="profile-pic-field">
                             <InputLabel className="profile-pic-title">Profile Picture</InputLabel>
                             <div className="profile-pic-buttons">
-                            <FormControl>
+                            <FormControl required>
                                 <input
                                     id="image-upload"
                                     type="file"

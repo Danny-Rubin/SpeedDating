@@ -43,9 +43,6 @@ function ParticipantView(props) {
 
     return (
         <>
-            <div className="name-div">
-                <h3>{displayName}</h3>
-            </div>
             <div className="participant-view">
                 <audio ref={micRef} autoPlay playsInline muted={isLocal}/>
                 {webcamOn && (
@@ -207,7 +204,7 @@ function MeetingView(props) {
                     anchorOrigin={{vertical:'top', horizontal:'center'}}
                     open={aloneSnackbarOpen}
                     onClose={handleCloseAloneSnackbar}
-                    autoHideDuration={2000}
+                    autoHideDuration={8000}
                     message="Looks like you're alone, feel free to go to the next date."
                 >
                 </Snackbar>
@@ -235,6 +232,7 @@ function MeetingView(props) {
                                 {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (
                                     <>
                                         <div className="other-participant-container">
+                                            <div style={{color:'white'}}>{props.matchName}</div>
                                             <ParticipantView
                                                 participantId={participantId}
                                             />
@@ -272,21 +270,23 @@ function MeetingView(props) {
 function Meeting({username, startTimer}) {
     const [token, setToken] = useState(null);
     const [sessionId, setSessionId] = useState(null);
+    const [matchName, setMatchName] = useState(null);
     const location = useLocation();
 
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const tokenParam = searchParams.get("token");
+        const matchNameParam = searchParams.get("match");
         const sessionIdParam = searchParams.get("session_id");
-        console.log(tokenParam);
-        console.log(sessionIdParam);
         if (tokenParam) {
             setToken(tokenParam);
         }
-
         if (sessionIdParam) {
             setSessionId(sessionIdParam);
+        }
+        if(matchNameParam){
+            setMatchName(matchNameParam);
         }
     }, [location]);
 
@@ -304,8 +304,9 @@ function Meeting({username, startTimer}) {
                             name: username,
                         }}
                         token={token}
+
                     >
-                        {<MeetingView startTimer={startTimer}/>}
+                        {<MeetingView startTimer={startTimer} matchName={matchName}/>}
                     </MeetingProvider>
                 </div>
             )}
