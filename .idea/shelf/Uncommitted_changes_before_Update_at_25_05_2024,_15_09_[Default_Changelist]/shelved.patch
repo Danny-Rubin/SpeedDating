@@ -1,0 +1,668 @@
+Index: speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, {useEffect, useState} from 'react';\nimport {useNavigate} from 'react-router-dom'\nimport Button from \"@mui/material/Button\";\nimport loading_gif from '../../../assets/heart-loader.gif'\nimport './loading-video-chat.css'\nimport {post, get} from 'aws-amplify/api';\nimport wavy_background from \"../../../assets/wavy_background.png\";\n\nasync function findMatch() {\n    console.log('ask server to find match');\n    const localStorageItems = Object.keys(localStorage);\n    console.log(localStorageItems.filter(key => key.endsWith('accessToken')))\n    try {\n        const restOperation = post({\n            apiName: 'matches',\n            path: '/matches/find',\n            options:\n                {\n                    headers:\n                        {\n                            'Content-Type': 'application/json',\n                            'authorization': \"Bearer \" + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])\n                        }\n                }\n        });\n        const {body} = await restOperation.response;\n        return body.json();\n\n    } catch (error) {\n        console.log('GET call failed: ', error);\n    }\n}\n\nasync function getToken() {\n    console.log('get token from server');\n    const localStorageItems = Object.keys(localStorage);\n    if (!localStorage.getItem('meeting_id'))\n        return null;\n\n    try {\n        const restOperation = get({\n            apiName: 'matches',\n            path: '/matches/getToken/' + localStorage.getItem('meeting_id'),\n            options:\n                {\n                    headers:\n                        {\n                            'Content-Type': 'application/json',\n                            'authorization': \"Bearer \" + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])\n                        }\n                }\n        });\n        const {body} = await restOperation.response;\n        return body.json();\n\n    } catch (error) {\n        console.log('GET call failed: ', error);\n    }\n}\n\nconst LoadingVideoChat = () => {\n    const navigate = useNavigate();\n    const [gotInQ, setGotInQ] = useState(false);\n    const [matched, setMatched] = useState(false);\n\n    useEffect(() => {\n\n        findMatch()\n            .then(response => {\n                console.log(response);\n                localStorage.setItem(\"meeting_id\", response[\"meetingId\"]);\n                setMatched(response[\"hasMatch\"])\n                setGotInQ(true);\n            })\n\n    }, []); // The empty dependency array means the effect runs once when the component mounts\n\n    useEffect(() => {\n        const interval = setInterval(() => {\n\n            if (gotInQ) {\n                console.log(\"meeting id exists start fetching for token\");\n                getToken()\n                    .then(response => {\n                        console.log(response);\n                        if (response[\"hasMatch\"]) {\n                            navigate('/video-chat?token=' + response[\"token\"] + \"&session_id=\" + localStorage.getItem('meeting_id'));\n                        }\n                    })\n            }\n\n        }, 5000); // 5000 milliseconds = 5 seconds\n\n\n        // Clean up the interval on unmount to avoid memory leaks\n        return () => clearInterval(interval);\n    }, [navigate, gotInQ]); // Empty dependency array to run the effect only once on mount\n\n    return (\n        <div className=\"loading-video-chat-main main-div\" style={{backgroundImage: `url(${wavy_background})`}}>\n            <div className=\"loading-video-chat-card mycard\">\n                <div>\n                    <h2 className=\"loading-video-title\">\n                        {(!matched && !gotInQ) ? \"Getting things ready...\"  : (gotInQ && !matched) ? \"Looking for a match...\" : \"Match Found! Loading...\"}\n                    </h2>\n                </div>\n                <div className=\"loading-video-loader\">\n                    <img className=\"loader\" src={loading_gif} alt=\"Looking for a match...\"/>\n                </div>\n                <div className=\"loading-video-cancel\">\n                    <Button href=\"./homepage\" className=\"cancel-loading-btn\"\n                            style={{backgroundColor: '#fa3ac56b'}}>Cancel</Button>\n                </div>\n            </div>\n        </div>\n    );\n};\n\nexport default LoadingVideoChat;
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx b/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx
+--- a/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx	(date 1715106933886)
+@@ -1,119 +1,90 @@
+-import React, {useEffect, useState} from 'react';
+-import {useNavigate} from 'react-router-dom'
++import React, { useEffect, useState } from 'react';
++import { useNavigate } from 'react-router-dom';
+ import Button from "@mui/material/Button";
+-import loading_gif from '../../../assets/heart-loader.gif'
+-import './loading-video-chat.css'
+-import {post, get} from 'aws-amplify/api';
++import loading_gif from '../../../assets/heart-loader.gif';
++import './loading-video-chat.css';
++import { post, get } from 'aws-amplify/api';
+ import wavy_background from "../../../assets/wavy_background.png";
++import { postRequest } from "../../../services/amplify-api-service";
++import { fetchAuthSession } from "aws-amplify/auth";
++
++const profilesApiName = 'profiles';
++const cancelPath = '/profiles/endMeeting/';
+ 
+-async function findMatch() {
+-    console.log('ask server to find match');
+-    const localStorageItems = Object.keys(localStorage);
+-    console.log(localStorageItems.filter(key => key.endsWith('accessToken')))
+-    try {
+-        const restOperation = post({
+-            apiName: 'matches',
+-            path: '/matches/find',
+-            options:
+-                {
+-                    headers:
+-                        {
++const LoadingVideoChat = () => {
++    const navigate = useNavigate();
++    const [gotInQ, setGotInQ] = useState(false);
++    const [matched, setMatched] = useState(false);
++
++    useEffect(() => {
++        const fetchData = async () => {
++            const session = await fetchAuthSession({ forceRefresh: true });
++            const accessToken = session.tokens.accessToken.toString();
++
++            try {
++                const restOperation = post({
++                    apiName: 'matches',
++                    path: '/matches/find',
++                    options: {
++                        headers: {
+                             'Content-Type': 'application/json',
+-                            'authorization': "Bearer " + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])
++                            'authorization': "Bearer " + localStorage.getItem(Object.keys(localStorage).filter(key => key.endsWith('accessToken'))[0])
+                         }
+-                }
+-        });
+-        const {body} = await restOperation.response;
+-        return body.json();
+-
+-    } catch (error) {
+-        console.log('GET call failed: ', error);
+-    }
+-}
++                    }
++                });
++                const { body } = await restOperation.response;
++                const response = await body.json();
++                console.log(response);
++                localStorage.setItem("meeting_id", response["meetingId"]);
++                setMatched(response["hasMatch"]);
++                setGotInQ(true);
++            } catch (error) {
++                console.log('GET call failed: ', error);
++            }
++        };
+ 
+-async function getToken() {
+-    console.log('get token from server');
+-    const localStorageItems = Object.keys(localStorage);
+-    if (!localStorage.getItem('meeting_id'))
+-        return null;
++        fetchData();
++    }, []); // The empty dependency array means the effect runs once when the component mounts
+ 
+-    try {
+-        const restOperation = get({
+-            apiName: 'matches',
+-            path: '/matches/getToken/' + localStorage.getItem('meeting_id'),
+-            options:
+-                {
+-                    headers:
+-                        {
+-                            'Content-Type': 'application/json',
+-                            'authorization': "Bearer " + localStorage.getItem(localStorageItems.filter(key => key.endsWith('accessToken'))[0])
+-                        }
+-                }
+-        });
+-        const {body} = await restOperation.response;
+-        return body.json();
+-
+-    } catch (error) {
+-        console.log('GET call failed: ', error);
+-    }
+-}
+-
+-const LoadingVideoChat = () => {
+-    const navigate = useNavigate();
+-    const [gotInQ, setGotInQ] = useState(false);
+-    const [matched, setMatched] = useState(false);
+-
+-    useEffect(() => {
+-
+-        findMatch()
+-            .then(response => {
+-                console.log(response);
+-                localStorage.setItem("meeting_id", response["meetingId"]);
+-                setMatched(response["hasMatch"])
+-                setGotInQ(true);
+-            })
+-
+-    }, []); // The empty dependency array means the effect runs once when the component mounts
+-
+-    useEffect(() => {
+-        const interval = setInterval(() => {
+-
+-            if (gotInQ) {
+-                console.log("meeting id exists start fetching for token");
+-                getToken()
+-                    .then(response => {
+-                        console.log(response);
+-                        if (response["hasMatch"]) {
+-                            navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
+-                        }
+-                    })
++    useEffect(() => {
++        const interval = setInterval(async () => {
++            if (gotInQ) {
++                console.log("meeting id exists start fetching for token");
++                try {
++                    const restOperation = get({
++                        apiName: 'matches',
++                        path: '/matches/getToken/' + localStorage.getItem('meeting_id'),
++                        options: {
++                            headers: {
++                                'Content-Type': 'application/json',
++                                'authorization': "Bearer " + localStorage.getItem(Object.keys(localStorage).filter(key => key.endsWith('accessToken'))[0])
++                            }
++                        }
++                    });
++                    const { body } = await restOperation.response;
++                    const response = await body.json();
++                    if (response["hasMatch"]) {
++                        navigate('/video-chat?token=' + response["token"] + "&session_id=" + localStorage.getItem('meeting_id'));
++                    }
++                } catch (error) {
++                    console.log('GET call failed: ', error);
++                }
+             }
+-
+         }, 5000); // 5000 milliseconds = 5 seconds
+ 
+-
+         // Clean up the interval on unmount to avoid memory leaks
+         return () => clearInterval(interval);
+     }, [navigate, gotInQ]); // Empty dependency array to run the effect only once on mount
+ 
+     return (
+-        <div className="loading-video-chat-main main-div" style={{backgroundImage: `url(${wavy_background})`}}>
++        <div className="loading-video-chat-main main-div" style={{ backgroundImage: `url(${wavy_background})` }}>
+             <div className="loading-video-chat-card mycard">
+                 <div>
+-                    <h2 className="loading-video-title">
+-                        {(!matched && !gotInQ) ? "Getting things ready..."  : (gotInQ && !matched) ? "Looking for a match..." : "Match Found! Loading..."}
+-                    </h2>
+-                </div>
+-                <div className="loading-video-loader">
+-                    <img className="loader" src={loading_gif} alt="Looking for a match..."/>
+-                </div>
+-                <div className="loading-video-cancel">
+-                    <Button href="./homepage" className="cancel-loading-btn"
+-                            style={{backgroundColor: '#fa3ac56b'}}>Cancel</Button>
++                    {/* Your component content */}
+                 </div>
+             </div>
+         </div>
+     );
+ };
+ 
+-export default LoadingVideoChat;
+\ No newline at end of file
++export default LoadingVideoChat;
+Index: speed-dating-proj/src/amplifyconfiguration.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"aws_project_region\": \"us-east-1\",\n  \"aws_cloud_logic_custom\": [\n    {\n      \"name\": \"apiTest\",\n      \"endpoint\": \"https://mg1weliael.execute-api.us-east-1.amazonaws.com/staging\",\n      \"region\": \"us-east-1\"\n    },\n    {\n      \"name\": \"findMatch\",\n      \"endpoint\": \"https://xab92hx6ih.execute-api.us-east-1.amazonaws.com/staging\",\n      \"region\": \"us-east-1\"\n    },\n    {\n      \"name\": \"matches\",\n      \"endpoint\": \"https://cypy05205k.execute-api.us-east-1.amazonaws.com/staging\",\n      \"region\": \"us-east-1\"\n    },\n    {\n      \"name\": \"profiles\",\n      \"endpoint\": \"https://gods6hmd3e.execute-api.us-east-1.amazonaws.com/staging/\",\n      \"region\": \"us-east-1\"\n    }\n  ],\n  \"aws_appsync_graphqlEndpoint\": \"https://ixl3exlfxjau7bqeug63i6isgq.appsync-api.us-east-1.amazonaws.com/graphql\",\n  \"aws_appsync_region\": \"us-east-1\",\n  \"aws_appsync_authenticationType\": \"API_KEY\",\n  \"aws_appsync_apiKey\": \"da2-qiuz45qaxjcsjj4l627fgxlbsy\",\n  \"aws_cognito_identity_pool_id\": \"us-east-1:7ea22cf9-a333-4048-85ac-2da3e12f8187\",\n  \"aws_cognito_region\": \"us-east-1\",\n  \"aws_user_pools_id\": \"us-east-1_xyuVI0Fio\",\n  \"aws_user_pools_web_client_id\": \"49ffngd052rn6daigj48g772vn\",\n  \"oauth\": {\n    \"domain\": \"speeddatingspeeddati9e812afc-9e812afc-staging.auth.us-east-1.amazoncognito.com\",\n    \"scope\": [\n      \"phone\",\n      \"email\",\n      \"openid\",\n      \"profile\",\n      \"aws.cognito.signin.user.admin\"\n    ],\n    \"redirectSignIn\": \"http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/\",\n    \"redirectSignOut\": \"http://localhost:3000/,https://main.deuksgbh6tmkx.amplifyapp.com/\",\n    \"responseType\": \"code\"\n  },\n  \"federationTarget\": \"COGNITO_USER_POOLS\",\n  \"aws_cognito_username_attributes\": [],\n  \"aws_cognito_social_providers\": [\n  ],\n  \"aws_cognito_signup_attributes\": [\n    \"EMAIL\"\n  ],\n  \"aws_cognito_mfa_configuration\": \"OFF\",\n  \"aws_cognito_mfa_types\": [\n    \"SMS\"\n  ],\n  \"aws_cognito_password_protection_settings\": {\n    \"passwordPolicyMinLength\": 8,\n    \"passwordPolicyCharacters\": []\n  },\n  \"aws_cognito_verification_mechanisms\": [\n    \"EMAIL\"\n  ],\n  \"aws_dynamodb_all_tables_region\": \"us-east-1\",\n  \"aws_dynamodb_table_schemas\": [\n    {\n      \"tableName\": \"profiles-staging\",\n      \"region\": \"us-east-1\"\n    },\n    {\n      \"tableName\": \"matches-staging\",\n      \"region\": \"us-east-1\"\n    }\n  ],\n  \"aws_user_files_s3_bucket\": \"profilepicsspeeddating205648-staging\",\n  \"aws_user_files_s3_bucket_region\": \"us-east-1\"\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/speed-dating-proj/src/amplifyconfiguration.json b/speed-dating-proj/src/amplifyconfiguration.json
+--- a/speed-dating-proj/src/amplifyconfiguration.json	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/speed-dating-proj/src/amplifyconfiguration.json	(date 1715103146794)
+@@ -2,23 +2,18 @@
+   "aws_project_region": "us-east-1",
+   "aws_cloud_logic_custom": [
+     {
+-      "name": "apiTest",
+-      "endpoint": "https://mg1weliael.execute-api.us-east-1.amazonaws.com/staging",
+-      "region": "us-east-1"
+-    },
+-    {
+-      "name": "findMatch",
+-      "endpoint": "https://xab92hx6ih.execute-api.us-east-1.amazonaws.com/staging",
+-      "region": "us-east-1"
+-    },
+-    {
+       "name": "matches",
+       "endpoint": "https://cypy05205k.execute-api.us-east-1.amazonaws.com/staging",
+       "region": "us-east-1"
+     },
+     {
+       "name": "profiles",
+-      "endpoint": "https://gods6hmd3e.execute-api.us-east-1.amazonaws.com/staging/",
++      "endpoint": "https://gods6hmd3e.execute-api.us-east-1.amazonaws.com/staging",
++      "region": "us-east-1"
++    },
++    {
++      "name": "report",
++      "endpoint": "https://dbi4ue5f0b.execute-api.us-east-1.amazonaws.com/staging",
+       "region": "us-east-1"
+     }
+   ],
+@@ -46,6 +41,7 @@
+   "federationTarget": "COGNITO_USER_POOLS",
+   "aws_cognito_username_attributes": [],
+   "aws_cognito_social_providers": [
++    "FACEBOOK"
+   ],
+   "aws_cognito_signup_attributes": [
+     "EMAIL"
+@@ -64,11 +60,15 @@
+   "aws_dynamodb_all_tables_region": "us-east-1",
+   "aws_dynamodb_table_schemas": [
+     {
++      "tableName": "matches-staging",
++      "region": "us-east-1"
++    },
++    {
+       "tableName": "profiles-staging",
+       "region": "us-east-1"
+     },
+     {
+-      "tableName": "matches-staging",
++      "tableName": "sharedDetails-staging",
+       "region": "us-east-1"
+     }
+   ],
+Index: speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import Button from \"@mui/material/Button\";\nimport './finished-video-chat.css'\nimport  {useNavigate} from 'react-router-dom'\nimport React, {useEffect, useState} from \"react\";\nimport wavy_background from \"../../../assets/wavy_background.png\";\nimport {postRequest} from \"../../../services/amplify-api-service\";\nimport {fetchAuthSession} from 'aws-amplify/auth';\nimport Snackbar from \"@mui/material/Snackbar/Snackbar\";\nimport Alert from \"@mui/material/Alert/Alert\";\nimport ReportIcon from '@mui/icons-material/Report';\nimport {useLocation} from \"react-use\";\n\n\nconst matchesApiName = 'matches';\nconst reportApiName = 'report';\nconst shareDetailsPath = '/matches/shareDetails/';\nconst reportPath = '/report/';\n\nconst FinishedVideoChat = () => {\n    const navigate = useNavigate();\n    const [accessToken, setAccessToken] = useState(undefined);\n    const meetingId = localStorage.getItem('meeting_id');\n    const [snackbarOpen, setSnackbarOpen] = useState(false);\n    const location = useLocation();\n\n\n\n\n    useEffect(() => {\n        currentAuthenticatedUser().then(()=>console.log('success'));\n        const searchParams = new URLSearchParams(location.search);\n        const endedEarlyParam = searchParams.get(\"endEarly\");\n        if (endedEarlyParam != null){\n            setSnackbarOpen(true);\n        }\n\n    }, []);\n\n    const currentAuthenticatedUser = async ()=>\n    {\n        try{\n            const session = await fetchAuthSession({forceRefresh:true});\n            const currAccessToken = session.tokens.accessToken.toString();\n            setAccessToken(currAccessToken);\n        }\n        catch(err){\n            console.log(err);\n        }\n    };\n\n\n\n    const onShareClicked = ()=>{\n            if (meetingId)\n                postRequest(matchesApiName, `${shareDetailsPath}${meetingId}`,{}, accessToken)\n                    .then(()=>console.log('success!'))\n                    .catch((e)=> console.log(e));\n            console.log('no meeting id found');\n            navigate('/loading-chat');\n\n    };\n\n    const onDontShareClicked = ()=>{\n        navigate('/loading-chat');\n    };\n\n    const handleCloseSnackbar = () => {\n        setSnackbarOpen(false);\n    };\n\n    const handleReport = () => {\n        setSnackbarOpen(false);\n        if (meetingId)\n            postRequest(reportApiName, `${reportPath}${meetingId}`,{}, accessToken)\n                .then(()=>console.log('Report successful!'))\n                .catch((e)=> console.log(e));\n    };\n\n    const action = (\n        <React.Fragment>\n            <Button color=\"secondary\" size=\"small\" onClick={handleReport}>\n                Report\n            </Button>\n        </React.Fragment>\n    );\n\n\n    return (\n        <div className=\"finished-video-chat-main main-div\" style={{backgroundImage: `url(${wavy_background})`}}>\n            <div className=\"finished-video-chat-card mycard\">\n                <div className=\"finished-video-text\">\n                    <h2 className=\"finished-video-title\">\n                        <div className=\"spark-title\">Feeling a spark?</div>\n                        <div className=\"share-details-text\">\n                            Share your contact and keep the romance alive</div>\n                    </h2>\n                </div>\n                <div >\n                    <div className=\"finished-video-button\">\n                        <Button className=\"share-details-button\"\n                                onClick={onShareClicked}\n                                style={{backgroundColor:'rgb(255 77 150)'}} >\n                            Yes!\n                        </Button>\n                    </div>\n                    <div className=\"finished-video-button\">\n                        <Button className=\"dont-share-details-button\"\n                                onClick={onDontShareClicked}\n                                style={{backgroundColor:'rgba(250,0,29,0.75)'}}>\n                            Not Feeling It\n                        </Button>\n                    </div>\n                </div>\n                <div className=\"finished-video-tip-text\">\n                    Remember, love could be just a text away\n                </div>\n            </div>\n            <Snackbar\n                anchorOrigin={{vertical:'top', horizontal:'center'}}\n                open={snackbarOpen}\n                onClose={handleCloseSnackbar}\n                autoHideDuration={10000}\n            >\n                <Alert\n                    severity=\"error\"\n                    sx={{ width: '100%' }}\n                    iconMapping={{\n                        error: <ReportIcon fontSize=\"inherit\" />,\n                    }}\n                    action={action}\n                >\n                    Inappropriate behavior?\n                    <br/>Help us maintain a safe space\n                </Alert>\n            </Snackbar>\n        </div>\n    );\n};\n\nexport default FinishedVideoChat;
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx b/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx
+--- a/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx	(date 1715104910024)
+@@ -137,4 +137,4 @@
+     );
+ };
+ 
+-export default FinishedVideoChat;
+\ No newline at end of file
++export default FinishedVideoChat;
+Index: speed-dating-proj/src/components/video-chat/video-display/meeting.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, {useEffect, useMemo, useRef, useState} from \"react\";\nimport {\n    MeetingProvider,\n    useMeeting,\n    useParticipant,\n} from \"@videosdk.live/react-sdk\";\nimport ReactPlayer from \"react-player\";\nimport {useLocation} from \"react-router-dom\";\nimport \"./Meeting.css\"; // Import CSS file for styling\nimport {CiVideoOff, CiVideoOn, CiMicrophoneOn, CiMicrophoneOff} from \"react-icons/ci\";\n\nfunction ParticipantView(props) {\n    const micRef = useRef(null);\n    const {webcamStream, micStream, webcamOn, micOn, isLocal, displayName} =\n        useParticipant(props.participantId);\n    let style = {maxWidth: '260px', maxHeight: '360px', width: 'auto', height: 'auto'};\n    const videoStream = useMemo(() => {\n        if (webcamOn && webcamStream) {\n            const mediaStream = new MediaStream();\n            mediaStream.addTrack(webcamStream.track);\n            return mediaStream;\n        }\n    }, [webcamStream, webcamOn]);\n\n    useEffect(() => {\n        if (micRef.current) {\n            if (micOn && micStream) {\n                const mediaStream = new MediaStream();\n                mediaStream.addTrack(micStream.track);\n\n                micRef.current.srcObject = mediaStream;\n                micRef.current\n                    .play()\n                    .catch((error) =>\n                        console.error(\"videoElem.current.play() failed\", error)\n                    );\n            } else {\n                micRef.current.srcObject = null;\n            }\n        }\n    }, [micStream, micOn]);\n\n\n    return (\n        <div className=\"participant-view\">\n            <audio ref={micRef} autoPlay playsInline muted={isLocal}/>\n            {webcamOn && (\n                <ReactPlayer\n                    style={{maxWidth: '250px', maxHeight: '360px', width: 'auto', height: 'auto'}}\n                    playsinline\n                    pip={false}\n                    light={false}\n                    controls={false}\n                    muted={true}\n                    playing={true}\n                    url={videoStream}\n                    onError={(err) => {\n                        console.log(err, \"participant video error\");\n                    }}\n                />\n\n            )}\n            <h2 style={{marginTop: '35px'}}>{displayName}</h2>\n        </div>\n    );\n}\n\nfunction MySmallView(props) {\n    const micRef = useRef(null);\n    const {webcamStream, micStream, webcamOn, micOn, isLocal} =\n        useParticipant(props.participantId);\n    const videoStream = useMemo(() => {\n        if (webcamOn && webcamStream) {\n            const mediaStream = new MediaStream();\n            mediaStream.addTrack(webcamStream.track);\n            return mediaStream;\n        }\n    }, [webcamStream, webcamOn]);\n\n    useEffect(() => {\n        if (micRef.current) {\n            if (micOn && micStream) {\n                const mediaStream = new MediaStream();\n                mediaStream.addTrack(micStream.track);\n\n                micRef.current.srcObject = mediaStream;\n                micRef.current\n                    .play()\n                    .catch((error) =>\n                        console.error(\"videoElem.current.play() failed\", error)\n                    );\n            } else {\n                micRef.current.srcObject = null;\n            }\n        }\n    }, [micStream, micOn]);\n\n\n    return (\n        <div className=\"participant-view\" style={{position: 'fixed', top: '41%'}}>\n            <audio ref={micRef} autoPlay playsInline muted={isLocal}/>\n            {webcamOn && (\n                <ReactPlayer\n                    style={{maxWidth: '100px', maxHeight: '200px', width: 'auto', height: 'auto'}}\n                    playsinline\n                    pip={false}\n                    light={false}\n                    controls={false}\n                    muted={true}\n                    playing={true}\n                    url={videoStream}\n                    onError={(err) => {\n                        console.log(err, \"participant video error\");\n                    }}\n                />\n            )}\n        </div>\n    );\n}\n\nfunction MeetingView(props) {\n    const [joined, setJoined] = useState(null);\n    const [webCamOnState, setWebCamOnState] = useState(true);\n    const [micOnState, setMicOnState] = useState(true);\n    //Get the method which will be used to join the meeting.\n    //We will also get the participants list to display all participants\n    const {toggleMic, toggleWebcam, leave} = useMeeting();\n    const {join, participants, localParticipant} = useMeeting({\n        //callback for when meeting is joined successfully\n        onMeetingJoined: () => {\n            setJoined(\"JOINED\");\n        }\n    });\n    const joinMeeting = () => {\n        setJoined(\"JOINING\");\n        join();\n    };\n\n    function toggleWebCamWrapper(state) {\n        console.log(webCamOnState);\n        setWebCamOnState(state);\n        toggleWebcam();\n    }\n\n    function toggleMicWrapper(state) {\n        console.log(state);\n        setMicOnState(state);\n        toggleMic();\n    }\n\n    useEffect(() => {\n        return () => {\n            // This function will be called when the component unmounts (i.e., when navigating away)\n            leave();\n        };\n    }, []);\n\n    useEffect(()=>{\n        if(participants.size === 2){\n            props.startTimer();\n        }\n    }, [participants.size]);\n\n    function Controls() {\n\n\n        return (\n            <div className=\"controls\">\n\n                <button onClick={() => toggleMicWrapper(!micOnState)}>\n                    {micOnState ? <CiMicrophoneOn color={\"#ffffff\"}/> : <CiMicrophoneOff color={\"#ffffff\"}/>}\n                </button>\n                <button onClick={() => toggleWebCamWrapper(!webCamOnState)}>\n                    {webCamOnState ? <CiVideoOn color={\"#ffffff\"}/> : <CiVideoOff color={\"#ffffff\"}/>}\n                </button>\n            </div>\n        );\n    }\n\n    return (\n        <div className=\"meeting-view\">\n            {joined && joined === \"JOINED\" ? (\n                <div style={{height: '100%'}}>\n                    <div className=\"participants-container\">\n                        {participants.size === 1 ? (\n                            <div style={{height: '100%'}}>\n                                {[...participants.keys()].map((participantId) => (\n                                    <ParticipantView\n                                        participantId={participantId}\n                                        key={participantId}\n                                    />\n                                ))}\n                            </div>\n                        ) : participants.size === 2 ? (\n                            <div style={{height: '100%'}}>\n                                {[...participants.keys()].filter(id => id !== localParticipant.id).map((participantId) => (\n                                    <div style={{display: 'inline-block'}} key={participantId}>\n                                        <ParticipantView\n                                            participantId={participantId}\n                                        />\n                                        <MySmallView\n                                            participantId={localParticipant.id}\n                                        />\n                                    </div>\n                                ))}\n                            </div>\n                        ) : (\n                            <div/>\n                        )}\n\n                        <Controls/>\n                    </div>\n                </div>\n            ) : joined && joined === \"JOINING\" ? (\n                <h2>Joining the meeting...</h2>\n            ) : (\n                <button onClick={joinMeeting}>Join the meeting</button>\n            )}\n        </div>\n    );\n}\n\nfunction Meeting({username, startTimer}) {\n    const [token, setToken] = useState(null);\n    const [sessionId, setSessionId] = useState(null);\n    const location = useLocation();\n\n\n    useEffect(() => {\n        const searchParams = new URLSearchParams(location.search);\n        const tokenParam = searchParams.get(\"token\");\n        const sessionIdParam = searchParams.get(\"session_id\");\n        console.log(tokenParam);\n        console.log(sessionIdParam);\n        if (tokenParam) {\n            setToken(tokenParam);\n        }\n\n        if (sessionIdParam) {\n            setSessionId(sessionIdParam);\n        }\n    }, [location]);\n\n    return (\n        <div className=\"meeting-container\">\n            {!token || !sessionId ? (\n                <div></div>\n            ) : (\n                <div style={{height: '100%'}}>\n                    <MeetingProvider\n                        config={{\n                            meetingId: sessionId,\n                            micEnabled: true,\n                            webcamEnabled: true,\n                            name: username,\n                        }}\n                        token={token}\n                    >\n                        {<MeetingView startTimer={startTimer}/>}\n                    </MeetingProvider>\n                </div>\n            )}\n        </div>\n    );\n}\n\nexport default Meeting;
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx b/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx
+--- a/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx	(date 1716635875587)
+@@ -264,4 +264,4 @@
+     );
+ }
+ 
+-export default Meeting;
+\ No newline at end of file
++export default Meeting;
+Index: speed-dating-proj/src/components/user-form/user-form.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.MuiFormControl-root {\n    width: 65%;\n    max-width: 250px;\n}\n\n.main-form-div{\n    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);\n    align-self: center;\n    flex-direction: column;\n    background-color: rgb(254, 212, 228);\n    margin-bottom: 10px;\n    overflow: scroll;\n}\n\n.user-form-header-div {\n    height: 20%;\n}\n\n.main-form-div > div {\n    width: 100%;\n}\n\n.main-title-div {\n    height: 10%;\n}\n\n.form-main, .main-form-div , .main-title-div{\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n.profile-form {\n    width: inherit;\n    max-height: 100%;\n}\n\n.profile-form > * {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    flex-direction: column;\n    padding: 5px;\n}\n\n.user-form-main {\n    display: flex;\n    justify-content: center;\n    align-content: center;\n    flex-direction: column;\n}\n\n.profile-pic-buttons {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n}\n\n.form-main{\n    overflow: scroll;\n}\n.form-title {\n    font-size: 1.2em\n}\n\n.save-btn {\n    margin-top: 2px;\n}\n\n.profile-img{\n    width: 3em;\n    box-shadow: rgb(255, 176, 209) 1px 1px 1px;\n}\n\n.error-msg {\n    text-align: center;\n}\n\n.new-user-title{\n    font-size: larger;\n    font-weight: 800;\n    color: #fb8eba;\n\n}\n\n.new-user-text {\n    text-align: center;\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/speed-dating-proj/src/components/user-form/user-form.css b/speed-dating-proj/src/components/user-form/user-form.css
+--- a/speed-dating-proj/src/components/user-form/user-form.css	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/speed-dating-proj/src/components/user-form/user-form.css	(date 1715104941440)
+@@ -85,4 +85,4 @@
+ 
+ .new-user-text {
+     text-align: center;
+-}
+\ No newline at end of file
++}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"ffdc884b-4819-45bb-9e14-9a707056f138\" name=\"Default Changelist\" comment=\"added lambda demo\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FindInProjectRecents\">\n    <findStrings>\n      <find>logo</find>\n      <find>loading-video</find>\n      <find>ke</find>\n      <find>helper</find>\n      <find>white</find>\n      <find>react app</find>\n      <find>`</find>\n    </findStrings>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\n      <list>\n        <option value=\"danny &lt;80157270+danny-rubin@users.noreply.github.com&gt;\" />\n      </list>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"IdeDocumentHistory\">\n    <option name=\"CHANGED_PATHS\">\n      <list>\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/user-form/user-form.jsx\" />\n        <option value=\"$PROJECT_DIR$/.gitignore\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/video-display.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/zoom-video-display.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-chat-page/video-chat-page.css\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-chat-page/video-chat-page.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/public/manifest.json\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.css\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-whatsapp-button.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/contact-details-card/contact-details-card.css\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.css\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/contact-details-card/contact-details-card.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/public/index.html\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/header/header.jsx\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/components/header/header.css\" />\n        <option value=\"$PROJECT_DIR$/speed-dating-proj/src/App.js\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 5\n}</component>\n  <component name=\"ProjectFrameBounds\">\n    <option name=\"x\" value=\"126\" />\n    <option name=\"y\" value=\"68\" />\n    <option name=\"width\" value=\"1159\" />\n    <option name=\"height\" value=\"785\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2bdqqTb1CeoCmMX8OII93lHA52r\" />\n  <component name=\"ProjectView\">\n    <navigator proportions=\"\" version=\"1\">\n      <foldersAlwaysOnTop value=\"true\" />\n    </navigator>\n    <panes>\n      <pane id=\"ProjectPane\">\n        <subPane>\n          <expand>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"public\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"header\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"shared-details-page\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"shared-details-page\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"contact-details-card\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n            <path>\n              <item name=\"SpeedDating\" type=\"b2602c69:ProjectViewProjectNode\" />\n              <item name=\"SpeedDating\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"speed-dating-proj\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"shared-details-page\" type=\"462c0819:PsiDirectoryNode\" />\n              <item name=\"send-whatsapp-button\" type=\"462c0819:PsiDirectoryNode\" />\n            </path>\n          </expand>\n          <select />\n        </subPane>\n      </pane>\n      <pane id=\"Scope\" />\n    </panes>\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/Users/drubinov/Desktop/studies/SpeedDating&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;npm.start.executor&quot;: &quot;Run&quot;,\n    &quot;ts.external.directory.path&quot;: &quot;/Users/drubinov/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/speed-dating-proj/public\" />\n      <recent name=\"$PROJECT_DIR$/speed-dating-proj\" />\n    </key>\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/speed-dating-proj/src/assets\" />\n      <recent name=\"$PROJECT_DIR$/speed-dating-proj\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"start\" type=\"js.build_tools.npm\" temporary=\"true\" nameIsGenerated=\"true\">\n      <package-json value=\"$PROJECT_DIR$/speed-dating-proj/package.json\" />\n      <command value=\"run\" />\n      <scripts>\n        <script value=\"start\" />\n      </scripts>\n      <node-interpreter value=\"project\" />\n      <envs />\n      <method v=\"2\" />\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"npm.start\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"SvnConfiguration\">\n    <configuration />\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"ffdc884b-4819-45bb-9e14-9a707056f138\" name=\"Default Changelist\" comment=\"\" />\n      <created>1706443460826</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1706443460826</updated>\n      <workItem from=\"1706443461999\" duration=\"1594000\" />\n      <workItem from=\"1706445730075\" duration=\"37000\" />\n      <workItem from=\"1706446087894\" duration=\"14773000\" />\n      <workItem from=\"1706555494872\" duration=\"12184000\" />\n      <workItem from=\"1706611572401\" duration=\"2886000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Update package.json&#10;&#10;changed node version to 16\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1706555780300</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1706555780300</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"checking CI CD Hi moon text\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1706559668315</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1706559668315</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"added lambda demo\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1706613436744</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1706613436744</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"4\" />\n    <servers />\n  </component>\n  <component name=\"TimeTrackingManager\">\n    <option name=\"totallyTimeSpent\" value=\"16404000\" />\n  </component>\n  <component name=\"TodoView\">\n    <todo-panel id=\"selected-file\">\n      <is-autoscroll-to-source value=\"true\" />\n    </todo-panel>\n    <todo-panel id=\"all\">\n      <are-packages-shown value=\"true\" />\n      <is-autoscroll-to-source value=\"true\" />\n    </todo-panel>\n  </component>\n  <component name=\"ToolWindowManager\">\n    <frame x=\"126\" y=\"68\" width=\"1159\" height=\"785\" extended-state=\"0\" />\n    <editor active=\"true\" />\n    <layout>\n      <window_info active=\"true\" content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.24956064\" />\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\n      <window_info id=\"Favorites\" order=\"2\" side_tool=\"true\" />\n      <window_info anchor=\"bottom\" id=\"TypeScript\" weight=\"0.32900432\" />\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" weight=\"0.32900432\" />\n      <window_info anchor=\"bottom\" id=\"Run\" order=\"2\" />\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.4\" />\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" weight=\"0.32900432\" />\n      <window_info anchor=\"bottom\" id=\"Docker\" order=\"7\" show_stripe_button=\"false\" />\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"8\" weight=\"0.32900432\" />\n      <window_info anchor=\"bottom\" id=\"Terminal\" order=\"9\" visible=\"true\" weight=\"0.32756132\" />\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"10\" side_tool=\"true\" />\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\n    </layout>\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Update package.json&#10;&#10;changed node version to 16\" />\n    <MESSAGE value=\"checking CI CD Hi moon text\" />\n    <MESSAGE value=\"added lambda demo\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"added lambda demo\" />\n  </component>\n  <component name=\"editorHistoryManager\">\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/index.css\" />\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/homepage/homepage.css\" />\n    <entry file=\"file://$PROJECT_DIR$/.gitignore\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"300\">\n          <caret line=\"20\" lean-forward=\"true\" selection-start-line=\"20\" selection-end-line=\"20\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/video-display-mock.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/node_modules/@zoom/videosdk/dist/index.js\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/node_modules/@zoom/videosdk/dist/types/videoclient.d.ts\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state>\n          <folding>\n            <element signature=\"e#0#73#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/node_modules/@zoom/videosdk/dist/types/zoomvideo.d.ts\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state>\n          <folding>\n            <element signature=\"e#0#80#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state>\n          <caret selection-end-line=\"4\" selection-end-column=\"1\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"14\">\n          <caret line=\"12\" column=\"45\" selection-start-line=\"12\" selection-start-column=\"45\" selection-end-line=\"12\" selection-end-column=\"45\" />\n          <folding>\n            <element signature=\"e#0#41#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-chat-page/video-chat-page.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"314\">\n          <caret line=\"32\" column=\"22\" selection-start-line=\"32\" selection-start-column=\"22\" selection-end-line=\"32\" selection-end-column=\"22\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/logo.svg\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-chat-page/video-chat-page.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"107\">\n          <caret line=\"51\" column=\"101\" selection-start-line=\"51\" selection-start-column=\"101\" selection-end-line=\"51\" selection-end-column=\"101\" />\n          <folding>\n            <element signature=\"e#20#71#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/favicon.ico\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/logo192.png\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/logo512.png\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/robots.txt\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/manifest.json\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"90\">\n          <caret line=\"6\" column=\"23\" selection-start-line=\"6\" selection-start-column=\"23\" selection-end-line=\"6\" selection-end-column=\"23\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/zoom-video-display.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"638\">\n          <caret line=\"66\" column=\"2\" selection-start-line=\"66\" selection-start-column=\"2\" selection-end-line=\"66\" selection-end-column=\"2\" />\n          <folding>\n            <element signature=\"e#20#79#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/App.test.js\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state>\n          <folding>\n            <element signature=\"e#0#56#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/assets/video-chat-mock.png\">\n      <provider selected=\"true\" editor-type-id=\"images\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/user-form/user-form.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"310\">\n          <caret line=\"163\" column=\"39\" lean-forward=\"true\" selection-start-line=\"159\" selection-start-column=\"35\" selection-end-line=\"163\" selection-end-column=\"39\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"405\">\n          <caret line=\"28\" column=\"31\" lean-forward=\"true\" selection-start-line=\"28\" selection-start-column=\"31\" selection-end-line=\"28\" selection-end-column=\"31\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-whatsapp-button.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/contact-details-card/contact-details-card.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"120\">\n          <caret line=\"8\" selection-start-line=\"8\" selection-end-line=\"8\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"164\">\n          <caret line=\"24\" selection-start-line=\"24\" selection-end-line=\"24\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"45\">\n          <caret line=\"3\" column=\"20\" lean-forward=\"true\" selection-start-line=\"3\" selection-start-column=\"20\" selection-end-line=\"3\" selection-end-column=\"20\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-whatsapp-button.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"254\">\n          <caret line=\"17\" column=\"18\" lean-forward=\"true\" selection-start-line=\"17\" selection-start-column=\"18\" selection-end-line=\"17\" selection-end-column=\"18\" />\n          <folding>\n            <element signature=\"e#0#38#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/contact-details-card/contact-details-card.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"180\">\n          <caret line=\"12\" column=\"38\" lean-forward=\"true\" selection-start-line=\"12\" selection-start-column=\"38\" selection-end-line=\"12\" selection-end-column=\"38\" />\n          <folding>\n            <element signature=\"e#0#26#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"195\">\n          <caret line=\"27\" column=\"36\" lean-forward=\"true\" selection-start-line=\"27\" selection-start-column=\"36\" selection-end-line=\"27\" selection-end-column=\"36\" />\n          <folding>\n            <element signature=\"e#0#38#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/public/index.html\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"60\">\n          <caret line=\"4\" column=\"56\" selection-start-line=\"4\" selection-start-column=\"56\" selection-end-line=\"4\" selection-end-column=\"56\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"214\">\n          <caret line=\"20\" lean-forward=\"true\" selection-start-line=\"20\" selection-end-line=\"20\" />\n          <folding>\n            <element signature=\"e#0#38#0\" expanded=\"true\" />\n          </folding>\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/header/header.jsx\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"284\">\n          <caret line=\"44\" column=\"34\" selection-start-line=\"44\" selection-start-column=\"34\" selection-end-line=\"44\" selection-end-column=\"34\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/components/header/header.css\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"296\">\n          <caret line=\"25\" column=\"16\" lean-forward=\"true\" selection-start-line=\"25\" selection-start-column=\"16\" selection-end-line=\"25\" selection-end-column=\"16\" />\n        </state>\n      </provider>\n    </entry>\n    <entry file=\"file://$PROJECT_DIR$/speed-dating-proj/src/App.js\">\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\n        <state relative-caret-position=\"389\">\n          <caret line=\"36\" column=\"77\" selection-start-line=\"36\" selection-start-column=\"77\" selection-end-line=\"36\" selection-end-column=\"77\" />\n        </state>\n      </provider>\n    </entry>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/.idea/workspace.xml	(date 1716638949688)
+@@ -1,17 +1,139 @@
+-
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="ffdc884b-4819-45bb-9e14-9a707056f138" name="Default Changelist" comment="added lambda demo">
++    <list default="true" id="ffdc884b-4819-45bb-9e14-9a707056f138" name="Default Changelist" comment="changes text in create profile and added report api">
++      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/speed-dating-proj/src/amplifyconfiguration.json" beforeDir="false" afterPath="$PROJECT_DIR$/speed-dating-proj/src/amplifyconfiguration.json" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/speed-dating-proj/src/components/user-form/user-form.css" beforeDir="false" afterPath="$PROJECT_DIR$/speed-dating-proj/src/components/user-form/user-form.css" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/finished-video-chat/finished-video-chat.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/loading-video-chat/loading-video-chat.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/speed-dating-proj/src/components/video-chat/video-display/meeting.jsx" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="ComposerSettings">
++    <execution />
++  </component>
++  <component name="FileEditorManager">
++    <leaf>
++      <file pinned="false" current-in-tab="true">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/App.js">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="389">
++              <caret line="36" column="77" selection-start-line="36" selection-start-column="77" selection-end-line="36" selection-end-column="77" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/header/header.jsx">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="284">
++              <caret line="44" column="34" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="34" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/header/header.css">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="296">
++              <caret line="25" column="16" lean-forward="true" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.jsx">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="195">
++              <caret line="27" column="36" lean-forward="true" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
++              <folding>
++                <element signature="e#0#38#0" expanded="true" />
++              </folding>
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/contact-details-card/contact-details-card.jsx">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="180">
++              <caret line="12" column="38" lean-forward="true" selection-start-line="12" selection-start-column="38" selection-end-line="12" selection-end-column="38" />
++              <folding>
++                <element signature="e#0#26#0" expanded="true" />
++              </folding>
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/public/index.html">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="60">
++              <caret line="4" column="56" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-whatsapp-button.jsx">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="254">
++              <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
++              <folding>
++                <element signature="e#0#38#0" expanded="true" />
++              </folding>
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.jsx">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="214">
++              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
++              <folding>
++                <element signature="e#0#38#0" expanded="true" />
++              </folding>
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/send-whatsapp-button/send-message.css">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="164">
++              <caret line="24" selection-start-line="24" selection-end-line="24" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/components/shared-details-page/shared-details-page.css">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="45">
++              <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
++            </state>
++          </provider>
++        </entry>
++      </file>
++    </leaf>
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="JSX File" />
++        <option value="JavaScript File" />
++      </list>
++    </option>
+   </component>
+   <component name="FindInProjectRecents">
+     <findStrings>
+@@ -71,6 +193,9 @@
+     <option name="height" value="785" />
+   </component>
+   <component name="ProjectId" id="2bdqqTb1CeoCmMX8OII93lHA52r" />
++  <component name="ProjectLevelVcsManager">
++    <OptionsSetting value="false" id="Update" />
++  </component>
+   <component name="ProjectView">
+     <navigator proportions="" version="1">
+       <foldersAlwaysOnTop value="true" />
+@@ -157,7 +282,9 @@
+     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;com.amazon.ijbp.awstoolkit.codewhisperer.Model_Has_Been_Selected&quot;: &quot;true&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+     &quot;last_opened_file_path&quot;: &quot;/Users/drubinov/Desktop/studies/SpeedDating&quot;,
+     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+@@ -211,7 +338,17 @@
+       <workItem from="1706445730075" duration="37000" />
+       <workItem from="1706446087894" duration="14773000" />
+       <workItem from="1706555494872" duration="12184000" />
+-      <workItem from="1706611572401" duration="2886000" />
++      <workItem from="1706611572401" duration="6365000" />
++      <workItem from="1708762048613" duration="66140000" />
++      <workItem from="1709918658316" duration="9944000" />
++      <workItem from="1710069794940" duration="953000" />
++      <workItem from="1711010845869" duration="1683000" />
++      <workItem from="1711704343994" duration="564000" />
++      <workItem from="1712143452431" duration="572000" />
++      <workItem from="1713295716012" duration="575000" />
++      <workItem from="1713784263338" duration="559000" />
++      <workItem from="1714376759701" duration="15275000" />
++      <workItem from="1716104414004" duration="2899000" />
+     </task>
+     <task id="LOCAL-00001" summary="Update package.json&#10;&#10;changed node version to 16">
+       <option name="closed" value="true" />
+@@ -237,7 +374,111 @@
+       <option name="project" value="LOCAL" />
+       <updated>1706613436744</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="added lambda demo">
++      <option name="closed" value="true" />
++      <created>1706614594216</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1706614594216</updated>
++    </task>
++    <task id="LOCAL-00005" summary="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;speed-dating-proj/src/index.js">
++      <option name="closed" value="true" />
++      <created>1706614951323</created>
++      <option name="number" value="00005" />
++      <option name="presentableId" value="LOCAL-00005" />
++      <option name="project" value="LOCAL" />
++      <updated>1706614951323</updated>
++    </task>
++    <task id="LOCAL-00006" summary="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;speed-dating-proj/src/index.js">
++      <option name="closed" value="true" />
++      <created>1706616483626</created>
++      <option name="number" value="00006" />
++      <option name="presentableId" value="LOCAL-00006" />
++      <option name="project" value="LOCAL" />
++      <updated>1706616483626</updated>
++    </task>
++    <task id="LOCAL-00007" summary="added login with google">
++      <option name="closed" value="true" />
++      <created>1708775992602</created>
++      <option name="number" value="00007" />
++      <option name="presentableId" value="LOCAL-00007" />
++      <option name="project" value="LOCAL" />
++      <updated>1708775992602</updated>
++    </task>
++    <task id="LOCAL-00008" summary="added login with google">
++      <option name="closed" value="true" />
++      <created>1708776149982</created>
++      <option name="number" value="00008" />
++      <option name="presentableId" value="LOCAL-00008" />
++      <option name="project" value="LOCAL" />
++      <updated>1708776149982</updated>
++    </task>
++    <task id="LOCAL-00009" summary="added login with google">
++      <option name="closed" value="true" />
++      <created>1708776412397</created>
++      <option name="number" value="00009" />
++      <option name="presentableId" value="LOCAL-00009" />
++      <option name="project" value="LOCAL" />
++      <updated>1708776412397</updated>
++    </task>
++    <task id="LOCAL-00010" summary="added redirect for prod domain">
++      <option name="closed" value="true" />
++      <created>1708777062193</created>
++      <option name="number" value="00010" />
++      <option name="presentableId" value="LOCAL-00010" />
++      <option name="project" value="LOCAL" />
++      <updated>1708777062193</updated>
++    </task>
++    <task id="LOCAL-00011" summary="added storage config">
++      <option name="closed" value="true" />
++      <created>1709900581684</created>
++      <option name="number" value="00011" />
++      <option name="presentableId" value="LOCAL-00011" />
++      <option name="project" value="LOCAL" />
++      <updated>1709900581684</updated>
++    </task>
++    <task id="LOCAL-00012" summary="added upload to S3 when user uploads a picture">
++      <option name="closed" value="true" />
++      <created>1709914268540</created>
++      <option name="number" value="00012" />
++      <option name="presentableId" value="LOCAL-00012" />
++      <option name="project" value="LOCAL" />
++      <updated>1709914268540</updated>
++    </task>
++    <task id="LOCAL-00013" summary="added login with facebook, screwed up login with google">
++      <option name="closed" value="true" />
++      <created>1709979631449</created>
++      <option name="number" value="00013" />
++      <option name="presentableId" value="LOCAL-00013" />
++      <option name="project" value="LOCAL" />
++      <updated>1709979631449</updated>
++    </task>
++    <task id="LOCAL-00014" summary="removed login with google from UI">
++      <option name="closed" value="true" />
++      <created>1709980363385</created>
++      <option name="number" value="00014" />
++      <option name="presentableId" value="LOCAL-00014" />
++      <option name="project" value="LOCAL" />
++      <updated>1709980363385</updated>
++    </task>
++    <task id="LOCAL-00015" summary="changed tour text">
++      <option name="closed" value="true" />
++      <created>1709984380683</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1709984380683</updated>
++    </task>
++    <task id="LOCAL-00016" summary="changes text in create profile and added report api">
++      <option name="closed" value="true" />
++      <created>1715105031263</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1715105031263</updated>
++    </task>
++    <option name="localTasksCounter" value="17" />
+     <servers />
+   </component>
+   <component name="TimeTrackingManager">
+@@ -279,11 +520,31 @@
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="Update package.json&#10;&#10;changed node version to 16" />
+     <MESSAGE value="checking CI CD Hi moon text" />
+     <MESSAGE value="added lambda demo" />
+-    <option name="LAST_COMMIT_MESSAGE" value="added lambda demo" />
++    <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;speed-dating-proj/src/index.js" />
++    <MESSAGE value="added login with google" />
++    <MESSAGE value="added redirect for prod domain" />
++    <MESSAGE value="added storage config" />
++    <MESSAGE value="added upload to S3 when user uploads a picture" />
++    <MESSAGE value="added login with facebook, screwed up login with google" />
++    <MESSAGE value="removed login with google from UI" />
++    <MESSAGE value="changed tour text" />
++    <MESSAGE value="changes text in create profile and added report api" />
++    <option name="LAST_COMMIT_MESSAGE" value="changes text in create profile and added report api" />
+   </component>
+   <component name="editorHistoryManager">
+     <entry file="file://$PROJECT_DIR$/speed-dating-proj/src/index.css" />
+Index: .idea/aws.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"accountSettings\">\n    <option name=\"activeProfile\" value=\"profile:default\" />\n    <option name=\"activeRegion\" value=\"us-east-1\" />\n    <option name=\"recentlyUsedProfiles\">\n      <list>\n        <option value=\"profile:default\" />\n      </list>\n    </option>\n    <option name=\"recentlyUsedRegions\">\n      <list>\n        <option value=\"us-east-1\" />\n      </list>\n    </option>\n  </component>\n</project>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/aws.xml b/.idea/aws.xml
+--- a/.idea/aws.xml	(revision 805a08ce28081acd5b131178f388ebb9184e17e0)
++++ b/.idea/aws.xml	(date 1716104665927)
+@@ -14,4 +14,4 @@
+       </list>
+     </option>
+   </component>
+-</project>
++</project>
+\ No newline at end of file

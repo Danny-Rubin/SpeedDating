@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/report/{meetingId}": {
+      "name": "/report/{meetingId}",
+      "lambdaFunction": "report",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/reportUser/{meetingId}": {
+      "name": "/reportUser/{meetingId}",
+      "lambdaFunction": "reportUser",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/profiles": {
+      "name": "/profiles",
+      "lambdaFunction": "profilesLambda",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/profiles/stopMatchSearching": {
+      "name": "/profiles/stopMatchSearching",
+      "lambdaFunction": "stopMatchSearching",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

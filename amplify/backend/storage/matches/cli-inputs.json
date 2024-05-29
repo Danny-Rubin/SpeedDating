@@ -1,0 +1,12 @@
+{
+  "resourceName": "matches",
+  "tableName": "matches",
+  "partitionKey": {
+    "fieldName": "session_id",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": [
+    "matchesTrigger0b7c02b8"
+  ]
+}

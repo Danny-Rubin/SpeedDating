@@ -1,0 +1,10 @@
+{
+  "resourceName": "sharedDetails",
+  "tableName": "sharedDetails",
+  "partitionKey": {
+    "fieldName": "profileId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

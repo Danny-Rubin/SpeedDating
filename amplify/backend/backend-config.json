@@ -1,0 +1,652 @@
+{
+  "api": {
+    "matches": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "matches"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "findMatch"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "findMatchVideoTmp"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getToken"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "shareDetails"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "shareProfilesList"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "extendMeeting"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "mutualConsentExtendMeeting"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "mutual"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "newConnection"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "profiles": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "profilesLambda"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "stopMatchSearching"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "report": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "report"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "reportUser"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "speeddatingspeeddati": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "speeddatingspeeddati9e812afc": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [
+          "FACEBOOK"
+        ],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "custom": {
+    "orderSQS": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "customCloudformation"
+    }
+  },
+  "function": {
+    "extendMeeting": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "matches"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "findMatch": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "findMatchVideoTmp": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getToken": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "matches"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "matches": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "matches"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "mutual": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "mutualConsentExtendMeeting": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "matches"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "myLambdaFunctionNameTest": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "newConnection": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "profilesLambda": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "profiles"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "report": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "reportUser": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "shareDetails": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "sharedDetails"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "shareProfilesList": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "sharedDetails"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "stopMatchSearching": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "profiles"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_endMeeting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "endMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_endMeeting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "endMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_extendMeeting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "extendMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_extendMeeting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "extendMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_findMatchVideoTmp_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "findMatchVideoTmp"
+        }
+      ]
+    },
+    "AMPLIFY_function_findMatchVideoTmp_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "findMatchVideoTmp"
+        }
+      ]
+    },
+    "AMPLIFY_function_findMatch_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "findMatch"
+        }
+      ]
+    },
+    "AMPLIFY_function_findMatch_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "findMatch"
+        }
+      ]
+    },
+    "AMPLIFY_function_getToken_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getToken"
+        }
+      ]
+    },
+    "AMPLIFY_function_getToken_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getToken"
+        }
+      ]
+    },
+    "AMPLIFY_function_matches_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "matches"
+        }
+      ]
+    },
+    "AMPLIFY_function_matches_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "matches"
+        }
+      ]
+    },
+    "AMPLIFY_function_mutualConsentExtendMeeting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mutualConsentExtendMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_mutualConsentExtendMeeting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mutualConsentExtendMeeting"
+        }
+      ]
+    },
+    "AMPLIFY_function_mutual_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mutual"
+        }
+      ]
+    },
+    "AMPLIFY_function_mutual_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "mutual"
+        }
+      ]
+    },
+    "AMPLIFY_function_myLambdaFunctionNameTest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myLambdaFunctionNameTest"
+        }
+      ]
+    },
+    "AMPLIFY_function_myLambdaFunctionNameTest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myLambdaFunctionNameTest"
+        }
+      ]
+    },
+    "AMPLIFY_function_newConnection_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "newConnection"
+        }
+      ]
+    },
+    "AMPLIFY_function_newConnection_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "newConnection"
+        }
+      ]
+    },
+    "AMPLIFY_function_profilesLambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profilesLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_profilesLambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "profilesLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_reportUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "reportUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_reportUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "reportUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_report_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "report"
+        }
+      ]
+    },
+    "AMPLIFY_function_report_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "report"
+        }
+      ]
+    },
+    "AMPLIFY_function_shareDetails_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "shareDetails"
+        }
+      ]
+    },
+    "AMPLIFY_function_shareDetails_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "shareDetails"
+        }
+      ]
+    },
+    "AMPLIFY_function_shareProfilesList_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "shareProfilesList"
+        }
+      ]
+    },
+    "AMPLIFY_function_shareProfilesList_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "shareProfilesList"
+        }
+      ]
+    },
+    "AMPLIFY_function_stopMatchSearching_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stopMatchSearching"
+        }
+      ]
+    },
+    "AMPLIFY_function_stopMatchSearching_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stopMatchSearching"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "matches": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "profilePics": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    },
+    "profiles": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "sharedDetails": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
+}

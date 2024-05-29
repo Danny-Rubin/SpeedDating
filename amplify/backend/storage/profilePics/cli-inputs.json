@@ -1,0 +1,14 @@
+{
+  "resourceName": "profilePics",
+  "policyUUID": "438fdcec",
+  "bucketName": "profilepicsspeeddating",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "paths": {
+    "/matches": {
+      "name": "/matches",
+      "lambdaFunction": "matches",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/find": {
+      "name": "/matches/find",
+      "lambdaFunction": "findMatch",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/find/tmp": {
+      "name": "/matches/find/tmp",
+      "lambdaFunction": "findMatchVideoTmp",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/getToken/{meetingId}": {
+      "name": "/matches/getToken/{meetingId}",
+      "lambdaFunction": "getToken",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/shareDetails/{meetingId}": {
+      "name": "/matches/shareDetails/{meetingId}",
+      "lambdaFunction": "shareDetails",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/sharedProfilesList": {
+      "name": "/matches/sharedProfilesList",
+      "lambdaFunction": "shareProfilesList",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/extendMeeting/{meetingId}": {
+      "name": "/matches/extendMeeting/{meetingId}",
+      "lambdaFunction": "extendMeeting",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/matches/mutualConsentExtendMeeting/{meetingId}": {
+      "name": "/matches/mutualConsentExtendMeeting/{meetingId}",
+      "lambdaFunction": "mutualConsentExtendMeeting",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/mutual/{meetingId}": {
+      "name": "/mutual/{meetingId}",
+      "lambdaFunction": "mutual",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/newConnection/{meetingId}": {
+      "name": "/newConnection/{meetingId}",
+      "lambdaFunction": "newConnection",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify867debc3e63f4-staging-205648-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335436053:role/amplify-amplify867debc3e63f4-staging-205648-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335436053:role/amplify-amplify867debc3e63f4-staging-205648-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+      "UnauthRoleName": "amplify-amplify867debc3e63f4-staging-205648-unauthRole",
+      "StackName": "amplify-amplify867debc3e63f4-staging-205648",
+      "StackId": "arn:aws:cloudformation:us-east-1:730335436053:stack/amplify-amplify867debc3e63f4-staging-205648/ebcb6690-bee8-11ee-887a-0a06bac2e489",
+      "AmplifyAppId": "deuksgbh6tmkx"
+    },
+    "categories": {
+      "function": {
+        "myLambdaFunctionNameTest": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/myLambdaFunctionNameTest-36385236494d36623465-build.zip"
+        },
+        "findMatch": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/findMatch-59474c303061664c4b69-build.zip"
+        },
+        "matches": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/matches-6e4b7a664a71736e386f-build.zip"
+        },
+        "findMatchVideoTmp": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/findMatchVideoTmp-327a4c494c6450503873-build.zip"
+        },
+        "getToken": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/getToken-63636b68705234705650-build.zip"
+        },
+        "profilesLambda": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/profilesLambda-7168314b5867626a3677-build.zip"
+        },
+        "shareDetails": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/shareDetails-632b3373597055614b67-build.zip"
+        },
+        "shareProfilesList": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/shareProfilesList-483953336a7a46564a54-build.zip"
+        },
+        "extendMeeting": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/extendMeeting-466e474b794d50684757-build.zip"
+        },
+        "mutualConsentExtendMeeting": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/mutualConsentExtendMeeting-773732706f744f454e67-build.zip"
+        },
+        "endMeeting": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/endMeeting-5a4c3930456454447a7a-build.zip"
+        },
+        "reportUserLambda": {},
+        "report": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/report-634d6939564368726852-build.zip"
+        },
+        "reportUser": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/reportUser-382b4478366831637943-build.zip"
+        },
+        "mutual": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/mutual-32444c506f5636343776-build.zip"
+        },
+        "newConnection": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/newConnection-304136745973777a3233-build.zip"
+        },
+        "stopMatchSearching": {
+          "deploymentBucketName": "amplify-amplify867debc3e63f4-staging-205648-deployment",
+          "s3Key": "amplify-builds/stopMatchSearching-4638627a6158554c7079-build.zip"
+        }
+      },
+      "api": {
+        "apiTest": {},
+        "findMatch": {},
+        "matches": {},
+        "profiles": {},
+        "speeddatingspeeddati": {}
+      },
+      "auth": {
+        "speeddatingspeeddati9e812afc": {}
+      },
+      "storage": {
+        "matches": {},
+        "profiles": {},
+        "sharedDetails": {},
+        "profilePics": {}
+      },
+      "custom": {
+        "orderSQS": {}
+      }
+    }
+  }
+}
